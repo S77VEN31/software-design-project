@@ -6,6 +6,8 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 // Cors
 import cors from "cors";
+// Routes
+import { authenticationRoutes } from "./routes";
 
 // Express app instance
 const app = express();
@@ -25,5 +27,8 @@ app.use(cors({ origin: true, credentials: true }));
 
 // Cookie parser
 app.use(cookieParser());
+
+// Routes
+app.use("/api", authenticationRoutes);
 
 export default app;
