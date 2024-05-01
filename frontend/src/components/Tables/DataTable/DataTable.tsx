@@ -1,6 +1,6 @@
 // React
 import { ReactNode } from "react";
-
+// Types
 type TableRenderable =
   | string
   | number
@@ -8,13 +8,12 @@ type TableRenderable =
   | React.ReactElement
   | null
   | undefined;
-
+// Interfaces
 interface TableColumn<T> {
   header?: string;
   accessor: keyof T;
   render?: (value: T[keyof T], row: T) => ReactNode;
 }
-
 interface DataTableProps<
   T extends Record<string, TableRenderable | TableRenderable[]>
 > {
@@ -55,3 +54,4 @@ const DataTable = <
 };
 export default DataTable;
 export type { TableColumn, TableRenderable };
+
