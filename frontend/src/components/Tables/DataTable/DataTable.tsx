@@ -1,3 +1,4 @@
+// React
 import { ReactNode } from "react";
 
 type TableRenderable =
@@ -54,4 +55,3 @@ const DataTable = <
 };
 export default DataTable;
 export type { TableColumn, TableRenderable };
-

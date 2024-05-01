@@ -1,13 +1,17 @@
+// Styles
+import "./App.css";
+// Enumerables
 import { Routes as RoutesList } from "@enumerables";
+// Libraries
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import "./App.css";
 // Screens
 import { MenuScreen } from "@screens";
-
+// Interfaces
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
+
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const hasPermission = true;
   const isLogin = true;
@@ -35,10 +39,10 @@ function App() {
           <Route key={key} {...props} />
         ))}
         <Route path="/home" element={<MenuScreen />}>
-          {appRoutes.map(({ path, ...props }, key) => (
+          {appRoutes.map(({ ...props }, key) => (
             <Route
               key={key}
-              path={path}
+              {...props}
               element={<ProtectedRoute>{props.element}</ProtectedRoute>}
             />
           ))}
