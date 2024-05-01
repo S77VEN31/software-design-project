@@ -21,6 +21,7 @@ const columns: TableColumn<Student>[] = [
     accessor: "id",
     render: (id) => <button onClick={() => alert("ID " + id)}>Click Me</button>,
   },
+  { header: "Edad", accessor: "age" },
 ];
 
 const Students = () => {
