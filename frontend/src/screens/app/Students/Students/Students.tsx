@@ -25,10 +25,6 @@ const columns: TableColumn<Student>[] = [
 ];
 
 const Students = () => {
-  return (
-    <div>
-      <DataTable data={data} columns={columns} />
-    </div>
-  );
+  return <DataTable data={data} columns={columns} />;
 };
 export default Students;
