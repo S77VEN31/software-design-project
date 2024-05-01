@@ -18,7 +18,6 @@ const columns: TableColumn<Student>[] = [
     render: (name) => <strong>{name}</strong>,
   },
   {
-    header: "Acción",
     accessor: "id",
     render: (id) => <button onClick={() => alert("ID " + id)}>Click Me</button>,
   },

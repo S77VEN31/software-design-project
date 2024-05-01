@@ -9,7 +9,7 @@ type TableRenderable =
   | undefined;
 
 interface TableColumn<T> {
-  header: string;
+  header?: string;
   accessor: keyof T;
   render?: (value: T[keyof T], row: T) => ReactNode;
 }
@@ -54,3 +54,4 @@ const DataTable = <
 };
 export default DataTable;
 export type { TableColumn, TableRenderable };
+
