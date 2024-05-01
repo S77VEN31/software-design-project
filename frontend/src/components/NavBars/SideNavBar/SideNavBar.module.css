@@ -1,0 +1,36 @@
+.nav {
+    display: flex;
+    flex-direction: column;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    gap: 1rem;
+    background-color: var(--color-primary);
+}
+
+.nav .routes {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.link {
+    padding: 0.5rem 1rem;
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    color: var(--color-background);
+    background-image: linear-gradient(to right, var(--color-secondary), var(--color-secondary));
+    background-size: 0% 100%;
+    background-repeat: no-repeat;
+    transition: background-size 0.5s ease-out, color 0.3s ease, transform 0.3s ease;
+    font-weight:bold;
+    transform: scale(1); /* Tamaño inicial */
+}
+
+.link.active {
+    background-size: 100% 100%;
+    color: var(--color-active-text, white); /* Color de texto para enlaces activos, con fallback a blanco */
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5); /* Sombra de texto para mejor visibilidad */
+}
+
+
