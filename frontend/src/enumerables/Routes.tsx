@@ -1,3 +1,4 @@
+// Screens
 import { StudentsScreen } from "@screens";
 
 const authenticationRoutes = [

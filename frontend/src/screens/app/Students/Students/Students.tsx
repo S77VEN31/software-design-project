@@ -1,5 +1,5 @@
 import { DataTable, TableColumn, TableRenderable } from "@components";
-
+// Interfaces
 interface Student extends Record<string, TableRenderable> {
   id: number;
   name: string;
