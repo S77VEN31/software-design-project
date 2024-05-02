@@ -1,35 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+// Styles
+import "./App.css";
+// Enumerables
+import { Routes as RoutesList } from "@enumerables";
+// Libraries
+import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+// Screens
+import { MenuScreen } from "@screens";
+// Interfaces
+interface ProtectedRouteProps {
+  children: React.ReactNode;
 }
 
-export default App
+const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
+  const hasPermission = true;
+  const isLogin = true;
+
+  if (!isLogin) {
+    return <Navigate to="/" replace />;
+  }
+  if (!hasPermission) {
+    return <Navigate to="/forbidden" replace />;
+  }
+
+  return <>{children}</>;
+};
+
+function App() {
+  // Routes
+  const { authenticationRoutes, errorRoutes, appRoutes } = RoutesList;
+  return (
+    <HashRouter>
+      <Routes>
+        {authenticationRoutes.map(({ ...props }, key) => (
+          <Route key={key} {...props} />
+        ))}
+        {errorRoutes.map(({ ...props }, key) => (
+          <Route key={key} {...props} />
+        ))}
+        <Route path="/home" element={<MenuScreen />}>
+          {appRoutes.map(({ ...props }, key) => (
+            <Route
+              key={key}
+              {...props}
+              element={<ProtectedRoute>{props.element}</ProtectedRoute>}
+            />
+          ))}
+        </Route>
+      </Routes>
+      <ToastContainer />
+    </HashRouter>
+  );
+}
+export default App;
