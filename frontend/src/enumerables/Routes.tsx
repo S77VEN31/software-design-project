@@ -1,5 +1,5 @@
 // Screens
-import { StudentsScreen } from "@screens";
+import { SchedulesScreen, StudentsScreen, TeachersScreen } from "@screens";
 
 const authenticationRoutes = [
   { path: "/", element: <div>Login</div> },
@@ -54,7 +54,7 @@ const appRoutes = [
     path: "/home/teachers",
     label: "TEACHERS",
     inNav: true,
-    element: <div>Teachers</div>,
+    element: <TeachersScreen />,
   },
   {
     path: "/home/teacher/add",
@@ -80,7 +80,7 @@ const appRoutes = [
     path: "/home/schedules",
     label: "SCHEDULES",
     inNav: true,
-    element: <div>Assign Teacher</div>,
+    element: <SchedulesScreen />,
   },
   {
     path: "/home/schedule/add",
