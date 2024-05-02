@@ -1,4 +1,9 @@
+// Styles
+import styles from "./Students.module.css";
+// Components
 import { DataTable, TableColumn, TableRenderable } from "@components";
+// Layouts
+import { TableLayout } from "@layouts";
 // Interfaces
 interface Student extends Record<string, TableRenderable> {
   id: number;
@@ -25,6 +30,12 @@ const columns: TableColumn<Student>[] = [
 ];
 
 const Students = () => {
-  return <DataTable data={data} columns={columns} />;
+  return (
+    <div className={styles.students}>
+      <TableLayout title={"STUDENTS"}>
+        <DataTable data={data} columns={columns} />
+      </TableLayout>
+    </div>
+  );
 };
 export default Students;

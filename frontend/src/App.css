@@ -5,9 +5,11 @@
 }
 /* define colores globales */
 :root {
-  --color-primary: #213547;
+  --primary: #40189D;
   --color-secondary: #747bff;
-  --color-background: #ffffff;
+  --black: #000000;
+  --background: #F2F2F2;
+  --white: #ffffff;
   --color-text: #1a1a1a;
   --color-button: #1a1a1a;
   --color-button-hover: #646cff;

@@ -1,0 +1,21 @@
+.tableLayout {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white);
+    padding: 1rem;
+    border-radius: 2rem;
+    flex: 1;
+    gap: 1rem;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.line {
+    height: 2px;
+    background-color: var(--color-primary);
+    width: 100%;
+}

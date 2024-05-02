@@ -11,7 +11,7 @@ const Menu = () => {
       <SideNavBar />
       <div className={styles.content}>
         <div>TopBar</div>
-        <div>
+        <div className={styles.route}>
           <Outlet />
         </div>
       </div>

@@ -1,5 +1,9 @@
+// Styles
+import styles from "./Teachers.module.css";
 // Components
 import { DataTable, TableColumn, TableRenderable } from "@components";
+// Layouts
+import { TableLayout } from "@layouts";
 // Interfaces
 interface Teacher extends Record<string, TableRenderable> {
   id: number;
@@ -26,6 +30,12 @@ const columns: TableColumn<Teacher>[] = [
 ];
 
 const Teachers = () => {
-  return <DataTable data={data} columns={columns} />;
+  return (
+    <div className={styles.teachers}>
+      <TableLayout title={"TEACHERS"}>
+        <DataTable data={data} columns={columns} />
+      </TableLayout>
+    </div>
+  );
 };
 export default Teachers;

@@ -1,0 +1,8 @@
+.dataTable {
+    border-spacing: 0;
+}
+
+.dataTable .item {
+    text-align: start;
+    align-items: center;
+}

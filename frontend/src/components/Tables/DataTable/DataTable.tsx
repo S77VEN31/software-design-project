@@ -1,5 +1,7 @@
 // React
 import { ReactNode } from "react";
+// Styles
+import styles from "./DataTable.module.css";
 // Types
 type TableRenderable =
   | string
@@ -28,11 +30,11 @@ const DataTable = <
   columns,
 }: DataTableProps<T>) => {
   return (
-    <table>
+    <table className={styles.dataTable}>
       <thead>
         <tr>
           {columns.map((column, index) => (
-            <th key={index}>{column.header}</th>
+            <th className={styles.item} key={index}>{column.header}</th>
           ))}
         </tr>
       </thead>
