@@ -11,6 +11,7 @@
       "@screens": ["screens/index.tsx"],
       "@components": ["components/index.tsx"],
       "@layouts": ["layouts/index.tsx"],
+      "@api": ["api/index.ts"],
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
