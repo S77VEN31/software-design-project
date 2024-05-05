@@ -1,9 +1,10 @@
 // Axios
 import axios from "axios";
+// Enviroment variables
+const { VITE_API_URL } = import.meta.env;
 
 const api = axios.create({
-  baseURL: "http://localhost:3001",
-
+  baseURL: VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -24,3 +25,4 @@ const isTokenSet = () => {
 };
 
 export { api, isTokenSet, setAuthToken };
+
