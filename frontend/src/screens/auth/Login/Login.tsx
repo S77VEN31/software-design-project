@@ -1,5 +1,5 @@
 // React
-import { FormEvent } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // Styles
 import styles from "./Login.module.tsx";
@@ -16,31 +16,42 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+// Api
+import { loginRequest } from "@api";
 
 const Login = () => {
+  // States
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
   // Navigation
   const navigation = useNavigate();
+
+  // Handle Change
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setLoginData({
+      ...loginData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
   // Handle Submit
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    navigation("/home");
+    loginRequest(loginData)
+      .then((response) => {
+        console.log(response);
+        navigation("/home");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
     <Grid container sx={styles.paperContainer}>
-      <Grid
-        item
-        xs={false}
-        sm={4}
-        md={7}
-        sx={{ backgroundColor: "primary.main" }}
-      />
+      <Grid item xs={false} sm={4} md={7} sx={styles.imageContainer} />
       <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6}>
         <Box sx={styles.paper}>
           <Avatar sx={styles.avatar} />
@@ -52,6 +63,7 @@ const Login = () => {
               sx={styles.inputs}
               required
               id="email"
+              onChange={handleChange}
               label="Email Address"
               name="email"
               autoComplete="email"
@@ -61,6 +73,7 @@ const Login = () => {
               sx={styles.inputs}
               required
               name="password"
+              onChange={handleChange}
               label="Password"
               type="password"
               id="password"
@@ -68,7 +81,7 @@ const Login = () => {
             />
             <Box sx={styles.buttons}>
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
+                control={<Checkbox value="remember" sx={styles.checkbox} />}
                 label="Remember me"
               />
               <Button
