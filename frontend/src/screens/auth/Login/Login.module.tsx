@@ -1,4 +1,5 @@
 const styles = {
+  imageContainer: { backgroundColor: "primary.main" },
   paperContainer: {
     height: "100vh",
   },
@@ -26,6 +27,9 @@ const styles = {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  checkbox: {
+    color: "primary.main",
   },
   submitButton: {
     margin: "1rem 0",

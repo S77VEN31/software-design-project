@@ -17,6 +17,7 @@ import {
 import { registerRequest } from "@api";
 
 const Signup = () => {
+  // States
   const [registerData, setRegisterData] = useState({
     email: "",
     password: "",
@@ -25,6 +26,7 @@ const Signup = () => {
     userName: "",
   });
 
+  // Handle Change
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRegisterData({
       ...registerData,
@@ -32,6 +34,7 @@ const Signup = () => {
     });
   };
 
+  // Handle Submit
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     registerRequest({
