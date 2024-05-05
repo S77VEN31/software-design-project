@@ -6,7 +6,9 @@ const styles = {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: "2rem",
+    justifyContent: "center",
+    padding: "0 2rem",
+    height: "100vh",
   },
   avatar: {
     margin: "1rem",
