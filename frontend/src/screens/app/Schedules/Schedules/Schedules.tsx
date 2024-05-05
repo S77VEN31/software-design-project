@@ -1,5 +1,8 @@
+// Styles
+import styles from "./Schedules.module.css";
 // Components
 import { DataTable, TableColumn, TableRenderable } from "@components";
+import { TableLayout } from "@layouts";
 // Interfaces
 interface Schedule extends Record<string, TableRenderable> {
   carne: number;
@@ -46,6 +49,12 @@ const columns: TableColumn<Schedule>[] = [
 ];
 
 const Schedules = () => {
-  return <DataTable data={data} columns={columns} />;
+  return (
+    <div className={styles.schedules}>
+      <TableLayout title={"SCHEDULES"}>
+        <DataTable data={data} columns={columns} />
+      </TableLayout>
+    </div>
+  );
 };
 export default Schedules;

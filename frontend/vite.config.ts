@@ -9,6 +9,7 @@ export default defineConfig({
       "@enumerables": "/src/enumerables/index.tsx",
       "@screens": "/src/screens/index.tsx",
       "@components": "/src/components/index.tsx",
+      "@layouts": "/src/layouts/index.tsx",
     },
   },
 });

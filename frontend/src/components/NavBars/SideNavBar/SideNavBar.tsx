@@ -21,7 +21,7 @@ const SideNavBar = () => {
         {appRoutes
           .filter((route) => route.inNav)
           .map((route, key) => (
-            <li key={key}>
+            <li key={key} className={styles.linkContainer}>
               <Link
                 className={`${styles.link} ${isActive(route.path)}`}
                 to={route.path}

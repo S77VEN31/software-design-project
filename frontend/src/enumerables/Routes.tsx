@@ -1,15 +1,19 @@
 // Screens
-import { SchedulesScreen, StudentsScreen, TeachersScreen } from "@screens";
+import {
+  LoginScreen,
+  SchedulesScreen,
+  SignupScreen,
+  StudentsScreen,
+  TeachersScreen,
+} from "@screens";
+
+import { CreateUserLayout } from "@layouts";
 
 const authenticationRoutes = [
-  { path: "/", element: <div>Login</div> },
+  { path: "/", element: <LoginScreen /> },
   {
     path: "/register",
-    element: (
-      <div>
-        <h1>Register</h1>
-      </div>
-    ),
+    element: <SignupScreen />,
   },
 ];
 
@@ -59,7 +63,7 @@ const appRoutes = [
   {
     path: "/home/teacher/add",
     inNav: false,
-    element: <div>Add Teacher</div>,
+    element: <CreateUserLayout />,
   },
   {
     path: "/home/teacher/edit",

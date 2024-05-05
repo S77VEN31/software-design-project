@@ -1,0 +1,12 @@
+.dataTable {
+    border-spacing: 0;
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    border-radius: 2rem;
+}
+
+.dataTable .item {
+    text-align: start;
+    align-items: center;
+}

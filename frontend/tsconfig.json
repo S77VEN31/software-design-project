@@ -10,6 +10,7 @@
       "@enumerables": ["enumerables/index.tsx"],
       "@screens": ["screens/index.tsx"],
       "@components": ["components/index.tsx"],
+      "@layouts": ["layouts/index.tsx"],
     },
     /* Bundler mode */
     "moduleResolution": "bundler",
