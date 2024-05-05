@@ -1,7 +1,10 @@
+// React
+import { useNavigate } from "react-router-dom";
 // Styles
 import styles from "./Teachers.module.css";
 // Components
 import { DataTable, TableColumn, TableRenderable } from "@components";
+import { Button } from "@mui/material";
 // Layouts
 import { TableLayout } from "@layouts";
 // Interfaces
@@ -30,11 +33,27 @@ const columns: TableColumn<Teacher>[] = [
 ];
 
 const Teachers = () => {
+  const navigation = useNavigate();
+  const dataTableProps = {
+    data,
+    columns,
+  };
+  const tableLayoutProps = {
+    title: "TEACHERS",
+    button: (
+      <Button
+        variant="contained"
+        onClick={() => navigation("/home/teacher/add")}
+      >
+        Add Teacher
+      </Button>
+    ),
+    children: <DataTable {...dataTableProps} />,
+  };
+
   return (
     <div className={styles.teachers}>
-      <TableLayout title={"TEACHERS"}>
-        <DataTable data={data} columns={columns} />
-      </TableLayout>
+      <TableLayout {...tableLayoutProps} />
     </div>
   );
 };
