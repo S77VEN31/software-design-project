@@ -1,3 +1,9 @@
+// React
+import { FormEvent } from "react";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+// Styles
+import styles from "./Login.module.tsx";
+// Components
 import {
   Avatar,
   Box,
@@ -10,13 +16,13 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
-import styles from "./Login.module.tsx";
 
 const Login = () => {
+  // Navigation
   const navigation = useNavigate();
 
-  const handleSubmit = (event) => {
+  // Handle Submit
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
@@ -87,5 +93,4 @@ const Login = () => {
     </Grid>
   );
 };
-
 export default Login;
