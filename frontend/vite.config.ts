@@ -10,6 +10,7 @@ export default defineConfig({
       "@screens": "/src/screens/index.tsx",
       "@components": "/src/components/index.tsx",
       "@layouts": "/src/layouts/index.tsx",
+      "@api": "/src/api/index.ts",
     },
   },
 });

@@ -6,38 +6,42 @@ import { User } from "../models";
 import bcrypt from "bcryptjs";
 // Create token
 import { createAccessToken } from "../libs";
+// Middlewares
+import { RoleContext, getRole } from "../middlewares";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { userName, email, password, isOrganization } = req.body;
+    const { userName, email, password, name} = req.body;
+  
+    const roleStrategy = getRole(email);
+    const roleContext = new RoleContext(roleStrategy);
+    const role = roleContext.executeStrategy();
+  
     // Hash the password
     const passwordHash = await bcrypt.hash(password, 10);
+
     // Create a new user instance and save it
     const newUser = new User({
       userName,
       email,
       password: passwordHash,
-      isOrganization,
+      roles: [role],
+      name,
     });
     await newUser.save();
+
     // Create an access token for the new user
     const token = await createAccessToken({ sub: newUser._id.toString() });
-    // Set a cookie with the token
     res.cookie("token", token, { httpOnly: true });
-    // Respond with the created user
+
+    // Send the new user in the response
     res.status(200).json(newUser);
-  } catch (error) {
-    if (typeof error === "object" && error !== null) {
-      // Check if this is a MongoDB unique constraint error
-      if ("code" in error && (error as any).code === 11000) {
-        return res
-          .status(400)
-          .json({ message: "Email or username is already in use" });
-      }
+
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return res.status(400).json({ message: ["Email or username already in use"] });
     }
-    // Log the error for debugging purposes
-    console.error("Registration error:", error);
-    res.status(500).json({ message: "An unexpected error occurred" });
+    res.status(500).json({ message: [error] });
   }
 };
 

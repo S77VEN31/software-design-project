@@ -84,7 +84,7 @@ const Login = () => {
                 <Link>Forgot password?</Link>
               </RouterLink>
               <RouterLink to="/register" style={styles.routerLink}>
-                <Link>{"Don't have an account? Sign Up"}</Link>
+                <Link>Don't have an account? Sign Up</Link>
               </RouterLink>
             </Box>
           </Box>
