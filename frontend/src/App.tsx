@@ -1,16 +1,19 @@
+// React
+import { ReactNode } from "react";
 // Styles
 import "./App.css";
+// Components
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 // Enumerables
 import { Routes as RoutesList } from "@enumerables";
 // Libraries
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 // Screens
 import { MenuScreen } from "@screens";
 // Interfaces
 interface ProtectedRouteProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 const theme = createTheme({

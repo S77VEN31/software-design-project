@@ -1,5 +1,5 @@
 // React
-import { ReactNode } from "react";
+import { ReactElement, ReactNode } from "react";
 // Styles
 import styles from "./DataTable.module.css";
 // Types
@@ -7,7 +7,7 @@ type TableRenderable =
   | string
   | number
   | boolean
-  | React.ReactElement
+  | ReactElement
   | null
   | undefined;
 // Interfaces
