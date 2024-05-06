@@ -58,6 +58,12 @@ class StudentStrategy implements PermissionStrategy {
         type: "GET",
         selector: "TEACHER",
       },
+      {
+        slug: "/teams/get",
+        description: "Get teams",
+        type: "GET",
+        selector: "TEAMS",
+      },
     ];
   }
 }
@@ -133,3 +139,4 @@ class PermissionManager {
 }
 
 export { PermissionManager };
+
