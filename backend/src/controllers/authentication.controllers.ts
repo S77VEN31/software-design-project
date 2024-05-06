@@ -64,11 +64,11 @@ export const login = async (req: Request, res: Response) => {
     // Send user in response
     res.status(200).json(userFound);
   } catch (error) {
-    res.status(500).json({ message: error });
+    res.status(500).json({ message: [error] });
   }
 };
 
-export const logout = (req: Request, res: Response) => {
+export const logout = (res: Response) => {
   // Clear cookie
   res.cookie("token", "", { expires: new Date(0) });
   // Send status

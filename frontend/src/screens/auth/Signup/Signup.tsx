@@ -1,6 +1,6 @@
 // React
 import { useState } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 // Styles
 import styles from "./Signup.module";
 // Components
@@ -9,7 +9,6 @@ import {
   Box,
   Button,
   Container,
-  Link,
   TextField,
   Typography,
 } from "@mui/material";
@@ -123,9 +122,7 @@ const Signup = () => {
             Sign Up
           </Button>
           <Box sx={styles.links}>
-            <RouterLink to="/" style={styles.routerLink}>
-              <Link>Already have an account? Log in</Link>
-            </RouterLink>
+            <Link to="/">Already have an account? Log in</Link>
           </Box>
         </Box>
       </Box>

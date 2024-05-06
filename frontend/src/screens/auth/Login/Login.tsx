@@ -1,6 +1,6 @@
 // React
 import { ChangeEvent, FormEvent, useState } from "react";
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // Styles
 import styles from "./Login.module.tsx";
 // Components
@@ -11,7 +11,6 @@ import {
   Checkbox,
   FormControlLabel,
   Grid,
-  Link,
   Paper,
   TextField,
   Typography,
@@ -93,12 +92,8 @@ const Login = () => {
               </Button>
             </Box>
             <Box sx={styles.buttons}>
-              <RouterLink to="/register" style={styles.routerLink}>
-                <Link>Forgot password?</Link>
-              </RouterLink>
-              <RouterLink to="/register" style={styles.routerLink}>
-                <Link>Don't have an account? Sign Up</Link>
-              </RouterLink>
+              <Link to="/register">Forgot password?</Link>
+              <Link to="/register">Don't have an account? Sign Up</Link>
             </Box>
           </Box>
         </Box>

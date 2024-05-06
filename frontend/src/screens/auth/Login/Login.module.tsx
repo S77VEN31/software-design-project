@@ -35,8 +35,5 @@ const styles = {
     margin: "1rem 0",
     width: "50%",
   },
-  routerLink: {
-    textDecoration: "none",
-  },
 };
 export default styles;

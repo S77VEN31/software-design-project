@@ -27,8 +27,5 @@ const styles = {
     justifyContent: "flex-end",
     alignItems: "center",
   },
-  routerLink: {
-    textDecoration: "none",
-  },
 };
 export default styles;
