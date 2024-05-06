@@ -1,7 +1,7 @@
 // Mongoose
 import mongoose, { Schema } from "mongoose";
 
-const groupModel = new Schema(
+const teamModel = new Schema(
   {
     code: {
       type: String, // IC2021
@@ -35,4 +35,4 @@ const groupModel = new Schema(
   },
   { timestamps: true }
 );
-export default mongoose.model("Group", groupModel);
+export default mongoose.model("Team", teamModel);

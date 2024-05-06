@@ -1,7 +1,7 @@
 // Mongoose
 import mongoose, { Schema } from "mongoose";
 
-const workPlanModel = new Schema(
+const ScheduleModel = new Schema(
   {
     name: {
       type: String,
@@ -43,4 +43,4 @@ const workPlanModel = new Schema(
   },
   { timestamps: true }
 );
-export default mongoose.model("WorkPlan", workPlanModel);
+export default mongoose.model("Schedule", ScheduleModel);

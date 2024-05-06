@@ -7,6 +7,10 @@ import { DataTable, TableColumn, TableRenderable } from "@components";
 import { Button } from "@mui/material";
 // Layouts
 import { TableLayout } from "@layouts";
+// Contexts
+import { useAuth } from "@contexts";
+// Utils
+import { checkPermission } from "@utils";
 // Interfaces
 interface Teacher extends Record<string, TableRenderable> {
   id: number;
@@ -33,14 +37,19 @@ const columns: TableColumn<Teacher>[] = [
 ];
 
 const Teachers = () => {
+  // Navigation
   const navigation = useNavigate();
+  // Contexts
+  const { permissions } = useAuth();
+
   const dataTableProps = {
     data,
     columns,
   };
+
   const tableLayoutProps = {
     title: "TEACHERS",
-    button: (
+    button: checkPermission(permissions, "TEACHER", "POST") && (
       <Button
         variant="contained"
         onClick={() => navigation("/home/teacher/add")}

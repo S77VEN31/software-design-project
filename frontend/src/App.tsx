@@ -7,8 +7,16 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 // Enumerables
 import { Routes as RoutesList } from "@enumerables";
 // Libraries
-import { HashRouter, Navigate, Route, Routes } from "react-router-dom";
+import {
+  HashRouter,
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+} from "react-router-dom";
 import { ToastContainer } from "react-toastify";
+// Contexts
+import { AuthProvider, useAuth } from "@contexts";
 // Screens
 import { MenuScreen } from "@screens";
 // Interfaces
@@ -46,45 +54,58 @@ const theme = createTheme({
   },
 });
 
+// Routes
+const { authenticationRoutes, errorRoutes, appRoutes } = RoutesList;
+
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const hasPermission = true;
-  const isLogin = true;
+  const { isLogin, permissions } = useAuth();
+  const location = useLocation();
+
+  const currentRoute = appRoutes.find(
+    (route) => route.path === location.pathname
+  )?.apiSlug;
+
+  const isPermitted =
+    isLogin &&
+    (currentRoute === "*" ||
+      permissions.some((permission) => permission.slug === currentRoute));
 
   if (!isLogin) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/" />;
   }
-  if (!hasPermission) {
-    return <Navigate to="/forbidden" replace />;
+
+  if (!isPermitted) {
+    return <Navigate to="/forbidden" />;
   }
 
   return <>{children}</>;
 };
 
 function App() {
-  // Routes
-  const { authenticationRoutes, errorRoutes, appRoutes } = RoutesList;
   return (
     <ThemeProvider theme={theme}>
-      <HashRouter>
-        <Routes>
-          {authenticationRoutes.map(({ ...props }, key) => (
-            <Route key={key} {...props} />
-          ))}
-          {errorRoutes.map(({ ...props }, key) => (
-            <Route key={key} {...props} />
-          ))}
-          <Route path="/home" element={<MenuScreen />}>
-            {appRoutes.map(({ ...props }, key) => (
-              <Route
-                key={key}
-                {...props}
-                element={<ProtectedRoute>{props.element}</ProtectedRoute>}
-              />
+      <AuthProvider>
+        <HashRouter>
+          <Routes>
+            {authenticationRoutes.map(({ ...props }, key) => (
+              <Route key={key} {...props} />
             ))}
-          </Route>
-        </Routes>
-        <ToastContainer />
-      </HashRouter>
+            {errorRoutes.map(({ ...props }, key) => (
+              <Route key={key} {...props} />
+            ))}
+            <Route path="/home" element={<MenuScreen />}>
+              {appRoutes.map(({ ...props }, key) => (
+                <Route
+                  key={key}
+                  {...props}
+                  element={<ProtectedRoute>{props.element}</ProtectedRoute>}
+                />
+              ))}
+            </Route>
+          </Routes>
+          <ToastContainer />
+        </HashRouter>
+      </AuthProvider>
     </ThemeProvider>
   );
 }
