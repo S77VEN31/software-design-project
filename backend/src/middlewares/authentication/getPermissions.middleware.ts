@@ -1,4 +1,11 @@
 // Types
+import {
+  AdminPermissions,
+  AdministrativeAssistantPermissions,
+  CoordinatorPermissions,
+  StudentPermissions,
+  TeacherPermissions,
+} from "../../enums/permissions";
 import { Permission, Role } from "../../types";
 // Interfaces
 interface PermissionStrategy {
@@ -7,114 +14,31 @@ interface PermissionStrategy {
 
 class TeacherStrategy implements PermissionStrategy {
   getPermissions(): Permission[] {
-    return [
-      {
-        slug: "/teacher/get",
-        description: "Get teacher",
-        type: "GET",
-        selector: "TEACHER",
-      },
-      {
-        slug: "/teacher/put",
-        description: "Put teacher",
-        type: "PUT",
-        selector: "TEACHER",
-      },
-      {
-        slug: "/teacher/delete",
-        description: "Delete teacher",
-        type: "DELETE",
-        selector: "TEACHER",
-      },
-    ];
+    return TeacherPermissions;
   }
 }
 
 class CoordinatorStrategy implements PermissionStrategy {
   getPermissions(): Permission[] {
-    return [
-      {
-        slug: "/team/get",
-        description: "Get team",
-        type: "GET",
-        selector: "TEAM",
-      },
-      {
-        slug: "/team/put",
-        description: "Put team",
-        type: "PUT",
-        selector: "TEAM",
-      },
-    ];
+    return CoordinatorPermissions;
   }
 }
 
 class StudentStrategy implements PermissionStrategy {
   getPermissions(): Permission[] {
-    return [
-      {
-        slug: "/teacher/get",
-        description: "Get teacher",
-        type: "GET",
-        selector: "TEACHER",
-      },
-      {
-        slug: "/teams/get",
-        description: "Get teams",
-        type: "GET",
-        selector: "TEAMS",
-      },
-    ];
+    return StudentPermissions;
   }
 }
 
 class AdministrativeAssistantStrategy implements PermissionStrategy {
   getPermissions(): Permission[] {
-    return [
-      {
-        slug: "/teachers/get",
-        description: "Get teachers",
-        type: "GET",
-        selector: "TEACHERS",
-      },
-      {
-        slug: "/teacher/get",
-        description: "Get teacher",
-        type: "GET",
-        selector: "TEACHER",
-      },
-      {
-        slug: "/teacher/post",
-        description: "Post teachers",
-        type: "POST",
-        selector: "TEACHER",
-      },
-      {
-        slug: "/teacher/put",
-        description: "Put teacher",
-        type: "PUT",
-        selector: "TEACHER",
-      },
-      {
-        slug: "/teacher/delete",
-        description: "Delete teacher",
-        type: "DELETE",
-        selector: "TEACHER",
-      },
-    ];
+    return AdministrativeAssistantPermissions;
   }
 }
 
 class AdminStrategy implements PermissionStrategy {
   getPermissions(): Permission[] {
-    return [
-      {
-        slug: "/teacher/post",
-        description: "Post teachers",
-        type: "POST",
-        selector: "TEACHER",
-      },
-    ];
+    return AdminPermissions;
   }
 }
 
