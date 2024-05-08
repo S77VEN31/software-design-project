@@ -1,68 +1,51 @@
-// Strategy interface
+// Types
+import { Role } from "../../types";
+// Interfaces
 interface RoleStrategy {
-  assignRole(): string;
+  assignRole(): Role;
 }
 
-// Concrete strategies for each user type
-class ProfessorStrategy implements RoleStrategy {
-  assignRole(): string {
-    return "Professor";
+class TeacherStrategy implements RoleStrategy {
+  assignRole(): Role {
+    return "Teacher";
   }
 }
 
 class StudentStrategy implements RoleStrategy {
-  assignRole(): string {
+  assignRole(): Role {
     return "Student";
   }
 }
 
 class AdministrativeAssistantStrategy implements RoleStrategy {
-  assignRole(): string {
+  assignRole(): Role {
     return "AdministrativeAssistant";
   }
 }
 
 class AdminStrategy implements RoleStrategy {
-  assignRole(): string {
+  assignRole(): Role {
     return "Admin";
   }
 }
 
-// Context that uses the strategy
-class RoleContext {
-  private strategy: RoleStrategy;
+class RoleManager {
+  private static strategyMap: { [key: string]: RoleStrategy } = {
+    "@itcr.ac.cr": new TeacherStrategy(),
+    "@estudiantec.cr": new StudentStrategy(),
+    "@aaitcr.ac.cr": new AdministrativeAssistantStrategy(),
+    "@aitcr.ac.cr": new AdminStrategy(),
+  };
 
-  constructor(strategy: RoleStrategy) {
-    this.strategy = strategy;
-  }
-
-  setStrategy(strategy: RoleStrategy) {
-    this.strategy = strategy;
-  }
-
-  executeStrategy(): string {
-    return this.strategy.assignRole();
+  public static getRole(email: string): string {
+    const domain = Object.keys(this.strategyMap).find((domain) =>
+      email.endsWith(domain)
+    );
+    if (!domain) {
+      throw new Error(`Invalid email domain for role assignment: ${email}`);
+    }
+    return this.strategyMap[domain].assignRole();
   }
 }
 
-// Mapping of domains to strategies
-const strategyMap: { [key: string]: RoleStrategy } = {
-  "@itcr.ac.cr": new ProfessorStrategy(),
-  "@estudiantec.cr": new StudentStrategy(),
-  "@aaitcr.ac.cr": new AdministrativeAssistantStrategy(),
-  "@aitcr.ac.cr": new AdminStrategy(),
-};
-
-// Helper function to determine strategy based on email
-const getRole = (email: string): RoleStrategy => {
-  const domain = Object.keys(strategyMap).find((domain) =>
-    email.endsWith(domain)
-  );
-  if (!domain) {
-    throw new Error("Invalid email domain for role assignment");
-  }
-  return strategyMap[domain];
-};
-
-// Export the getRole function and RoleContext class
-export { RoleContext, getRole };
+export { RoleManager };

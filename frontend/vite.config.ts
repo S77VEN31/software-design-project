@@ -11,6 +11,8 @@ export default defineConfig({
       "@components": "/src/components/index.tsx",
       "@layouts": "/src/layouts/index.tsx",
       "@api": "/src/api/index.ts",
+      "@contexts": "/src/contexts/index.tsx",
+      "@utils": "/src/utils/index.ts",
     },
   },
 });

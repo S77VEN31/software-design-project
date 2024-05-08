@@ -1,7 +1,7 @@
 // Api
-import { api, isTokenSet, setAuthToken } from "./api";
+import { api, setAuthHeaders } from "./api";
 // Authentication services
 import { loginRequest, registerRequest } from "./authentication.services";
 
-export { api, isTokenSet, loginRequest, registerRequest, setAuthToken };
+export { api, loginRequest, registerRequest, setAuthHeaders };
 

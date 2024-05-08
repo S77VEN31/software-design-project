@@ -12,6 +12,8 @@
       "@components": ["components/index.tsx"],
       "@layouts": ["layouts/index.tsx"],
       "@api": ["api/index.ts"],
+      "@contexts": ["contexts/index.tsx"],
+      "@utils": ["utils/index.ts"],
     },
     /* Bundler mode */
     "moduleResolution": "bundler",

@@ -4,11 +4,15 @@ import styles from "./SideNavBar.module.css";
 import { Link, useLocation } from "react-router-dom";
 // Enumerables
 import { Routes } from "@enumerables";
+// Contexts
+import { useAuth } from "@contexts";
 
 const SideNavBar = () => {
   // Routes
   const { appRoutes } = Routes;
   const location = useLocation();
+  // Contexts
+  const { permissions } = useAuth();
 
   // if im in the current route, i will add the active class
   const isActive = (path: string) => {
@@ -19,7 +23,8 @@ const SideNavBar = () => {
     <nav className={styles.nav}>
       <ul className={styles.routes}>
         {appRoutes
-          .filter((route) => route.inNav)
+          // Filter the routes that are in the nav and the user has permission
+          .filter((route) => route.inNav && permissions.some((permission) => permission.slug === route.apiSlug))
           .map((route, key) => (
             <li key={key} className={styles.linkContainer}>
               <Link

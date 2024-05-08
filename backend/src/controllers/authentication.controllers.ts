@@ -6,17 +6,15 @@ import { User } from "../models";
 import bcrypt from "bcryptjs";
 // Create token
 import { createAccessToken } from "../libs";
+import { PermissionManager, RoleManager } from "../middlewares";
 // Middlewares
-import { RoleContext, getRole } from "../middlewares";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { userName, email, password, name} = req.body;
-  
-    const roleStrategy = getRole(email);
-    const roleContext = new RoleContext(roleStrategy);
-    const role = roleContext.executeStrategy();
-  
+    const { userName, email, password, name } = req.body;
+
+    const role = RoleManager.getRole(email);
+
     // Hash the password
     const passwordHash = await bcrypt.hash(password, 10);
 
@@ -35,36 +33,49 @@ export const register = async (req: Request, res: Response) => {
     res.cookie("token", token, { httpOnly: true });
 
     // Send the new user in the response
-    res.status(200).json(newUser);
-
+    return res.status(200).json(newUser);
   } catch (error: any) {
     if (error.code === 11000) {
-      return res.status(400).json({ message: ["Email or username already in use"] });
+      return res
+        .status(400)
+        .json({ message: ["Email or username already in use"] });
     }
-    res.status(500).json({ message: [error] });
+    return res.status(500).json({ message: [error] });
   }
 };
 
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+
     // Find user
     const userFound = await User.findOne({ email });
     if (!userFound) {
-      res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: "User not found" });
     }
+
     // Compare password
     const isCorrect = await bcrypt.compare(password, userFound!.password);
     if (!isCorrect) {
       return res.status(400).json({ message: "Invalid password" });
     }
+
+    // Get permissions
+    const permissions = PermissionManager.getPermissionsByRoles(
+      userFound.roles
+    );
+
     // Create token with userFound._id
     const token = await createAccessToken({ id: userFound!._id });
     res.cookie("token", token);
-    // Send user in response
-    res.status(200).json(userFound);
+
+    // Send userFound and permissions
+    return res.status(200).json({
+      permissions,
+    });
   } catch (error) {
-    res.status(500).json({ message: [error] });
+    console.log(error);
+    return res.status(500).json({ message: [error] });
   }
 };
 

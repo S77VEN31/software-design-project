@@ -1,6 +1,7 @@
+// Mongoose
 import mongoose, { Schema } from "mongoose";
 
-const groupAuditModel = new Schema(
+const teamAuditModel = new Schema(
   {
     groupCode: {
       type: Schema.Types.ObjectId,
@@ -19,4 +20,4 @@ const groupAuditModel = new Schema(
   },
   { timestamps: true }
 );
-export default mongoose.model("GroupAudit", groupAuditModel);
+export default mongoose.model("TeamAudit", teamAuditModel);

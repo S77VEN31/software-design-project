@@ -17,6 +17,8 @@ import {
 } from "@mui/material";
 // Api
 import { loginRequest } from "@api";
+// Contexts
+import { useAuth } from "@contexts";
 
 const Login = () => {
   // States
@@ -26,6 +28,8 @@ const Login = () => {
   });
   // Navigation
   const navigation = useNavigate();
+  // Contexts
+  const {  setPermissions } = useAuth();
 
   // Handle Change
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +44,7 @@ const Login = () => {
     event.preventDefault();
     loginRequest(loginData)
       .then((response) => {
-        console.log(response);
+        setPermissions(response.permissions);
         navigation("/home");
       })
       .catch((error) => {

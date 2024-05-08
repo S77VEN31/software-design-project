@@ -57,7 +57,7 @@ const userModel = new Schema(
         type: String,
         enum: [
           "Admin",
-          "Professor",
+          "Teacher",
           "Student",
           "Coordinator",
           "AdministrativeAssistant",
