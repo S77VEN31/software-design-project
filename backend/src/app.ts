@@ -30,6 +30,6 @@ app.use(cookieParser());
 
 // Routes
 app.use("/api", authenticationRoutes);
-app.use("/carrer", carrerRoutes);
+app.use("/api/carrer", carrerRoutes);
 
 export default app;
