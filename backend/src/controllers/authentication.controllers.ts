@@ -83,5 +83,5 @@ export const logout = (res: Response) => {
   // Clear cookie
   res.cookie("token", "", { expires: new Date(0) });
   // Send status
-  return res.status(200).json({ message: "Logged out" });
+  res.status(200).json({ message: ["Logged out"] });
 };
