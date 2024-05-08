@@ -12,7 +12,7 @@ const router = Router();
 router.get("/", authRequired, getCarrers);
 router.get("/:code", authRequired, getCarrer);
 router.post("/", authRequired, schemaValidation(carrerSchema), addCarrer);
-router.put("/:oldCode", authRequired, updateCarrer);
+router.put("/:oldCode", authRequired, schemaValidation(carrerSchema), updateCarrer);
 router.delete("/:code", authRequired, deleteCarrer);
 
 export default router;
