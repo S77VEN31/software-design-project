@@ -9,8 +9,10 @@ import { carrerSchema } from "../schemas";
 
 const router = Router();
 
-router.get("/carrer", getCarrers);
-router.get("/carrer/:code", getCarrer);
-router.post("/carrer", schemaValidation(carrerSchema), addCarrer);
-router.put("/carrer/:oldCode", updateCarrer);
-router.delete("/carrer/:code", deleteCarrer);
+router.get("/", getCarrers);
+router.get("/:code", getCarrer);
+router.post("/", schemaValidation(carrerSchema), addCarrer);
+router.put("/:oldCode", updateCarrer);
+router.delete("/:code", deleteCarrer);
+
+export default router;
