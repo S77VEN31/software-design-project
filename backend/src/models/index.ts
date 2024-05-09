@@ -1,5 +1,6 @@
 // Models
 import Carrer from "./carrer.model";
+import Activity from "./activity.model"
 import {
   AdminAssistantUser,
   AdminUser,
@@ -11,8 +12,9 @@ import {
 export {
   AdminAssistantUser,
   AdminUser,
-  Carrer,
   StudentUser,
   TeacherUser,
   User,
+  Carrer,
+  Activity
 };
