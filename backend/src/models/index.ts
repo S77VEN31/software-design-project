@@ -1,5 +1,18 @@
 // Models
-import User from "./user.model";
 import Carrer from "./carrer.model";
+import {
+  AdminAssistantUser,
+  AdminUser,
+  StudentUser,
+  TeacherUser,
+  User,
+} from "./user.models";
 
-export { User, Carrer };
+export {
+  AdminAssistantUser,
+  AdminUser,
+  Carrer,
+  StudentUser,
+  TeacherUser,
+  User,
+};

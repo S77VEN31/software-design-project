@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 // Cors
 import cors from "cors";
 // Routes
-import { authenticationRoutes, carrerRoutes } from "./routes";
+import { authenticationRoutes, carrerRoutes, userRoutes } from "./routes";
 
 // Express app instance
 const app = express();
@@ -31,5 +31,6 @@ app.use(cookieParser());
 // Routes
 app.use("/api", authenticationRoutes);
 app.use("/api/carrer", carrerRoutes);
+app.use("/api", userRoutes);
 
 export default app;

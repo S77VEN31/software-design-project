@@ -4,10 +4,13 @@ import { Request, Response } from "express";
 import { User } from "../models";
 // Encrypt library
 import bcrypt from "bcryptjs";
-// Create token
+// Libs
 import { createAccessToken } from "../libs";
-import { PermissionManager, RoleManager } from "../middlewares";
 // Middlewares
+import { PermissionManager, RoleManager } from "../middlewares";
+// Types
+import { Role } from "../types";
+
 
 export const register = async (req: Request, res: Response) => {
   try {
@@ -51,18 +54,22 @@ export const login = async (req: Request, res: Response) => {
     // Find user
     const userFound = await User.findOne({ email });
     if (!userFound) {
-      return res.status(400).json({ message: "User not found" });
+      return res.status(400).json({ message: ["User not found"] });
     }
 
     // Compare password
     const isCorrect = await bcrypt.compare(password, userFound!.password);
     if (!isCorrect) {
-      return res.status(400).json({ message: "Invalid password" });
+      return res.status(400).json({ message: ["Invalid password"] });
     }
 
     // Get permissions
+    if (!userFound.roles) {
+      return res.status(400).json({ message: ["User has no roles"] });
+    }
+
     const permissions = PermissionManager.getPermissionsByRoles(
-      userFound.roles
+      userFound.roles as Role[]
     );
 
     // Create token with userFound._id
