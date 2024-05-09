@@ -1,9 +1,4 @@
-export type Role =
-  | "Teacher"
-  | "Student"
-  | "AdministrativeAssistant"
-  | "Admin"
-  | "Coordinator";
+export type Role = "Teacher" | "Student" | "AdminAssistant" | "Admin";
 
 export type Permission = {
   slug: string;

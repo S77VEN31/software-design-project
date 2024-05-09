@@ -19,7 +19,7 @@ class StudentStrategy implements RoleStrategy {
 
 class AdministrativeAssistantStrategy implements RoleStrategy {
   assignRole(): Role {
-    return "AdministrativeAssistant";
+    return "AdminAssistant";
   }
 }
 
@@ -49,3 +49,4 @@ class RoleManager {
 }
 
 export { RoleManager };
+
