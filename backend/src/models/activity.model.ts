@@ -6,7 +6,7 @@ const activityModel = new Schema(
       type: Number,
       required: true,
       min: 1,
-      max: 16,
+      max: 18,
     },
     type: {
       type: String,
