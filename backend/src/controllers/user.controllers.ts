@@ -24,6 +24,9 @@ class Admin extends BaseUser {
       const user = await new AdminUser(userData).save();
       return user;
     } catch (error: any) {
+      if (error.code === 11000) {
+        throw new Error("Email already exists");
+      }
       throw new Error(`Error creating admin user: ${error.message}`);
     }
   }
@@ -88,6 +91,9 @@ class Teacher extends BaseUser {
       const user = await new TeacherUser(userData).save();
       return user;
     } catch (error: any) {
+      if (error.code === 11000) {
+        throw new Error("Email already exists");
+      }
       throw new Error(`Error creating teacher user: ${error.message}`);
     }
   }
@@ -152,6 +158,9 @@ class Student extends BaseUser {
       const user = await new StudentUser(userData).save();
       return user;
     } catch (error: any) {
+      if (error.code === 11000) {
+        throw new Error("Email already exists");
+      }
       throw new Error(`Error creating student user: ${error.message}`);
     }
   }
@@ -216,6 +225,9 @@ class AdminAssistant extends BaseUser {
       const user = await new AdminUser(userData).save();
       return user;
     } catch (error: any) {
+      if (error.code === 11000) {
+        throw new Error("Email already exists");
+      }
       throw new Error(`Error creating admin assistant user: ${error.message}`);
     }
   }
@@ -298,12 +310,6 @@ export class UserFactory {
             const newUser = await user.create(userData);
             res.status(201).json(newUser);
           } catch (error: any) {
-            // Handle 11000 duplicate key error
-            if (error.code === 11000) {
-              return res.status(400).json({
-                message: ["Email already exists"],
-              });
-            }
             res.status(400).json({ message: [error.message] });
           }
           break;
