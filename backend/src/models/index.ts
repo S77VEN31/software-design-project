@@ -1,6 +1,7 @@
 // Models
-import Carrer from "./carrer.model";
-import Activity from "./activity.model"
+import Activity from "./activity.model";
+import CampusBranch from "./campusBranch.model";
+import Career from "./career.model";
 import {
   AdminAssistantUser,
   AdminUser,
@@ -10,11 +11,13 @@ import {
 } from "./user.models";
 
 export {
+  Activity,
   AdminAssistantUser,
   AdminUser,
+  CampusBranch,
+  Career,
   StudentUser,
   TeacherUser,
   User,
-  Carrer,
-  Activity
 };
+

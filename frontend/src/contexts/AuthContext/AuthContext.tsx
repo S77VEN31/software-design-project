@@ -4,7 +4,6 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 // Libraries
@@ -17,53 +16,58 @@ import { Permission } from "@enumerables";
 interface AuthContextType {
   isLogin: boolean;
   permissions: Permission[];
-  setIsLogin: (isLogin: boolean) => void;
-  setPermissions: (permissions: Permission[]) => void;
+  login: (token: string, permissions: Permission[]) => void;
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isLogin: false,
   permissions: [],
-  setIsLogin: () => {},
-  setPermissions: () => {},
+  login: () => {},
+  logout: () => {},
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-
-  const [permissions, setPermissions] = useState<Permission[]>(() => {
-    const storedPermissions = localStorage.getItem("permissions");
-    return storedPermissions ? JSON.parse(storedPermissions) : [];
-  });
-  const [cookies] = useCookies(["token"]);
+  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
+  const [permissions, setPermissions] = useState<Permission[]>([]);
   const [isLogin, setIsLogin] = useState(!!cookies.token);
 
   useEffect(() => {
     if (cookies.token) {
-      setIsLogin(true);
       setAuthHeaders(cookies.token);
+      const storedPermissions = localStorage.getItem("permissions");
+      if (storedPermissions) {
+        try {
+          const parsedPermissions = JSON.parse(storedPermissions);
+          setPermissions(parsedPermissions);
+        } catch (e) {
+          console.error("Failed to parse permissions:", e);
+        }
+      }
     } else {
+      localStorage.removeItem("permissions");
+      setPermissions([]);
       setIsLogin(false);
-      setAuthHeaders("");
     }
   }, [cookies.token]);
 
-  useEffect(() => {
+  const login = (token: string, permissions: Permission[]) => {
+    setCookie("token", token);
+    setPermissions(permissions);
     localStorage.setItem("permissions", JSON.stringify(permissions));
-  }, [permissions]);
+    setIsLogin(true);
+  };
 
-  // Memoized value to avoid re-renders
-  const value = useMemo(
-    () => ({
-      isLogin,
-      permissions,
-      setIsLogin,
-      setPermissions,
-    }),
-    [isLogin, permissions]
+  const logout = () => {
+    removeCookie("token");
+    setIsLogin(false);
+    setPermissions([]);
+  };
+  return (
+    <AuthContext.Provider value={{ isLogin, permissions, login, logout }}>
+      {children}
+    </AuthContext.Provider>
   );
-
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-// Custom hook to use the AuthContext
 export const useAuth = () => useContext(AuthContext);

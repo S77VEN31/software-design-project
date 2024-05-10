@@ -1,4 +1,5 @@
 // React
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 // Styles
 import styles from "./Teachers.module.css";
@@ -9,31 +10,41 @@ import { Button } from "@mui/material";
 import { TableLayout } from "@layouts";
 // Contexts
 import { useAuth } from "@contexts";
+// Api
+import { getTeacherRequest } from "@api";
 // Utils
 import { checkPermission } from "@utils";
 // Interfaces
-interface Teacher extends Record<string, TableRenderable> {
-  id: number;
+interface Career {
+  _id: string;
   name: string;
-  age: number;
+}
+interface Teacher extends Record<string, TableRenderable> {
+  idNumber: number;
+  name: string;
+  career: Career[];
+  email: string;
 }
 
-const data: Teacher[] = [
-  { id: 1, name: "Juan", age: 20 },
-  { id: 2, name: "Ana", age: 22 },
-];
-
-const columns: TableColumn<Teacher>[] = [
+const columns: TableColumn<Teacher, keyof Teacher>[] = [
+  {
+    accessor: "idNumber",
+    header: "Cédula",
+  },
   {
     header: "Nombre",
     accessor: "name",
     render: (name) => <strong>{name}</strong>,
   },
   {
-    accessor: "id",
-    render: (id) => <button onClick={() => alert("ID " + id)}>Click Me</button>,
+    header: "Careera",
+    accessor: "career",
+    render: (career) => <span>{career[0].name}</span>,
   },
-  { header: "Edad", accessor: "age" },
+  {
+    header: "Correo",
+    accessor: "email",
+  },
 ];
 
 const Teachers = () => {
@@ -42,10 +53,21 @@ const Teachers = () => {
   // Contexts
   const { permissions } = useAuth();
 
-  const dataTableProps = {
-    data,
-    columns,
+  const [teachers, setTeachers] = useState<Teacher[]>([]);
+  const getTeachers = async () => {
+    getTeacherRequest()
+      .then((response) => {
+        setTeachers(response);
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
+
+  useEffect(() => {
+    getTeachers();
+  }, []);
 
   const tableLayoutProps = {
     title: "TEACHERS",
@@ -57,7 +79,7 @@ const Teachers = () => {
         Add Teacher
       </Button>
     ),
-    children: <DataTable {...dataTableProps} />,
+    children: <DataTable data={teachers} columns={columns} />,
   };
 
   return (

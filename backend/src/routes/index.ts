@@ -1,7 +1,6 @@
-import authenticationRoutes from "./authentication.routes";
-import carrerRoutes from "./carrer.routes";
-import userRoutes from "./user.routes";
 import activityRoutes from "./activity.routes";
+import authenticationRoutes from "./authentication.routes";
+import careerRoutes from "./career.routes";
+import userRoutes from "./user.routes";
 
-export { authenticationRoutes, carrerRoutes, userRoutes, activityRoutes };
-
+export { activityRoutes, authenticationRoutes, careerRoutes, userRoutes };

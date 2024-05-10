@@ -15,19 +15,11 @@ interface LoginBody {
 }
 
 export const registerRequest = async (data: RegisterBody) => {
-  try {
-    const response = await api.post(VITE_API_REGISTER, data);
-    return response.data;
-  } catch (error) {
-    return error;
-  }
+  const response = await api.post(VITE_API_REGISTER, data);
+  return response.data;
 };
 
 export const loginRequest = async (data: LoginBody) => {
-  try {
-    const response = await api.post(VITE_API_LOGIN, data);
-    return response.data;
-  } catch (error) {
-    return error;
-  }
+  const response = await api.post(VITE_API_LOGIN, data);
+  return response.data;
 };
