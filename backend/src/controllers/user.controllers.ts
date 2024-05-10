@@ -16,6 +16,7 @@ abstract class BaseUser {
   abstract read(id: string, role: string): Promise<any>;
   abstract update(id: string, updateData: any, role: string): Promise<any>;
   abstract delete(id: string, role: string): Promise<any>;
+  abstract list(): Promise<any>;
 }
 
 class Admin extends BaseUser {
@@ -81,6 +82,15 @@ class Admin extends BaseUser {
       return user;
     } catch (error: any) {
       throw new Error(`Error deleting admin user: ${error.message}`);
+    }
+  }
+
+  async list() {
+    try {
+      const users = await AdminUser.find();
+      return users;
+    } catch (error: any) {
+      throw new Error(`Error listing admin users: ${error.message}`);
     }
   }
 }
@@ -150,6 +160,15 @@ class Teacher extends BaseUser {
       throw new Error(`Error deleting teacher user: ${error.message}`);
     }
   }
+
+  async list() {
+    try {
+      const users = await TeacherUser.find();
+      return users;
+    } catch (error: any) {
+      throw new Error(`Error listing teacher users: ${error.message}`);
+    }
+  }
 }
 
 class Student extends BaseUser {
@@ -215,6 +234,15 @@ class Student extends BaseUser {
       return user;
     } catch (error: any) {
       throw new Error(`Error deleting student user: ${error.message}`);
+    }
+  }
+
+  async list() {
+    try {
+      const users = await StudentUser.find();
+      return users;
+    } catch (error: any) {
+      throw new Error(`Error listing student users: ${error.message}`);
     }
   }
 }
@@ -284,6 +312,15 @@ class AdminAssistant extends BaseUser {
       throw new Error(`Error deleting admin assistant user: ${error.message}`);
     }
   }
+
+  async list() {
+    try {
+      const users = await AdminAssistantUser.find();
+      return users;
+    } catch (error: any) {
+      throw new Error(`Error listing admin assistant users: ${error.message}`);
+    }
+  }
 }
 
 // Role to Class mapping
@@ -314,11 +351,20 @@ export class UserFactory {
           }
           break;
         case "GET":
-          try {
-            const userFound = await user.read(id, role);
-            res.status(200).json(userFound);
-          } catch (error: any) {
-            res.status(400).json({ message: [error.message] });
+          if (id) {
+            try {
+              const userFound = await user.read(id, role);
+              res.status(200).json(userFound);
+            } catch (error: any) {
+              res.status(400).json({ message: [error.message] });
+            }
+          } else {
+            try {
+              const users = await user.list();
+              res.status(200).json(users);
+            } catch (error: any) {
+              res.status(400).json({ message: [error.message] });
+            }
           }
           break;
         case "PUT":
