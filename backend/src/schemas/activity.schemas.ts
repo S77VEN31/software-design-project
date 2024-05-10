@@ -28,7 +28,8 @@ export const createActivitySchema = z
               .min(5, { message: "The activity name must be at least 5 characters long" })
               .max(60, { message: "the activity name must be less than 60 characters long" }),
         dateTime: z
-              .date({ required_error: "The date must be provided" }),
+              .string({ required_error: "The date must be provided" })
+              .datetime(),
         organizers: z.array<ZodString>( 
                 z
                     .string()
@@ -92,7 +93,7 @@ export const updateActivitySchema = z
         week: z
             .number({ required_error: "The week number must be provided" })
             .min(1, { message: "The week number must be at least 1" })
-            .max(16, { message: "The week number must be less than 18"}),
+            .max(18, { message: "The week number must be less than 18"}),
         type: z
             .string({ required_error: "The activity type must be provided" })
             .refine(
@@ -110,7 +111,8 @@ export const updateActivitySchema = z
                 }
               ),
         dateTime: z
-            .date({ required_error: "The date must be provided" }),
+            .string({ required_error: "The date must be provided" })
+            .datetime(),
         name: z
             .string({ required_error: "The activity name must be provided" })
             .min(5, { message: "The activity name must be at least 5 characters long" })
