@@ -27,10 +27,10 @@ const campusBranchModel = new Schema(
         required: true,
       },
     },
-    carrers: [
+    careers: [
       {
         type: Schema.Types.ObjectId,
-        ref: "Carrer",
+        ref: "Career",
       },
     ],
   },

@@ -3,24 +3,27 @@ import { ReactElement, ReactNode } from "react";
 // Styles
 import styles from "./DataTable.module.css";
 // Types
+// @ts-expect-error - This type is used in the DataTable component
 type TableRenderable =
   | string
   | number
   | boolean
   | ReactElement
   | null
-  | undefined;
+  | undefined
+  | Record<string, TableRenderable>;
+
 // Interfaces
-interface TableColumn<T> {
+interface TableColumn<T, K extends keyof T> {
   header?: string;
-  accessor: keyof T;
-  render?: (value: T[keyof T], row: T) => ReactNode;
+  accessor: K;
+  render?: (value: T[K], row: T) => ReactNode;
 }
 interface DataTableProps<
   T extends Record<string, TableRenderable | TableRenderable[]>
 > {
   data: T[];
-  columns: TableColumn<T>[];
+  columns: TableColumn<T, keyof T>[];
 }
 
 const DataTable = <

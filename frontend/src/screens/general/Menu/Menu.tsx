@@ -4,13 +4,21 @@ import styles from "./Menu.module.css";
 import { SideNavBar } from "@components";
 // Libraries
 import { Outlet } from "react-router-dom";
+// Contexts
+import { useAuth } from "@contexts";
 
 const Menu = () => {
+  const { logout } = useAuth();
+  const logOut = () => {
+    logout();
+  };
   return (
     <main className={styles.menu}>
       <SideNavBar />
       <div className={styles.content}>
-        <div>TopBar</div>
+        <div className={styles.header}>
+          <button onClick={logOut}>Logout</button>
+        </div>
         <div className={styles.route}>
           <Outlet />
         </div>

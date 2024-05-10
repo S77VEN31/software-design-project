@@ -1,7 +1,7 @@
 // Mongoose
 import mongoose, { Schema } from "mongoose";
 
-const carrerModel = new Schema({
+const careerModel = new Schema({
   name: {
     type: String,
   },
@@ -9,4 +9,4 @@ const carrerModel = new Schema({
     type: String,
   },
 });
-export default mongoose.model("Carrer", carrerModel);
+export default mongoose.model("Career", careerModel);

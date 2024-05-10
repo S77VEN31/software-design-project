@@ -1,39 +1,69 @@
+// React
+import { useEffect, useState } from "react";
 // Styles
 import styles from "./Students.module.css";
 // Components
 import { DataTable, TableColumn, TableRenderable } from "@components";
 // Layouts
 import { TableLayout } from "@layouts";
+// Api
+import { getStudentRequest } from "@api";
 // Interfaces
-interface Student extends Record<string, TableRenderable> {
-  id: number;
+interface Career {
+  _id: string;
   name: string;
-  age: number;
+}
+interface Student extends Record<string, TableRenderable> {
+  carne: number;
+  name: string;
+  career: Career[];
+  email: string;
 }
 
-const data: Student[] = [
-  { id: 1, name: "Juan", age: 20 },
-  { id: 2, name: "Ana", age: 22 },
-];
-
-const columns: TableColumn<Student>[] = [
+const columns: TableColumn<Student, keyof Student>[] = [
+  {
+    accessor: "carne",
+    header: "Carné",
+  },
   {
     header: "Nombre",
     accessor: "name",
     render: (name) => <strong>{name}</strong>,
   },
   {
-    accessor: "id",
-    render: (id) => <button onClick={() => alert("ID " + id)}>Click Me</button>,
+    header: "Careera",
+    accessor: "career",
+    render: (career) => <span>{career[0].name}</span>,
   },
-  { header: "Edad", accessor: "age" },
+  {
+    header: "Correo",
+    accessor: "email",
+  },
 ];
 
 const Students = () => {
+  const [students, setStudents] = useState<Student[]>([]);
+  const getStudents = async () => {
+    getStudentRequest()
+      .then((response) => {
+        setStudents(response);
+
+        console.log(response);
+      })
+      .catch((error) => {
+        // TODO: Handle error
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    getStudents();
+  }, []);
+
   return (
     <div className={styles.students}>
       <TableLayout title={"STUDENTS"}>
-        <DataTable data={data} columns={columns} />
+        <DataTable data={students} columns={columns} />
       </TableLayout>
     </div>
   );

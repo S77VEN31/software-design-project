@@ -50,10 +50,10 @@ export const createTeacherUserSchema = z.object({
     .nonempty({
       message: "You must send at least 1 campus branch",
     }),
-  carrer: z
-    .array(z.string(), { required_error: "Carrer is required" })
+  career: z
+    .array(z.string(), { required_error: "Career is required" })
     .nonempty({
-      message: "You must send at least 1 carrer",
+      message: "You must send at least 1 career",
     }),
 });
 
@@ -89,10 +89,10 @@ export const updateTeacherUserSchema = z.object({
       message: "You must send at least 1 campus branch",
     })
     .optional(),
-  carrer: z
-    .array(z.string(), { required_error: "Carrer is required" })
+  career: z
+    .array(z.string(), { required_error: "Career is required" })
     .nonempty({
-      message: "You must send at least 1 carrer",
+      message: "You must send at least 1 career",
     })
     .optional(),
 });

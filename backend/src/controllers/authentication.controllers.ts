@@ -7,16 +7,13 @@ import bcrypt from "bcryptjs";
 // Libs
 import { createAccessToken } from "../libs";
 // Middlewares
-import { PermissionManager, RoleManager } from "../middlewares";
+import { PermissionManager } from "../middlewares";
 // Types
 import { Role } from "../types";
-
 
 export const register = async (req: Request, res: Response) => {
   try {
     const { userName, email, password, name } = req.body;
-
-    const role = RoleManager.getRole(email);
 
     // Hash the password
     const passwordHash = await bcrypt.hash(password, 10);
@@ -26,7 +23,6 @@ export const register = async (req: Request, res: Response) => {
       userName,
       email,
       password: passwordHash,
-      roles: [role],
       name,
     });
     await newUser.save();
@@ -50,9 +46,9 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
-
     // Find user
     const userFound = await User.findOne({ email });
+    console.log(userFound);
     if (!userFound) {
       return res.status(400).json({ message: ["User not found"] });
     }
@@ -84,11 +80,4 @@ export const login = async (req: Request, res: Response) => {
     console.log(error);
     return res.status(500).json({ message: [error] });
   }
-};
-
-export const logout = (res: Response) => {
-  // Clear cookie
-  res.cookie("token", "", { expires: new Date(0) });
-  // Send status
-  res.status(200).json({ message: ["Logged out"] });
 };

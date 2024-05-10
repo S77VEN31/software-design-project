@@ -1,5 +1,7 @@
 // Express
 import { Request, Response } from "express";
+// Libs
+import bcrypt from "bcryptjs";
 // Models
 import {
   AdminAssistantUser,
@@ -22,11 +24,17 @@ abstract class BaseUser {
 class Admin extends BaseUser {
   async create(userData: any) {
     try {
-      const user = await new AdminUser(userData).save();
+      const { password, ...data } = userData;
+      const passwordHash = await bcrypt.hash(password, 10);
+      const user = await new AdminUser({
+        ...data,
+        password: passwordHash,
+      }).save();
       return user;
     } catch (error: any) {
       if (error.code === 11000) {
-        throw new Error("Email already exists");
+        const field = Object.keys(error.keyValue)[0];
+        throw new Error(`${field} already exists`);
       }
       throw new Error(`Error creating admin user: ${error.message}`);
     }
@@ -98,11 +106,17 @@ class Admin extends BaseUser {
 class Teacher extends BaseUser {
   async create(userData: any) {
     try {
-      const user = await new TeacherUser(userData).save();
+      const { password, ...data } = userData;
+      const passwordHash = await bcrypt.hash(password, 10);
+      const user = await new TeacherUser({
+        ...data,
+        password: passwordHash,
+      }).save();
       return user;
     } catch (error: any) {
       if (error.code === 11000) {
-        throw new Error("Email already exists");
+        const field = Object.keys(error.keyValue)[0];
+        throw new Error(`${field} already exists`);
       }
       throw new Error(`Error creating teacher user: ${error.message}`);
     }
@@ -113,7 +127,7 @@ class Teacher extends BaseUser {
       const user = await TeacherUser.findOne({
         _id: id,
         roles: { $in: [role] },
-      }).populate("campusBranch", "carrer");
+      }).populate("campusBranch", "career");
 
       if (!user) {
         throw new Error(`User with role ${role} not found. Cannot read user.`);
@@ -130,7 +144,7 @@ class Teacher extends BaseUser {
         { _id: id, roles: { $in: [role] } },
         updateData,
         { new: true, runValidators: true }
-      ).populate("campusBranch", "carrer");
+      ).populate("campusBranch", "career");
 
       if (!user) {
         throw new Error(
@@ -163,7 +177,10 @@ class Teacher extends BaseUser {
 
   async list() {
     try {
-      const users = await TeacherUser.find();
+      const users = await TeacherUser.find()
+        .select("-password")
+        .populate("campusBranch")
+        .populate("career");
       return users;
     } catch (error: any) {
       throw new Error(`Error listing teacher users: ${error.message}`);
@@ -174,11 +191,17 @@ class Teacher extends BaseUser {
 class Student extends BaseUser {
   async create(userData: any) {
     try {
-      const user = await new StudentUser(userData).save();
+      const { password, ...data } = userData;
+      const passwordHash = await bcrypt.hash(password, 10);
+      const user = await new StudentUser({
+        ...data,
+        password: passwordHash,
+      }).save();
       return user;
     } catch (error: any) {
       if (error.code === 11000) {
-        throw new Error("Email already exists");
+        const field = Object.keys(error.keyValue)[0];
+        throw new Error(`${field} already exists`);
       }
       throw new Error(`Error creating student user: ${error.message}`);
     }
@@ -189,7 +212,9 @@ class Student extends BaseUser {
       const user = await StudentUser.findOne({
         _id: id,
         roles: { $in: [role] },
-      }).populate("campusBranch", "carrer");
+      })
+        .populate("campusBranch")
+        .populate("career");
 
       if (!user) {
         throw new Error(`User with role ${role} not found. Cannot read user.`);
@@ -206,7 +231,7 @@ class Student extends BaseUser {
         { _id: id, roles: { $in: [role] } },
         updateData,
         { new: true, runValidators: true }
-      ).populate("campusBranch", "carrer");
+      ).populate("campusBranch", "career");
 
       if (!user) {
         throw new Error(
@@ -239,7 +264,11 @@ class Student extends BaseUser {
 
   async list() {
     try {
-      const users = await StudentUser.find();
+      // Ommit password field
+      const users = await StudentUser.find()
+        .select("-password")
+        .populate("campusBranch")
+        .populate("career");
       return users;
     } catch (error: any) {
       throw new Error(`Error listing student users: ${error.message}`);
@@ -250,11 +279,17 @@ class Student extends BaseUser {
 class AdminAssistant extends BaseUser {
   async create(userData: any) {
     try {
-      const user = await new AdminUser(userData).save();
+      const { password, ...data } = userData;
+      const passwordHash = await bcrypt.hash(password, 10);
+      const user = await new AdminUser({
+        ...data,
+        password: passwordHash,
+      }).save();
       return user;
     } catch (error: any) {
       if (error.code === 11000) {
-        throw new Error("Email already exists");
+        const field = Object.keys(error.keyValue)[0];
+        throw new Error(`${field} already exists`);
       }
       throw new Error(`Error creating admin assistant user: ${error.message}`);
     }

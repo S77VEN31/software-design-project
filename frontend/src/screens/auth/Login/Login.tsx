@@ -29,7 +29,7 @@ const Login = () => {
   // Navigation
   const navigation = useNavigate();
   // Contexts
-  const {  setPermissions } = useAuth();
+  const { login } = useAuth();
 
   // Handle Change
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,10 +44,12 @@ const Login = () => {
     event.preventDefault();
     loginRequest(loginData)
       .then((response) => {
-        setPermissions(response.permissions);
+        const { permissions, token } = response;
+        login(token, permissions);
         navigation("/home");
       })
       .catch((error) => {
+        // TODO: Handle error
         console.error(error);
       });
   };
