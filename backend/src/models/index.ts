@@ -7,6 +7,7 @@ import {
   TeacherUser,
   User,
 } from "./user.models";
+import CampusBranchModel from "./campusBranch.model";
 
 export {
   AdminAssistantUser,
@@ -15,4 +16,5 @@ export {
   StudentUser,
   TeacherUser,
   User,
+  CampusBranchModel,
 };

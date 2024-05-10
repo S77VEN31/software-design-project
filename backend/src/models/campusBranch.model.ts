@@ -1,7 +1,7 @@
 // Mongoose
 import mongoose, { Schema } from "mongoose";
 
-const campusBranchModel = new Schema(
+const CampusBranchModel = new Schema(
   {
     name: {
       type: String,
@@ -36,5 +36,5 @@ const campusBranchModel = new Schema(
   },
   { timestamps: true }
 );
-campusBranchModel.index({ location: "2dsphere" });
-export default mongoose.model("CampusBranch", campusBranchModel);
+CampusBranchModel.index({ location: "2dsphere" });
+export default mongoose.model("CampusBranch", CampusBranchModel);
