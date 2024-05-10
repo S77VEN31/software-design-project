@@ -30,7 +30,7 @@ const activityModel = new Schema(
     organizers: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: "TeacherUser",
       },
     ],
     announcementDays: Number,
