@@ -6,7 +6,7 @@ export const createActivitySchema = z
         week: z
             .number({ required_error: "The week number must be provided" })
             .min(1, { message: "The week number must be at least 1" })
-            .max(16, { message: "The week number must be less than 18"}),
+            .max(18, { message: "The week number must be less than 18"}),
         type: z
             .string({ required_error: "The activity type must be provided" })
             .refine(
