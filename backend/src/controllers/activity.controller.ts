@@ -22,8 +22,8 @@ export const addActivity = async (req: Request, res: Response) => {
             evidence 
         } = req.body
 
-        const organizersDocuments = organizers.reduce(async (accumulator: Array<Document>, idNumber: String, []) => {
-            const coordinator = await TeacherUser.findOne({ idNumber });
+        const organizersDocuments = organizers.reduce(async (accumulator: Array<Document>, _id: String, []) => {
+            const coordinator = await TeacherUser.findOne({ _id });
             if (coordinator) {
                 accumulator.push(coordinator);
                 return;
@@ -58,9 +58,7 @@ export const addActivity = async (req: Request, res: Response) => {
 export const getActivities = async (req: Request, res: Response) => {
     try {        
         const activities = await Activity.find({})
-            .populate({ path: "organizers", select: ["userName"]})
-            .populate("comments")
-            .populate({ path: "comments.author", select: ["userName"]});
+            .populate({ path: "organizers", select: ["userName", "idNumber", "_id"]});
 
         return res.status(200).json(activities);
     } catch (error: any) {
@@ -73,11 +71,7 @@ export const getActivity = async (req: Request, res: Response) => {
         const { name } = req.params;
         
         const activities = await Activity.findOne({ name })
-            .populate({ path: "organizers", select: ["userName, idNumber"]})
-            .populate("comments")
-            .populate({ path: "comments.author", select: ["userName"]})
-            .populate("comments.replies")
-            .populate({ path: "comments.replies.author", select: ["userName"]});
+            .populate({ path: "organizers", select: ["userName", "idNumber", "_id"]});
 
         return res.status(200).json(activities);
     } catch (error: any) {
@@ -104,8 +98,8 @@ export const updateActivities = async (req: Request, res: Response) => {
         } = req.body
 
         const activity =  await Activity.findOne({ name: activityName });
-        const organizersDocuments = organizers.reduce(async (accumulator: Array<Document>, idNumber: String, []) => {
-            const coordinator = await TeacherUser.findOne({ idNumber });
+        const organizersDocuments = organizers.reduce(async (accumulator: Array<Document>, _id: String, []) => {
+            const coordinator = await TeacherUser.findOne({ _id });
             if (coordinator) {
                 accumulator.push(coordinator);
                 return;
