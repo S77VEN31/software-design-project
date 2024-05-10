@@ -9,7 +9,7 @@ export const carrerSchema = z
             .max(60, { message: "Carrer name must be less than 60 characters long"}),
         code: z
             .string({ required_error: "Carrer code is required" })
-            .min(2, { message: "Carrer name must be at least 2 characters long" })
-            .max(10, { message: "Carrer name must be less than 10 characters long"}),
+            .min(2, { message: "Carrer code must be at least 2 characters long" })
+            .max(10, { message: "Carrer code must be less than 10 characters long"}),
         })
     .strict();
