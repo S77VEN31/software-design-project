@@ -6,7 +6,7 @@ const activityModel = new Schema(
       type: Number,
       required: true,
       min: 1,
-      max: 16,
+      max: 18,
     },
     type: {
       type: String,
@@ -30,7 +30,7 @@ const activityModel = new Schema(
     organizers: [
       {
         type: Schema.Types.ObjectId,
-        ref: "User",
+        ref: "TeacherUser",
       },
     ],
     announcementDays: Number,

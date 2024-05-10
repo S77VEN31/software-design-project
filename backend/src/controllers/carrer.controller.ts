@@ -14,9 +14,6 @@ export const addCarrer = async (req: Request, res: Response) => {
         await newCarrer.save();
         return res.status(200).json(newCarrer)
     } catch (error: any) {
-        if (error.code === 11000) {
-            return res.status(400).json({ message: ["Email or username already in use"] })
-        }
         return res.status(500).json({ message: [error] });
     }
 };
@@ -64,9 +61,6 @@ export const updateCarrer = async (req: Request, res: Response) => {
         return res.status(200).json(newCarrer)
 
     } catch (error: any) {
-        if (error.code === 11000) {
-            return res.status(400).json({ message: ["Email or username already in use"] })
-        }
         return res.status(500).json({ message: [error] });
     }
 };
