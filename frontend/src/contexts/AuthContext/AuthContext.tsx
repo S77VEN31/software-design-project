@@ -29,9 +29,14 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isLogin, setIsLogin] = useState(false);
-  const [permissions, setPermissions] = useState<Permission[]>([]);
+
+  const [permissions, setPermissions] = useState<Permission[]>(() => {
+    const storedPermissions = localStorage.getItem("permissions");
+    return storedPermissions ? JSON.parse(storedPermissions) : [];
+  });
   const [cookies] = useCookies(["token"]);
+  const [isLogin, setIsLogin] = useState(!!cookies.token);
+
   useEffect(() => {
     if (cookies.token) {
       setIsLogin(true);
@@ -41,6 +46,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setAuthHeaders("");
     }
   }, [cookies.token]);
+
+  useEffect(() => {
+    localStorage.setItem("permissions", JSON.stringify(permissions));
+  }, [permissions]);
 
   // Memoized value to avoid re-renders
   const value = useMemo(
