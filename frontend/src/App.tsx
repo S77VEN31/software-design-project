@@ -1,19 +1,14 @@
 // React
-import { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 // Styles
 import "./App.css";
 // Components
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 // Enumerables
-import { Routes as RoutesList } from "@enumerables";
+import { Permission, Routes as RoutesList } from "@enumerables";
 // Libraries
-import {
-  HashRouter,
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-} from "react-router-dom";
+import { HashRouter, Route, Routes, useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 // Contexts
 import { AuthProvider, useAuth } from "@contexts";
@@ -58,28 +53,40 @@ const theme = createTheme({
 const { authenticationRoutes, errorRoutes, appRoutes } = RoutesList;
 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
-  const { isLogin, permissions } = useAuth();
+  const { isLogin } = useAuth();
   const location = useLocation();
+  const [hasPermission, setHasPermission] = useState(true);
+  const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  useEffect(
+    () => {
+      if (permissions) {
+        const currentPath = location.pathname;
+        const apiSlug = appRoutes.find(
+          (route) => route.path === currentPath
+        )?.apiSlug;
 
-  const currentRoute = appRoutes.find(
-    (route) => route.path === location.pathname
-  )?.apiSlug;
-
-  const isPermitted =
-    isLogin &&
-    (currentRoute === "*" ||
-      permissions.some((permission) => permission.slug === currentRoute));
+        const isAuthorized =
+          permissions.some(
+            (permission: Permission) => permission.slug === apiSlug
+          ) || apiSlug === "*";
+        setHasPermission(isAuthorized);
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [location]
+  );
 
   if (!isLogin) {
-    return <Navigate to="/" />;
+    return <Navigate to="/" replace />;
   }
 
-  if (!isPermitted) {
-    return <Navigate to="/forbidden" />;
+  if (!hasPermission) {
+    return <Navigate to="/forbidden" replace />;
   }
 
   return <>{children}</>;
 };
+
 
 function App() {
   return (
