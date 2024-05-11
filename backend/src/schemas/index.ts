@@ -6,3 +6,4 @@ export * from "./users/adminAssistant.schemas";
 export * from "./users/student.schemas";
 export * from "./users/teacher.schemas";
 export * from "./campusBranch.schemas";
+export * from "./comment.schemas";
