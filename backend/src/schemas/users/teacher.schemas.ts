@@ -21,8 +21,8 @@ export const createTeacherUserSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .email()
-    .refine((email) => email.endsWith("@aitcr.ac.cr"), {
-      message: "Email must end with @aitcr.ac.cr",
+    .refine((email) => email.endsWith("@itcr.ac.cr"), {
+      message: "Email must end with @itcr.ac.cr",
     }),
   password: z
     .string({ required_error: "Password is required" })

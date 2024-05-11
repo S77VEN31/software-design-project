@@ -9,7 +9,6 @@ import { Button } from "@mui/material";
 // Layouts
 import { TableLayout } from "@layouts";
 // Contexts
-import { useAuth } from "@contexts";
 // Api
 import { getTeacherRequest } from "@api";
 // Utils
@@ -50,8 +49,8 @@ const columns: TableColumn<Teacher, keyof Teacher>[] = [
 const Teachers = () => {
   // Navigation
   const navigation = useNavigate();
-  // Contexts
-  const { permissions } = useAuth();
+  // Get the permissions from the localStorage
+  const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
 
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const getTeachers = async () => {

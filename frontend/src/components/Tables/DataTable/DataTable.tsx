@@ -33,28 +33,32 @@ const DataTable = <
   columns,
 }: DataTableProps<T>) => {
   return (
-    <table className={styles.dataTable}>
-      <thead>
-        <tr>
-          {columns.map((column, index) => (
-            <th className={styles.item} key={index}>{column.header}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody>
-        {data.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {columns.map((column, colIndex) => (
-              <td key={colIndex}>
-                {typeof column.render === "function"
-                  ? column.render(row[column.accessor], row)
-                  : row[column.accessor]}
-              </td>
+    <div className={styles.dataTable}>
+      <table>
+        <thead>
+          <tr>
+            {columns.map((column, index) => (
+              <th className={styles.item} key={index}>
+                {column.header}
+              </th>
             ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {data.map((row, rowIndex) => (
+            <tr key={rowIndex}>
+              {columns.map((column, colIndex) => (
+                <td key={colIndex}>
+                  {typeof column.render === "function"
+                    ? column.render(row[column.accessor], row)
+                    : row[column.accessor]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 };
 export default DataTable;

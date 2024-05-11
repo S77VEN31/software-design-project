@@ -46,7 +46,7 @@ const Login = () => {
       .then((response) => {
         const { permissions, token } = response;
         login(token, permissions);
-        navigation("/home");
+        navigation("/home/students");
       })
       .catch((error) => {
         // TODO: Handle error
