@@ -10,6 +10,7 @@ import cors from "cors";
 import {
   activityRoutes,
   authenticationRoutes,
+  campusBranchRoutes,
   careerRoutes,
   userRoutes,
 } from "./routes";
@@ -38,5 +39,6 @@ app.use("/api", authenticationRoutes);
 app.use("/api/career", careerRoutes);
 app.use("/api", userRoutes);
 app.use("/api", activityRoutes);
+app.use("/api", campusBranchRoutes);
 
 export default app;
