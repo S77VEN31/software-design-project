@@ -12,6 +12,7 @@ import {
   authenticationRoutes,
   careerRoutes,
   userRoutes,
+  commentRoutes
 } from "./routes";
 
 // Express app instance
@@ -38,5 +39,6 @@ app.use("/api", authenticationRoutes);
 app.use("/api/career", careerRoutes);
 app.use("/api", userRoutes);
 app.use("/api", activityRoutes);
+app.use("/api", commentRoutes);
 
 export default app;
