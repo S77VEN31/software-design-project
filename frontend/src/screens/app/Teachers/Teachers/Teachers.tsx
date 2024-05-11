@@ -8,7 +8,6 @@ import { DataTable, TableColumn, TableRenderable } from "@components";
 import { Button } from "@mui/material";
 // Layouts
 import { TableLayout } from "@layouts";
-// Contexts
 // Api
 import { getTeacherRequest } from "@api";
 // Utils

@@ -1,6 +1,7 @@
 // CRUD Layouts
-import CreateUser from "./CreateUser/CreateUser";
+import CreateUserForm from "./CreateUser/CreateUserForm";
 // Table Layouts
 import TableLayout from "./TableLayout/TableLayout";
 
-export { CreateUser as CreateUserLayout, TableLayout };
+export { CreateUserForm as CreateUserFormLayout, TableLayout };
+

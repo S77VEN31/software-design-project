@@ -1,7 +1,23 @@
 // Types
-import { Permission } from "./Types";
+export type {
+  Admin,
+  AdminAssistant,
+  Permission,
+  Role,
+  Student,
+  Teacher,
+} from "./Types";
+// Enums
+export {
+  AdminAssistantFields,
+  AdminFields,
+  DefaultAdmin,
+  DefaultAdminAssistant,
+  DefaultStudent,
+  DefaultTeacher,
+  StudentFields,
+  TeacherFields,
+} from "./Users";
 // Routes
-import { Routes } from "./Routes";
+export { Routes } from "./Routes";
 
-export { Routes };
-export type { Permission };
