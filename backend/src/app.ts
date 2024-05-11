@@ -10,10 +10,10 @@ import cors from "cors";
 import {
   activityRoutes,
   authenticationRoutes,
-  campusBranchRoutes,
   careerRoutes,
   userRoutes,
-  commentRoutes
+  commentRoutes,
+  campusBranchRoutes
 } from "./routes";
 
 // Express app instance
@@ -41,6 +41,6 @@ app.use("/api/career", careerRoutes);
 app.use("/api", userRoutes);
 app.use("/api", activityRoutes);
 app.use("/api", campusBranchRoutes);
-app.use("/api", commentRoutes);;
+app.use("/api", commentRoutes);
 
 export default app;
