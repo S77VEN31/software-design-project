@@ -31,7 +31,7 @@ const TeacherFields = [
   {
     id: "password",
     label: "Password",
-    type: "text",
+    type: "password",
   },
   {
     id: "name",
@@ -92,7 +92,7 @@ const StudentFields = [
   {
     id: "password",
     label: "Password",
-    type: "text",
+    type: "password",
   },
   {
     id: "name",
@@ -195,3 +195,4 @@ export {
   StudentFields,
   TeacherFields,
 };
+

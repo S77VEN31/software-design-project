@@ -67,6 +67,17 @@ const CreateUserForm = ({ initialData, fields }: CreateUserFormProps) => {
             ))}
           </TextField>
         );
+      case "password":
+        return (
+          <TextField
+            label={label}
+            value={formData[id] || ""}
+            onChange={(e) => handleChange(id, e.target.value)}
+            fullWidth
+            margin="normal"
+            type="password"
+          />
+        );
       default:
         return <div>Unsupported field type</div>;
     }
