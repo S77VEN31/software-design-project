@@ -6,8 +6,10 @@ import {
   StudentsScreen,
   TeachersScreen,
 } from "@screens";
-
-import { CreateUserLayout } from "@layouts";
+// Layouts
+import { CreateUserFormLayout } from "@layouts";
+// User Enums
+import { DefaultStudent, DefaultTeacher, StudentFields, TeacherFields } from "@enumerables";
 
 const authenticationRoutes = [
   { path: "/", element: <LoginScreen /> },
@@ -65,7 +67,12 @@ const appRoutes = [
     apiSlug: "/student/post",
     path: "/home/student/add",
     inNav: false,
-    element: <div>Add Student</div>,
+    element: (
+      <CreateUserFormLayout
+        fields={StudentFields}
+        initialData={DefaultStudent}
+      />
+    ),
   },
   {
     apiSlug: "/student/put",
@@ -96,7 +103,12 @@ const appRoutes = [
     apiSlug: "/teacher/post",
     path: "/home/teacher/add",
     inNav: false,
-    element: <CreateUserLayout />,
+    element: (
+      <CreateUserFormLayout
+        fields={TeacherFields}
+        initialData={DefaultTeacher}
+      />
+    ),
   },
   {
     apiSlug: "/teacher/put",
