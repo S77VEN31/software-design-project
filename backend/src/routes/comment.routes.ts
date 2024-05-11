@@ -23,6 +23,6 @@ router.delete("/comments/activity/:activity/:comment", authRequired, deleteActiv
 router.get("/comments/schedule/:schedule", authRequired, getScheduleComments);
 router.post("/comments/schedule/:schedule", authRequired, schemaValidation(createCommentSchema), addScheduleComment);
 router.delete("/comments/schedule/:schedule/:comment", authRequired, deleteScheduleComment);
-router.post("/comments/reply/:comment", authRequired, schemaValidation(createCommentSchema), addReplyComment)
+router.post("/comments/reply/:comment", authRequired, schemaValidation(createCommentSchema), addReplyComment);
 
 export default router;
