@@ -11,6 +11,8 @@ import { Button, IconButton, Modal } from "@mui/material";
 import { TableLayout } from "@layouts";
 // Api
 import { deleteStudentRequest, getStudentRequest } from "@api";
+// Utils
+import { checkPermission } from "@utils";
 // Interfaces
 interface Career {
   _id: string;
@@ -30,6 +32,7 @@ const Students = () => {
   const [open, setOpen] = useState(false);
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
 
   const columns: TableColumn<Student, keyof Student>[] = [
     {
@@ -65,6 +68,19 @@ const Students = () => {
       ),
     },
   ];
+
+  const tableLayoutProps = {
+    title: "STUDENTS",
+    button: checkPermission(permissions, "STUDENT", "POST") && (
+      <Button
+        variant="contained"
+        onClick={() => navigation("/home/student/add")}
+      >
+        Add Student
+      </Button>
+    ),
+    children: <DataTable data={students} columns={columns} />,
+  };
 
   const getStudents = async () => {
     getStudentRequest()
@@ -136,9 +152,7 @@ const Students = () => {
           </div>
         </div>
       </Modal>
-      <TableLayout title={"STUDENTS"}>
-        <DataTable data={students} columns={columns} />
-      </TableLayout>
+      <TableLayout {...tableLayoutProps} />
     </div>
   );
 };

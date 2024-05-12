@@ -14,9 +14,17 @@
     background-color: var(--background);
 }
 
+.content .header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 1rem 2rem;
+}
+
 .content .route {
     display: flex;
     flex-direction: column;
     flex: 1;
+    overflow-y: auto;
     padding: 2rem;
 }
