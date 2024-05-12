@@ -19,6 +19,8 @@ import {
 import { loginRequest } from "@api";
 // Contexts
 import { useAuth } from "@contexts";
+// Hooks
+import { useResponseToast } from "@hooks";
 
 const Login = () => {
   // States
@@ -30,6 +32,8 @@ const Login = () => {
   const navigation = useNavigate();
   // Contexts
   const { login } = useAuth();
+  // Hooks
+  const toast = useResponseToast();
 
   // Handle Change
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,9 +51,12 @@ const Login = () => {
         const { permissions, token } = response;
         login(token, permissions);
         navigation("/home/students");
+        if (response.status === 400)  {
+          toast(400, response.message);
+        }
       })
       .catch((error) => {
-        // TODO: Handle error
+        toast(error.response.status, error.response.data.message);
         console.error(error);
       });
   };
