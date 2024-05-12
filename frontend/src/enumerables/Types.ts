@@ -13,22 +13,24 @@ export type Role =
   | "Coordinator";
 
 export type Teacher = {
-  idNumber: string;
-  userName: string;
-  email: string;
+  active?: boolean;
+  idNumber?: string;
+  userName?: string;
+  email?: string;
   roles: Role[];
-  password: string;
+  password?: string;
   name: string;
   campusBranch: string[];
   career: string[];
 };
 
 export type Student = {
-  carne: string;
-  userName: string;
-  email: string;
+  active?: boolean;
+  carne?: string;
+  userName?: string;
+  email?: string;
   roles: Role[];
-  password: string;
+  password?: string;
   name: string;
   campusBranch: string[];
   career: string[];
@@ -77,7 +79,7 @@ export type FormData = Student | Teacher;
 
 export type Field = {
   id: string;
-  label: string;
+  label?: string;
   options?: { value: string; label: string }[];
   type: string;
   section: string;

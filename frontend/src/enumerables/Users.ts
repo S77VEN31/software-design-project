@@ -12,15 +12,22 @@ const DefaultTeacher: Teacher = {
   career: [],
 };
 
+const DefaultUpdateTeacher: Teacher = {
+  name: "",
+  campusBranch: [],
+  career: [],
+  roles: ["Teacher"],
+};
+
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
 
 const TeacherFields = [
   {
     id: "idNumber",
-    label: "ID Number",
+    label: "Cédula",
     type: "text",
-    section: "Teacher Information",
+    section: "Información del Profesor",
     fullWidth: true,
     inputProps: {
       maxLength: 9,
@@ -33,9 +40,9 @@ const TeacherFields = [
   },
   {
     id: "userName",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
-    section: "Teacher Information",
+    section: "Información del Profesor",
     fullWidth: true,
     inputProps: {
       maxLength: 20,
@@ -45,25 +52,23 @@ const TeacherFields = [
     helperText: "Username must have at least 4 characters",
     required: true,
   },
+
   {
-    id: "email",
-    label: "Email",
-    type: "email",
-    section: "Teacher Contact",
+    id: "name",
+    label: "Nombre",
+    type: "text",
+    section: "Información del Profesor",
     fullWidth: true,
     inputProps: {
       maxLength: 100,
     },
-    validation: (value: string) =>
-      value === "" || value.endsWith("@itcr.ac.cr"),
-    helperText: "Email must end with @itcr.ac.cr",
     required: true,
   },
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "password",
-    section: "Teacher Information",
+    section: "Información del Profesor",
     fullWidth: true,
     inputProps: {
       maxLength: 100,
@@ -74,38 +79,42 @@ const TeacherFields = [
       "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character",
     required: true,
   },
-  {
-    id: "name",
-    label: "Name",
-    type: "text",
-    section: "Teacher Information",
-    fullWidth: true,
-    inputProps: {
-      maxLength: 100,
-    },
-    required: true,
-  },
+
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
   },
   {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Contacto",
+    fullWidth: true,
+    inputProps: {
+      maxLength: 100,
+    },
+    validation: (value: string) =>
+      value === "" || value.endsWith("@itcr.ac.cr"),
+    helperText: "Email must end with @itcr.ac.cr",
+    required: true,
+  },
+  {
     id: "description",
-    label: "Description",
+    label: "Descripción",
     type: "textarea",
-    section: "About",
+    section: "Sobre mi",
     multiline: true,
     rows: 4,
     fullWidth: true,
@@ -115,7 +124,7 @@ const TeacherFields = [
   },
   {
     id: "roles",
-    label: "Coordinator",
+    label: "Coordinador",
     type: "checkbox",
     section: "Roles",
     fullWidth: true,
@@ -124,10 +133,26 @@ const TeacherFields = [
 
 const TeacherUpdateFields = [
   {
-    id: "name",
-    label: "Name",
+    id: "idNumber",
+    label: "Cédula",
     type: "text",
-    section: "Teacher Information",
+    section: "Información del Profesor",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
+    id: "userName",
+    label: "Nombre de usuario",
+    type: "text",
+    section: "Información del Profesor",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
+    id: "name",
+    label: "Nombre",
+    type: "text",
+    section: "Información del Profesor",
     fullWidth: true,
     inputProps: {
       maxLength: 100,
@@ -136,25 +161,33 @@ const TeacherUpdateFields = [
   },
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
   },
   {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Contacto",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
     id: "description",
-    label: "Description",
+    label: "Descripción",
     type: "textarea",
-    section: "About",
+    section: "Sobre mi",
     multiline: true,
     rows: 4,
     fullWidth: true,
@@ -164,10 +197,15 @@ const TeacherUpdateFields = [
   },
   {
     id: "roles",
-    label: "Coordinator",
+    label: "Coordinador",
     type: "checkbox",
     section: "Roles",
     fullWidth: true,
+  },
+  {
+    id: "active",
+    type: "checkbox",
+    section: "Estado",
   },
 ];
 
@@ -182,12 +220,19 @@ const DefaultStudent: Student = {
   career: [],
 };
 
+const DefaultUpdateStudent: Student = {
+  name: "",
+  campusBranch: [],
+  career: [],
+  roles: ["Student"],
+};
+
 const StudentFields = [
   {
     id: "carne",
     label: "Carne",
     type: "text",
-    section: "Student Information",
+    section: "Información del Estudiante",
     fullWidth: true,
     required: true,
     inputProps: {
@@ -199,9 +244,9 @@ const StudentFields = [
   },
   {
     id: "userName",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
-    section: "Student Information",
+    section: "Información del Estudiante",
     fullWidth: true,
     inputProps: {
       maxLength: 20,
@@ -211,25 +256,12 @@ const StudentFields = [
     helperText: "Username must have at least 4 characters",
     required: true,
   },
-  {
-    id: "email",
-    label: "Email",
-    type: "email",
-    section: "Student Contact",
-    fullWidth: true,
-    inputProps: {
-      maxLength: 100,
-    },
-    validation: (value: string) =>
-      value === "" || value.endsWith("@estudiantec.cr"),
-    helperText: "Email must end with @estudiantec.cr",
-    required: true,
-  },
+
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "password",
-    section: "Student Information",
+    section: "Información del Estudiante",
     fullWidth: true,
     inputProps: {
       maxLength: 100,
@@ -242,9 +274,9 @@ const StudentFields = [
   },
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
-    section: "Student Information",
+    section: "Información del Estudiante",
     fullWidth: true,
     inputProps: {
       maxLength: 100,
@@ -253,19 +285,45 @@ const StudentFields = [
   },
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
-    section: "Student Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
-    section: "Student Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Contacto",
+    fullWidth: true,
+    inputProps: {
+      maxLength: 100,
+    },
+    validation: (value: string) =>
+      value === "" || value.endsWith("@estudiantec.cr"),
+    helperText: "Email must end with @estudiantec.cr",
+    required: true,
+  },
+  {
+    id: "description",
+    label: "Descripción",
+    type: "textarea",
+    section: "Sobre mi",
+    multiline: true,
+    rows: 4,
+    fullWidth: true,
+    inputProps: {
+      maxLength: 100,
+    },
   },
 ];
 
@@ -274,21 +332,29 @@ const StudentUpdateFields = [
     id: "carne",
     label: "Carne",
     type: "text",
-    section: "Student Information",
+    section: "Información del Estudiante",
     fullWidth: true,
-    required: true,
+    disabled: true,
+    validation: (value: string) => value === "" || /^\d{10}$/.test(value),
     inputProps: {
       maxLength: 10,
       minLength: 10,
     },
-    validation: (value: string) => value === "" || /^\d{10}$/.test(value),
     helperText: "Carne must have 10 digits",
   },
   {
-    id: "name",
-    label: "Name",
+    id: "userName",
+    label: "Nombre de usuario",
     type: "text",
-    section: "Student Information",
+    section: "Información del Estudiante",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
+    id: "name",
+    label: "Nombre",
+    type: "text",
+    section: "Información del Estudiante",
     fullWidth: true,
     inputProps: {
       maxLength: 100,
@@ -297,19 +363,32 @@ const StudentUpdateFields = [
   },
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
-    section: "Student Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
-    section: "Student Information",
+    section: "Información del Campus",
     fullWidth: true,
     required: true,
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Contacto",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
+    id: "active",
+    type: "checkbox",
+    section: "Estado",
   },
 ];
 
@@ -325,12 +404,12 @@ const DefaultAdmin: Admin = {
 const AdminFields = [
   {
     id: "idNumber",
-    label: "ID Number",
+    label: "Cédula",
     type: "text",
   },
   {
     id: "username",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
   },
   {
@@ -340,12 +419,12 @@ const AdminFields = [
   },
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "text",
   },
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
   },
 ];
@@ -362,12 +441,12 @@ const DefaultAdminAssistant: AdminAssistant = {
 const AdminAssistantFields = [
   {
     id: "idNumber",
-    label: "ID Number",
+    label: "Cédula",
     type: "text",
   },
   {
     id: "username",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
   },
   {
@@ -377,12 +456,12 @@ const AdminAssistantFields = [
   },
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "text",
   },
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
   },
 ];
@@ -394,6 +473,8 @@ export {
   DefaultAdminAssistant,
   DefaultStudent,
   DefaultTeacher,
+  DefaultUpdateStudent,
+  DefaultUpdateTeacher,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,

@@ -11,6 +11,10 @@ import { Button, IconButton, Modal } from "@mui/material";
 import { TableLayout } from "@layouts";
 // Api
 import { deleteStudentRequest, getStudentRequest } from "@api";
+// Utils
+import { checkPermission } from "@utils";
+// Hooks
+import { useResponseToast } from "@hooks";
 // Interfaces
 interface Career {
   _id: string;
@@ -30,6 +34,9 @@ const Students = () => {
   const [open, setOpen] = useState(false);
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
+  const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  // Hooks
+  const toast = useResponseToast();
 
   const columns: TableColumn<Student, keyof Student>[] = [
     {
@@ -42,39 +49,78 @@ const Students = () => {
       render: (name) => <strong>{name}</strong>,
     },
     {
-      header: "Careera",
+      header: "Carrera",
       accessor: "career",
-      render: (career) => <span>{career[0].name}</span>,
+      objectAccessor: (career) => career[0].name,
+      render: (career) =>
+        career.length > 0 ? <span>{career[0].name}</span> : <span>None</span>,
     },
     {
       header: "Correo",
       accessor: "email",
     },
     {
-      header: "Actions",
-      accessor: "_id",
-      render: (id) => (
-        <div>
-          <IconButton onClick={() => navigation(`/home/student/edit/${id}`)}>
-            <Edit />
-          </IconButton>
-          <IconButton onClick={() => handleModal(id)}>
-            <Delete />
-          </IconButton>
-        </div>
+      header: "Estado",
+      accessor: "active",
+      render: (active) => (active ? "Activo" : "Inactivo"),
+      objectAccessor: (active) => (active ? "Activo" : "Inactivo"),
+    },
+  ];
+
+  const actions = [
+    {
+      permission: checkPermission(permissions, "STUDENT", "PUT"),
+      component: (id: string) => (
+        <IconButton onClick={() => navigation(`/home/student/edit/${id}`)}>
+          <Edit />
+        </IconButton>
+      ),
+    },
+    {
+      permission: checkPermission(permissions, "STUDENT", "DELETE"),
+      component: (id: string) => (
+        <IconButton onClick={() => handleModal(id)}>
+          <Delete />
+        </IconButton>
       ),
     },
   ];
+
+  if (actions.some((action) => action.permission)) {
+    columns.push({
+      header: "Acciones",
+      accessor: "_id",
+      render: (id) => (
+        <div>
+          {actions.map((action) =>
+            action.permission ? action.component(id) : null
+          )}
+        </div>
+      ),
+    });
+  }
+
+  const tableLayoutProps = {
+    title: "Estudiantes",
+    button: checkPermission(permissions, "STUDENT", "POST") && (
+      <Button
+        variant="contained"
+        onClick={() => navigation("/home/student/add")}
+      >
+        Agregar Estudiante
+      </Button>
+    ),
+    children: <DataTable data={students} columns={columns} />,
+  };
 
   const getStudents = async () => {
     getStudentRequest()
       .then((response) => {
         setStudents(response);
-        console.log(response);
       })
       .catch((error) => {
-        // TODO: Handle error
         console.log(error);
+        toast(500 , ["Error al obtener los estudiantes"]);
       });
   };
 
@@ -84,9 +130,11 @@ const Students = () => {
         console.log(response);
         getStudents();
         setOpen(false);
+        toast(200, response.message);
       })
       .catch((error) => {
         console.log(error);
+        toast(500, ["Error al eliminar el estudiante"]);
       });
   };
 
@@ -97,9 +145,8 @@ const Students = () => {
 
   useEffect(() => {
     getStudents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {}, [open]);
 
   return (
     <div className={styles.students}>
@@ -111,7 +158,7 @@ const Students = () => {
         <div className={styles.modal}>
           <h2
             className={styles.warning}
-          >{`Are you sure you want to delete ${selectedStudent?.name}?`}</h2>
+          >{`Seguro de que quieres eliminar a ${selectedStudent?.name}?`}</h2>
           <hr />
           <div className={styles.rowContainer}>
             <div className={styles.row}>
@@ -123,22 +170,20 @@ const Students = () => {
               <p>{selectedStudent?.carne}</p>
             </div>
           </div>
-          <p className={styles.warning}>This action cannot be undone.</p>
+          <p className={styles.warning}>Esta accion no se puede deshacer.</p>
           <div className={styles.buttons}>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={() => setOpen(false)}>Cancelar</Button>
             <Button
               onClick={() => {
                 deleteStudent(selectedStudent?._id);
               }}
             >
-              Delete
+              Eliminar
             </Button>
           </div>
         </div>
       </Modal>
-      <TableLayout title={"STUDENTS"}>
-        <DataTable data={students} columns={columns} />
-      </TableLayout>
+      <TableLayout {...tableLayoutProps} />
     </div>
   );
 };

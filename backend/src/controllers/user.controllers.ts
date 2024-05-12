@@ -127,7 +127,7 @@ class Teacher extends BaseUser {
       const user = await TeacherUser.findOne({
         _id: id,
         roles: { $in: [role] },
-      }).populate("campusBranch", "career");
+      });
 
       if (!user) {
         throw new Error(`User with role ${role} not found. Cannot read user.`);
@@ -378,7 +378,7 @@ export class UserFactory {
         case "POST":
           try {
             const newUser = await user.create(userData);
-            res.status(201).json(newUser);
+            res.status(201).json({ message: [`Usuario creado`], user: newUser });
           } catch (error: any) {
             res.status(400).json({ message: [error.message] });
           }
@@ -389,29 +389,29 @@ export class UserFactory {
               const userFound = await user.read(id, role);
               res.status(200).json(userFound);
             } catch (error: any) {
-              res.status(400).json({ message: [error.message] });
+              res.status(400).json({ message: [error.message]});
             }
           } else {
             try {
               const users = await user.list();
               res.status(200).json(users);
             } catch (error: any) {
-              res.status(400).json({ message: [error.message] });
+              res.status(400).json({ message: [error.message]});
             }
           }
           break;
         case "PUT":
           try {
             const updatedUser = await user.update(id, userData, role);
-            res.status(200).json(updatedUser);
+            res.status(200).json({ message: [`Usuario actualizado`], user: updatedUser});
           } catch (error: any) {
-            res.status(400).json({ message: [error.message] });
+            res.status(400).json({ message: [error.message]});
           }
           break;
         case "DELETE":
           try {
             const deletedUser = await user.delete(id, role);
-            res.status(200).json(deletedUser);
+            res.status(200).json({ message: [`Usuario borrado`], user: deletedUser});
           } catch (error: any) {
             res.status(400).json({ message: [error.message] });
           }

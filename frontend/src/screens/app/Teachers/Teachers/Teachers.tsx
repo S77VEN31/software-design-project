@@ -13,6 +13,8 @@ import { TableLayout } from "@layouts";
 import { deleteTeacherRequest, getTeacherRequest } from "@api";
 // Utils
 import { checkPermission } from "@utils";
+// Hooks
+import { useResponseToast } from "@hooks";
 // Interfaces
 interface Career {
   _id: string;
@@ -33,7 +35,9 @@ const Teachers = () => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
-  // Columns with edit and delete actions
+  // Hooks
+  const toast = useResponseToast();
+
   const columns: TableColumn<Teacher, keyof Teacher>[] = [
     {
       accessor: "idNumber",
@@ -47,36 +51,72 @@ const Teachers = () => {
     {
       header: "Careera",
       accessor: "career",
-      render: (career) => <span>{career[0].name}</span>,
+      objectAccessor: (career) => career[0].name,
+      render: (career) =>
+        career.length > 0 ? <span>{career[0].name}</span> : <span>None</span>,
     },
     {
       header: "Correo",
       accessor: "email",
     },
     {
-      header: "Actions",
-      accessor: "_id",
-      render: (id) => (
-        <div>
-          <IconButton onClick={() => navigation(`/home/teacher/edit/${id}`)}>
-            <Edit />
-          </IconButton>
-          <IconButton onClick={() => handleModal(id)}>
-            <Delete />
-          </IconButton>
-        </div>
+      header: "Es Coordinator",
+      accessor: "roles",
+      render: (roles) => (
+        <span>{roles.includes("Coordinator") ? "Sí" : "No"}</span>
+      ),
+      objectAccessor: (roles) => (roles.includes("Coordinator") ? "Sí" : "No"),
+    },
+    {
+      header: "Estado",
+      accessor: "active",
+      render: (active) => (active ? "Activo" : "Inactivo"),
+      objectAccessor: (active) => (active ? "Activo" : "Inactivo"),
+    },
+  ];
+
+  const actions = [
+    {
+      permission: checkPermission(permissions, "TEACHER", "PUT"),
+      component: (id: string) => (
+        <IconButton onClick={() => navigation(`/home/teacher/edit/${id}`)}>
+          <Edit />
+        </IconButton>
+      ),
+    },
+    {
+      permission: checkPermission(permissions, "TEACHER", "DELETE"),
+      component: (id: string) => (
+        <IconButton onClick={() => handleModal(id)}>
+          <Delete />
+        </IconButton>
       ),
     },
   ];
 
+  // Add the actions column if any permissions are granted
+  if (actions.some((action) => action.permission)) {
+    columns.push({
+      header: "Acciones",
+      accessor: "_id",
+      render: (id) => (
+        <div>
+          {actions.map((action) =>
+            action.permission ? action.component(id) : null
+          )}
+        </div>
+      ),
+    });
+  }
+
   const tableLayoutProps = {
-    title: "TEACHERS",
+    title: "Profesores",
     button: checkPermission(permissions, "TEACHER", "POST") && (
       <Button
         variant="contained"
         onClick={() => navigation("/home/teacher/add")}
       >
-        Add Teacher
+        Agregar Profesor
       </Button>
     ),
     children: <DataTable data={teachers} columns={columns} />,
@@ -95,12 +135,14 @@ const Teachers = () => {
 
   const deleteTeacher = async (id: string) => {
     deleteTeacherRequest(id)
-      .then(() => {
+      .then((response) => {
         getTeachers(); // Refresh the list after deletion
         setOpen(false);
+        toast(200, response.message);
       })
       .catch((error) => {
         console.log(error);
+        toast(500, ["Error al eliminar el profesor"]);
       });
   };
 
@@ -123,20 +165,20 @@ const Teachers = () => {
         <div className={styles.modal}>
           <h2
             className={styles.warning}
-          >{`Are you sure you want to delete ${selectedTeacher?.name}?`}</h2>
+          >{`Seguro de que quieres eliminar a ${selectedTeacher?.name}?`}</h2>
           <div className={styles.row}>
-            <h4>Name:</h4>
+            <h4>Nombre:</h4>
             <p>{selectedTeacher?.name}</p>
           </div>
           <div className={styles.row}>
-            <h4>ID Number:</h4>
+            <h4>Cédula:</h4>
             <p>{selectedTeacher?.idNumber}</p>
           </div>
-          <p className={styles.warning}>This action cannot be undone.</p>
+          <p className={styles.warning}>Esta accion no se puede deshacer.</p>
           <div className={styles.buttons}>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={() => setOpen(false)}>Cancelar</Button>
             <Button onClick={() => deleteTeacher(selectedTeacher?._id)}>
-              Delete
+              Eliminar
             </Button>
           </div>
         </div>

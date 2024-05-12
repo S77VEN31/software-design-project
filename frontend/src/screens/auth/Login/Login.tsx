@@ -19,6 +19,8 @@ import {
 import { loginRequest } from "@api";
 // Contexts
 import { useAuth } from "@contexts";
+// Hooks
+import { useResponseToast } from "@hooks";
 
 const Login = () => {
   // States
@@ -30,6 +32,8 @@ const Login = () => {
   const navigation = useNavigate();
   // Contexts
   const { login } = useAuth();
+  // Hooks
+  const toast = useResponseToast();
 
   // Handle Change
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -47,9 +51,12 @@ const Login = () => {
         const { permissions, token } = response;
         login(token, permissions);
         navigation("/home/students");
+        if (response.status === 400)  {
+          toast(400, response.message);
+        }
       })
       .catch((error) => {
-        // TODO: Handle error
+        toast(error.response.status, error.response.data.message);
         console.error(error);
       });
   };
@@ -61,7 +68,7 @@ const Login = () => {
         <Box sx={styles.paper}>
           <Avatar sx={styles.avatar} />
           <Typography component="h1" variant="h5">
-            Sign in
+            Iniciar Sesión
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
             <TextField
@@ -69,7 +76,7 @@ const Login = () => {
               required
               id="email"
               onChange={handleChange}
-              label="Email Address"
+              label="Email"
               name="email"
               autoComplete="email"
               autoFocus
@@ -79,7 +86,7 @@ const Login = () => {
               required
               name="password"
               onChange={handleChange}
-              label="Password"
+              label="Contraseña"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -87,19 +94,21 @@ const Login = () => {
             <Box sx={styles.buttons}>
               <FormControlLabel
                 control={<Checkbox value="remember" sx={styles.checkbox} />}
-                label="Remember me"
+                label="Recuerdame"
               />
               <Button
                 type="submit"
                 variant="contained"
                 sx={styles.submitButton}
               >
-                Log In
+                Iniciar Sesión
               </Button>
             </Box>
             <Box sx={styles.buttons}>
-              <Link to="/register">Forgot password?</Link>
-              <Link to="/register">Don't have an account? Sign Up</Link>
+              <Link to="/register">
+                Olvidaste tu contraseña? Recuperala aquí
+              </Link>
+              <Link to="/register">No tienes cuenta? Registrate aquí</Link>
             </Box>
           </Box>
         </Box>

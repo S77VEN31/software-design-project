@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 // Libs
 import { createAccessToken } from "../libs";
 // Middlewares
-import { PermissionManager } from "../middlewares";
+import { PermissionManager, RoleManager } from "../middlewares";
 // Types
 import { Role } from "../types";
 
@@ -17,13 +17,31 @@ export const register = async (req: Request, res: Response) => {
 
     // Hash the password
     const passwordHash = await bcrypt.hash(password, 10);
-
     // Create a new user instance and save it
+    const userType = `${RoleManager.getRole(email)}User`;
+    const fields: any = {};
+    switch (userType) {
+      case "TeacherUser":
+        fields["type"] = "Teacher";
+        fields["idNumber"] = "N/A";
+        fields["campusBranch"] = [];
+        break;
+      case "StudentUser":
+        fields["type"] = "StudentUser";
+        fields["carne"] = "N/A";
+        fields["campusBranch"] = [];
+        break;
+      default:
+    }
+
     const newUser = new User({
       userName,
       email,
       password: passwordHash,
       name,
+      active: false,
+      roles: [RoleManager.getRole(email)],
+      ...fields,
     });
     await newUser.save();
 
@@ -51,6 +69,10 @@ export const login = async (req: Request, res: Response) => {
     console.log(userFound);
     if (!userFound) {
       return res.status(400).json({ message: ["User not found"] });
+    }
+
+    if (!userFound.active) {
+      return res.status(400).json({ message: ["User is not active"] });
     }
 
     // Compare password

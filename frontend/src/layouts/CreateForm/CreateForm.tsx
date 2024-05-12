@@ -1,6 +1,6 @@
 // React
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // Styles
 import styles from "./CreateForm.module.css";
 // Components
@@ -17,6 +17,8 @@ import {
 import { getCampusBranchRequest } from "@api";
 // Types
 import { CampusBranch, Career, Field, FormData } from "@enumerables";
+// Hooks
+import { useResponseToast } from "@hooks";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Request = (...args: any[]) => Promise<any>;
@@ -28,6 +30,7 @@ interface CreateFormProps {
   request: Request;
   layoutTitle: string;
   getRequest?: Request;
+  routeToGo?: string;
 }
 
 interface DropdownOptions {
@@ -52,6 +55,7 @@ const CreateForm = ({
   createButtonText,
   layoutTitle,
   getRequest,
+  routeToGo,
 }: CreateFormProps) => {
   const [formData, setFormData] = useState<FormData>(initialData);
   const [showPassword, setShowPassword] = useState(false);
@@ -60,7 +64,9 @@ const CreateForm = ({
     campusBranches: [],
     careers: [],
   });
-
+  // Hooks
+  const toast = useResponseToast();
+  const navigation = useNavigate();
   const { id } = useParams();
 
   const getCampusBranches = async () => {
@@ -89,7 +95,7 @@ const CreateForm = ({
     const selectedBranch = dropdownOptions.campusBranches.find(
       (branch) => branch._id === campusBranchId
     );
-
+    console.log(selectedBranch);
     if (selectedBranch) {
       setDropdownOptions((prevOptions) => ({
         ...prevOptions,
@@ -99,7 +105,7 @@ const CreateForm = ({
     }
     setFormData({
       ...formData,
-      campusBranch: [campusBranchId],
+      campusBranch: selectedBranch ? [selectedBranch._id] : [""],
     });
   };
 
@@ -109,6 +115,7 @@ const CreateForm = ({
       career: [careerId],
     });
   };
+
   const handleAddCoordinatorRole = (state: boolean) => {
     const isCoordinator = formData.roles.includes("Coordinator");
     if (state) {
@@ -140,15 +147,19 @@ const CreateForm = ({
               setFormData(response);
             })
             .catch((error) => {
-              console.error(error);
+              console.log(error);
+              toast(500, ["Error al obtener los datos del usuario"]);
             });
         } else {
           setFormData(initialData);
         }
+        toast(200, response.message);
+        routeToGo && navigation(routeToGo);
         console.log(response);
       })
       .catch((error) => {
         console.log(error);
+        toast(500, ["Error al guardar los datos"]);
       });
   };
 
@@ -161,11 +172,26 @@ const CreateForm = ({
           setFormData(response);
         })
         .catch((error) => {
-          console.error(error);
+          toast(error.status, error.message);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // if any formData field is "N/A" change the value to empty string
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    for (const key in formData) {
+      if (formData[key as keyof FormData] === "N/A") {
+        setFormData({
+          ...formData,
+          [key]: "",
+        });
+      }
+    }
+    console.log(formData);
+  }, [formData]);
 
   useEffect(() => {
     console.log(formData);
@@ -193,7 +219,7 @@ const CreateForm = ({
           }))
         : options || [];
 
-    const recognizedFields = ["campusBranch", "career", "roles"];
+    const recognizedFields = ["campusBranch", "career", "roles", "active"];
     const handleChangeFunctions:
       | HandleChangeCheckboxFunction
       | HandleChangeInputFunction = {
@@ -204,8 +230,15 @@ const CreateForm = ({
         handleCareerChange(event.target.value),
       roles: (event: ChangeEvent<HTMLInputElement>) =>
         handleAddCoordinatorRole(event.target.checked),
+      active: (event: ChangeEvent<HTMLInputElement>) =>
+        handleChange(id, event.target.checked as unknown as string),
       default: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
         handleChange(id, event.target.value),
+    };
+
+    const handleCheckedFunctions = {
+      roles: () => formData.roles.includes("Coordinator"),
+      active: () => (formData.active ? true : false),
     };
 
     switch (type) {
@@ -265,6 +298,8 @@ const CreateForm = ({
                 ? helperText
                 : ""
             }
+            disabled={formData[id as keyof FormData] === "N/A" ? true : false}
+            required={formData[id as keyof FormData] === "" ? true : false}
           />
         );
       case "dropdown":
@@ -322,7 +357,10 @@ const CreateForm = ({
             control={
               <Checkbox
                 {...field}
-                checked={formData.roles.includes("Coordinator")}
+                checked={
+                  // @ts-expect-error - Esto no debería ser necesario
+                  handleCheckedFunctions[id]()
+                }
                 className={styles.formField}
                 value={formData[id as keyof FormData] || ""}
                 onChange={
@@ -332,10 +370,15 @@ const CreateForm = ({
                 }
               />
             }
-            label={label}
+            label={
+              label
+                ? label
+                : formData[id as keyof FormData]
+                ? "Activo"
+                : "Inactivo"
+            }
           />
         );
-
       default:
         return <div>Unsupported field type</div>;
     }

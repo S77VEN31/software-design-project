@@ -20,6 +20,8 @@ import {
 import {
   DefaultStudent,
   DefaultTeacher,
+  DefaultUpdateStudent,
+  DefaultUpdateTeacher,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,
@@ -43,7 +45,7 @@ const appRoutes = [
   {
     apiSlug: "/teams/get",
     path: "/home/teams",
-    label: "TEAMS",
+    label: "EQUIPOS",
     inNav: true,
     element: <div>Teams</div>,
   },
@@ -74,7 +76,7 @@ const appRoutes = [
   {
     apiSlug: "/students/get",
     path: "/home/students",
-    label: "STUDENTS",
+    label: "ESTUDIANTES",
     inNav: true,
     element: <StudentsScreen />,
   },
@@ -84,11 +86,12 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Create Student"
-        createButtonText="Add Student"
+        layoutTitle="Crear Estudiante"
+        createButtonText="Agregar Estudiante"
         request={createStudentRequest}
         fields={StudentFields}
         initialData={DefaultStudent}
+        routeToGo="/home/students"
       />
     ),
   },
@@ -98,12 +101,13 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Edit Student"
-        createButtonText="Update Student"
+        layoutTitle="Editar Estudiante"
+        createButtonText="Actualizar Estudiante"
         request={updateStudentRequest}
         fields={StudentUpdateFields}
-        initialData={DefaultStudent}
+        initialData={DefaultUpdateStudent}
         getRequest={getStudentRequest}
+        routeToGo="/home/students"
       />
     ),
   },
@@ -116,7 +120,7 @@ const appRoutes = [
   {
     apiSlug: "/teachers/get",
     path: "/home/teachers",
-    label: "TEACHERS",
+    label: "PROFESORES",
     inNav: true,
     element: <TeachersScreen />,
   },
@@ -126,11 +130,12 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Create Teacher"
-        createButtonText="Add Teacher"
+        layoutTitle="Crear Profesor"
+        createButtonText="Agregar Profesor"
         request={createTeacherRequest}
         fields={TeacherFields}
         initialData={DefaultTeacher}
+        routeToGo="/home/teachers"
       />
     ),
   },
@@ -140,16 +145,16 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Edit Teacher"
-        createButtonText="Update Teacher"
+        layoutTitle="Editar Profesor"
+        createButtonText="Actualizar Profesor"
         request={updateTeacherRequest}
         fields={TeacherUpdateFields}
-        initialData={DefaultTeacher}
+        initialData={DefaultUpdateTeacher}
         getRequest={getTeacherRequest}
+        routeToGo="/home/teachers"
       />
     ),
   },
-
   {
     apiSlug: "/teacher/get",
     path: "/home/teacher/view/:id",
@@ -159,7 +164,7 @@ const appRoutes = [
   {
     apiSlug: "/schedules/get",
     path: "/home/schedules",
-    label: "SCHEDULES",
+    label: "HORARIOS",
     inNav: true,
     element: <SchedulesScreen />,
   },

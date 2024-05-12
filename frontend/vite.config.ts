@@ -13,6 +13,7 @@ export default defineConfig({
       "@api": "/src/api/index.ts",
       "@contexts": "/src/contexts/index.tsx",
       "@utils": "/src/utils/index.ts",
+      "@hooks": "/src/hooks/index.tsx",
     },
   },
 });
