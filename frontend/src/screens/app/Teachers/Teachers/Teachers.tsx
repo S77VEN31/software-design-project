@@ -47,6 +47,7 @@ const Teachers = () => {
     {
       header: "Careera",
       accessor: "career",
+      objectAccessor: (career) => career[0].name,
       render: (career) => <span>{career[0].name}</span>,
     },
     {
@@ -59,6 +60,7 @@ const Teachers = () => {
       render: (roles) => (
         <span>{roles.includes("Coordinator") ? "Sí" : "No"}</span>
       ),
+      objectAccessor: (roles) => (roles.includes("Coordinator") ? "Sí" : "No"),
     },
   ];
 
