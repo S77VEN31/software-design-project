@@ -5,7 +5,12 @@ export type Permission = {
   selector: string;
 };
 
-export type Role = "Teacher" | "Student" | "AdminAssistant" | "Admin";
+export type Role =
+  | "Teacher"
+  | "Student"
+  | "AdminAssistant"
+  | "Admin"
+  | "Coordinator";
 
 export type Teacher = {
   idNumber: string;
@@ -45,4 +50,40 @@ export type AdminAssistant = {
   roles: Role[];
   password: string;
   name: string;
+};
+
+export type Location = {
+  type: string;
+  coordinates: [number, number];
+};
+
+export type Career = {
+  _id: string;
+  name: string;
+  code: string;
+  __v: number;
+};
+
+export type CampusBranch = {
+  location: Location;
+  _id: string;
+  name: string;
+  initials: string;
+  code: string;
+  careers: Career[];
+};
+
+export type FormData = Student | Teacher;
+
+export type Field = {
+  id: string;
+  label: string;
+  options?: { value: string; label: string }[];
+  type: string;
+  section: string;
+  fullWidth?: boolean;
+  inputProps?: { maxLength?: number; minLength?: number };
+  validation?: (value: string) => boolean;
+  helperText?: string;
+  required?: boolean;
 };

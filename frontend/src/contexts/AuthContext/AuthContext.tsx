@@ -1,4 +1,4 @@
-// React
+import { Permission } from "@enumerables";
 import {
   ReactNode,
   createContext,
@@ -6,12 +6,7 @@ import {
   useEffect,
   useState,
 } from "react";
-// Libraries
 import { useCookies } from "react-cookie";
-// Api
-import { setAuthHeaders } from "@api";
-// Types
-import { Permission } from "@enumerables";
 
 interface AuthContextType {
   isLogin: boolean;
@@ -26,31 +21,48 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [cookies, setCookie, removeCookie] = useCookies(["token"]);
-  const [isLogin, setIsLogin] = useState(!!cookies.token);
+  // Utilizar useCookies para manejar cookies
+  const [, setCookie, removeCookie] = useCookies(["token"]);
+  const [isLogin, setIsLogin] = useState<boolean>(
+    !!localStorage.getItem("token")
+  );
 
   useEffect(() => {
-    if (cookies.token) {
-      setAuthHeaders(cookies.token);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setCookie("token", token, {
+        expires: new Date(Date.now() + 7 * 864e5), // expires in 7 days
+        path: "/",
+        secure: true,
+        sameSite: "lax",
+      });
+      setIsLogin(true);
     } else {
+      console.log("Token not found in localStorage");
       setIsLogin(false);
-      // Asegurarse de limpiar localStorage cuando el usuario no está logueado
       localStorage.removeItem("permissions");
     }
-  }, [cookies.token]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const login = (token: string, newPermissions: Permission[]) => {
     // Guardar los permisos en localStorage
     localStorage.setItem("permissions", JSON.stringify(newPermissions));
-    setCookie("token", token);
+    localStorage.setItem("token", token); // Guardar el token en localStorage para persistencia
+    setCookie("token", token, {
+      expires: new Date(Date.now() + 7 * 864e5), // expires in 7 days
+      path: "/",
+      secure: true,
+      sameSite: "lax",
+    });
     setIsLogin(true);
   };
 
   const logout = () => {
     removeCookie("token");
-    setIsLogin(false);
-    // Limpiar los permisos del localStorage
+    localStorage.removeItem("token");
     localStorage.removeItem("permissions");
+    setIsLogin(false);
   };
 
   return (

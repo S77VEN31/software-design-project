@@ -212,9 +212,7 @@ class Student extends BaseUser {
       const user = await StudentUser.findOne({
         _id: id,
         roles: { $in: [role] },
-      })
-        .populate("campusBranch")
-        .populate("career");
+      });
 
       if (!user) {
         throw new Error(`User with role ${role} not found. Cannot read user.`);

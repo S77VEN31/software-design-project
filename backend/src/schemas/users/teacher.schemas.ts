@@ -21,6 +21,8 @@ export const createTeacherUserSchema = z.object({
   email: z
     .string({ required_error: "Email is required" })
     .email()
+    .min(1, { message: "Email must have at least 1 character" })
+    .max(100, { message: "Email must have at most 100 characters" })
     .refine((email) => email.endsWith("@itcr.ac.cr"), {
       message: "Email must end with @itcr.ac.cr",
     }),

@@ -45,12 +45,11 @@ export const getCampusBranch = async (req: Request, res: Response) => {
 };
 
 export const getCampusBranches = async (req: Request, res: Response) => {
-    try {        
-        const campusBranches = await CampusBranch.find({});
-
-        return res.status(200).json(campusBranches);
+    try {
+      const campusBranches = await CampusBranch.find({}).populate("careers");
+      return res.status(200).json(campusBranches);
     } catch (error: any) {
-        return res.status(500).json({ message: [error] });
+      return res.status(500).json({ message: [error] });
     }
 };
 

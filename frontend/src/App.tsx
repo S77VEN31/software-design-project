@@ -32,6 +32,20 @@ const theme = createTheme({
     },
   },
   components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            backgroundColor: "transparent",
+          },
+          "&.Mui-focusVisible, &:focus": {
+            outline: "none",
+            border: "none",
+            boxShadow: "none",
+          },
+        },
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -57,25 +71,34 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const location = useLocation();
   const [hasPermission, setHasPermission] = useState(true);
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
-  useEffect(
-    () => {
-      if (permissions) {
-        const currentPath = location.pathname;
-        const apiSlug = appRoutes.find(
-          (route) => route.path === currentPath
-        )?.apiSlug;
-
-        const isAuthorized =
-          permissions.some(
-            (permission: Permission) => permission.slug === apiSlug
-          ) || apiSlug === "*";
-        setHasPermission(isAuthorized);
+  const findRoute = (pathname: string) => {
+    return appRoutes.find((route) => {
+      const match = route.path.match(/:[^\s/]+/g); // Encuentra todos los parámetros
+      if (match) {
+        const regex = new RegExp(
+          match.reduce((acc, curr) => {
+            return acc.replace(curr, "[^/]+"); // Reemplaza cada parámetro con una regex que acepte cualquier conjunto de caracteres excepto '/'
+          }, route.path)
+        );
+        return pathname.match(regex);
       }
-    },
+      return pathname === route.path;
+    });
+  };
+  useEffect(() => {
+    const matchedRoute = findRoute(location.pathname);
+    if (matchedRoute && permissions) {
+      const apiSlug = matchedRoute.apiSlug;
+      const isAuthorized =
+        permissions.some(
+          (permission: Permission) => permission.slug === apiSlug
+        ) || apiSlug === "*";
+      setHasPermission(isAuthorized);
+    } else {
+      setHasPermission(false);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [location]
-  );
-
+  }, [location]);
   if (!isLogin) {
     return <Navigate to="/" replace />;
   }
