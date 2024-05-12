@@ -23,9 +23,9 @@ const ScheduleModel = new Schema(
       enum: ["active", "inactive"],
       required: true,
     },
-    group: {
+    team: {
       type: Schema.Types.ObjectId,
-      ref: "Group",
+      ref: "Team",
       required: true,
     },
     activities: [

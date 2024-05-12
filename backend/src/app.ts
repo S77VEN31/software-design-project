@@ -13,7 +13,8 @@ import {
   careerRoutes,
   userRoutes,
   commentRoutes,
-  campusBranchRoutes
+  campusBranchRoutes,
+  teamRoutes
 } from "./routes";
 
 // Express app instance
@@ -42,5 +43,6 @@ app.use("/api", userRoutes);
 app.use("/api", activityRoutes);
 app.use("/api", campusBranchRoutes);
 app.use("/api", commentRoutes);
+app.use("/api", teamRoutes);
 
 export default app;

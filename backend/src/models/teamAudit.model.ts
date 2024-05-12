@@ -3,10 +3,10 @@ import mongoose, { Schema } from "mongoose";
 
 const teamAuditModel = new Schema(
   {
-    groupCode: {
+    teamCode: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Group",
+      ref: "Team",
     },
     userId: {
       type: Schema.Types.ObjectId,
