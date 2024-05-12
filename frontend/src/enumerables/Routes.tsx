@@ -91,6 +91,7 @@ const appRoutes = [
         request={createStudentRequest}
         fields={StudentFields}
         initialData={DefaultStudent}
+        routeToGo="/home/students"
       />
     ),
   },
@@ -106,6 +107,7 @@ const appRoutes = [
         fields={StudentUpdateFields}
         initialData={DefaultUpdateStudent}
         getRequest={getStudentRequest}
+        routeToGo="/home/students"
       />
     ),
   },
@@ -133,6 +135,7 @@ const appRoutes = [
         request={createTeacherRequest}
         fields={TeacherFields}
         initialData={DefaultTeacher}
+        routeToGo="/home/teachers"
       />
     ),
   },
@@ -148,6 +151,7 @@ const appRoutes = [
         fields={TeacherUpdateFields}
         initialData={DefaultUpdateTeacher}
         getRequest={getTeacherRequest}
+        routeToGo="/home/teachers"
       />
     ),
   },

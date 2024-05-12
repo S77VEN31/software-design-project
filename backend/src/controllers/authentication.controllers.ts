@@ -71,6 +71,10 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: ["User not found"] });
     }
 
+    if (!userFound.active) {
+      return res.status(400).json({ message: ["User is not active"] });
+    }
+
     // Compare password
     const isCorrect = await bcrypt.compare(password, userFound!.password);
     if (!isCorrect) {

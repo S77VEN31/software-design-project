@@ -2,6 +2,7 @@
 import { ReactNode, useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
 // Styles
+import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
 // Components
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -110,7 +111,6 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   return <>{children}</>;
 };
 
-
 function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -136,6 +136,7 @@ function App() {
           <ToastContainer />
         </HashRouter>
       </AuthProvider>
+      <ToastContainer />
     </ThemeProvider>
   );
 }
