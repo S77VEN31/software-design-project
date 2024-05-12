@@ -54,6 +54,13 @@ const Teachers = () => {
       accessor: "email",
     },
     {
+      header: "Es Coordinator",
+      accessor: "roles",
+      render: (roles) => (
+        <span>{roles.includes("Coordinator") ? "Sí" : "No"}</span>
+      ),
+    },
+    {
       header: "Actions",
       accessor: "_id",
       render: (id) => (
@@ -65,13 +72,6 @@ const Teachers = () => {
             <Delete />
           </IconButton>
         </div>
-      ),
-    },
-    {
-      header: "Es Coordinator",
-      accessor: "roles",
-      render: (roles) => (
-        <span>{roles.includes("Coordinator") ? "Sí" : "No"}</span>
       ),
     },
   ];

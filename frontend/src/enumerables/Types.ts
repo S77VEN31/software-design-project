@@ -13,22 +13,22 @@ export type Role =
   | "Coordinator";
 
 export type Teacher = {
-  idNumber: string;
-  userName: string;
-  email: string;
+  idNumber?: string;
+  userName?: string;
+  email?: string;
   roles: Role[];
-  password: string;
+  password?: string;
   name: string;
   campusBranch: string[];
   career: string[];
 };
 
 export type Student = {
-  carne: string;
-  userName: string;
-  email: string;
+  carne?: string;
+  userName?: string;
+  email?: string;
   roles: Role[];
-  password: string;
+  password?: string;
   name: string;
   campusBranch: string[];
   career: string[];
