@@ -202,6 +202,11 @@ const TeacherUpdateFields = [
     section: "Roles",
     fullWidth: true,
   },
+  {
+    id: "active",
+    type: "checkbox",
+    section: "Estado",
+  },
 ];
 
 const DefaultStudent: Student = {
@@ -330,6 +335,12 @@ const StudentUpdateFields = [
     section: "Información del Estudiante",
     fullWidth: true,
     disabled: true,
+    validation: (value: string) => value === "" || /^\d{10}$/.test(value),
+    inputProps: {
+      maxLength: 10,
+      minLength: 10,
+    },
+    helperText: "Carne must have 10 digits",
   },
   {
     id: "userName",
@@ -339,7 +350,6 @@ const StudentUpdateFields = [
     fullWidth: true,
     disabled: true,
   },
-
   {
     id: "name",
     label: "Nombre",
@@ -374,6 +384,11 @@ const StudentUpdateFields = [
     section: "Contacto",
     fullWidth: true,
     disabled: true,
+  },
+  {
+    id: "active",
+    type: "checkbox",
+    section: "Estado",
   },
 ];
 

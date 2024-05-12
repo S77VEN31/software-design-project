@@ -13,6 +13,7 @@ export type Role =
   | "Coordinator";
 
 export type Teacher = {
+  active?: boolean;
   idNumber?: string;
   userName?: string;
   email?: string;
@@ -24,6 +25,7 @@ export type Teacher = {
 };
 
 export type Student = {
+  active?: boolean;
   carne?: string;
   userName?: string;
   email?: string;
