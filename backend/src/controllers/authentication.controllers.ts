@@ -70,11 +70,16 @@ export const login = async (req: Request, res: Response) => {
 
     // Create token with userFound._id
     const token = await createAccessToken({ id: userFound!._id });
-    res.cookie("token", token);
+    res.cookie("token", token, {
+      httpOnly: true,
+      sameSite: "none",
+      secure: true,
+    });
 
     // Send userFound and permissions
     return res.status(200).json({
       permissions,
+      token,
     });
   } catch (error) {
     console.log(error);

@@ -2,6 +2,11 @@
 export type {
   Admin,
   AdminAssistant,
+  CampusBranch,
+  Career,
+  Field,
+  FormData,
+  Location,
   Permission,
   Role,
   Student,
@@ -16,7 +21,9 @@ export {
   DefaultStudent,
   DefaultTeacher,
   StudentFields,
+  StudentUpdateFields,
   TeacherFields,
+  TeacherUpdateFields,
 } from "./Users";
 // Routes
 export { Routes } from "./Routes";

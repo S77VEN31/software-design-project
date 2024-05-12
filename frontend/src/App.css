@@ -14,4 +14,12 @@
   --color-button: #1a1a1a;
   --color-button-hover: #646cff;
   --color-button-focus: #646cff;
+  --warning: #ff0000;
+}
+
+hr {
+  margin: 0;
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--color-text);
 }

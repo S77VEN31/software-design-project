@@ -1,5 +1,5 @@
 // Express
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 // Json Web Token
 import jwt, { JwtPayload } from "jsonwebtoken";
 // Token key
@@ -35,6 +35,7 @@ export const authRequired = async (
   next: NextFunction
 ): Promise<void> => {
   const token = req.cookies.token;
+  console.log("Token:", token);
   if (!token) {
     res.status(401).json({ message: "Unauthorized no token" });
     return;
