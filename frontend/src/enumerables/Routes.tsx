@@ -20,6 +20,8 @@ import {
 import {
   DefaultStudent,
   DefaultTeacher,
+  DefaultUpdateStudent,
+  DefaultUpdateTeacher,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,
@@ -102,7 +104,7 @@ const appRoutes = [
         createButtonText="Update Student"
         request={updateStudentRequest}
         fields={StudentUpdateFields}
-        initialData={DefaultStudent}
+        initialData={DefaultUpdateStudent}
         getRequest={getStudentRequest}
       />
     ),
@@ -144,7 +146,7 @@ const appRoutes = [
         createButtonText="Update Teacher"
         request={updateTeacherRequest}
         fields={TeacherUpdateFields}
-        initialData={DefaultTeacher}
+        initialData={DefaultUpdateTeacher}
         getRequest={getTeacherRequest}
       />
     ),

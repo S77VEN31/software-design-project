@@ -12,6 +12,13 @@ const DefaultTeacher: Teacher = {
   career: [],
 };
 
+const DefaultUpdateTeacher: Teacher = {
+  name: "",
+  campusBranch: [],
+  career: [],
+  roles: ["Teacher"],
+};
+
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
 
@@ -45,18 +52,16 @@ const TeacherFields = [
     helperText: "Username must have at least 4 characters",
     required: true,
   },
+
   {
-    id: "email",
-    label: "Email",
-    type: "email",
-    section: "Teacher Contact",
+    id: "name",
+    label: "Name",
+    type: "text",
+    section: "Teacher Information",
     fullWidth: true,
     inputProps: {
       maxLength: 100,
     },
-    validation: (value: string) =>
-      value === "" || value.endsWith("@itcr.ac.cr"),
-    helperText: "Email must end with @itcr.ac.cr",
     required: true,
   },
   {
@@ -74,22 +79,12 @@ const TeacherFields = [
       "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character",
     required: true,
   },
-  {
-    id: "name",
-    label: "Name",
-    type: "text",
-    section: "Teacher Information",
-    fullWidth: true,
-    inputProps: {
-      maxLength: 100,
-    },
-    required: true,
-  },
+
   {
     id: "campusBranch",
     label: "Campus Branch",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Campus Information",
     fullWidth: true,
     required: true,
   },
@@ -97,8 +92,22 @@ const TeacherFields = [
     id: "career",
     label: "Career",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Campus Information",
     fullWidth: true,
+    required: true,
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Teacher Contact",
+    fullWidth: true,
+    inputProps: {
+      maxLength: 100,
+    },
+    validation: (value: string) =>
+      value === "" || value.endsWith("@itcr.ac.cr"),
+    helperText: "Email must end with @itcr.ac.cr",
     required: true,
   },
   {
@@ -124,6 +133,22 @@ const TeacherFields = [
 
 const TeacherUpdateFields = [
   {
+    id: "idNumber",
+    label: "ID Number",
+    type: "text",
+    section: "Teacher Information",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
+    id: "userName",
+    label: "Username",
+    type: "text",
+    section: "Teacher Information",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
     id: "name",
     label: "Name",
     type: "text",
@@ -138,7 +163,7 @@ const TeacherUpdateFields = [
     id: "campusBranch",
     label: "Campus Branch",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Campus Information",
     fullWidth: true,
     required: true,
   },
@@ -146,9 +171,17 @@ const TeacherUpdateFields = [
     id: "career",
     label: "Career",
     type: "dropdown",
-    section: "Teacher Information",
+    section: "Campus Information",
     fullWidth: true,
     required: true,
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Teacher Contact",
+    fullWidth: true,
+    disabled: true,
   },
   {
     id: "description",
@@ -182,6 +215,13 @@ const DefaultStudent: Student = {
   career: [],
 };
 
+const DefaultUpdateStudent: Student = {
+  name: "",
+  campusBranch: [],
+  career: [],
+  roles: ["Student"],
+};
+
 const StudentFields = [
   {
     id: "carne",
@@ -211,20 +251,7 @@ const StudentFields = [
     helperText: "Username must have at least 4 characters",
     required: true,
   },
-  {
-    id: "email",
-    label: "Email",
-    type: "email",
-    section: "Student Contact",
-    fullWidth: true,
-    inputProps: {
-      maxLength: 100,
-    },
-    validation: (value: string) =>
-      value === "" || value.endsWith("@estudiantec.cr"),
-    helperText: "Email must end with @estudiantec.cr",
-    required: true,
-  },
+
   {
     id: "password",
     label: "Password",
@@ -255,7 +282,7 @@ const StudentFields = [
     id: "campusBranch",
     label: "Campus Branch",
     type: "dropdown",
-    section: "Student Information",
+    section: "Campus Information",
     fullWidth: true,
     required: true,
   },
@@ -263,9 +290,35 @@ const StudentFields = [
     id: "career",
     label: "Career",
     type: "dropdown",
-    section: "Student Information",
+    section: "Campus Information",
     fullWidth: true,
     required: true,
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Student Contact",
+    fullWidth: true,
+    inputProps: {
+      maxLength: 100,
+    },
+    validation: (value: string) =>
+      value === "" || value.endsWith("@estudiantec.cr"),
+    helperText: "Email must end with @estudiantec.cr",
+    required: true,
+  },
+  {
+    id: "description",
+    label: "Description",
+    type: "textarea",
+    section: "About",
+    multiline: true,
+    rows: 4,
+    fullWidth: true,
+    inputProps: {
+      maxLength: 100,
+    },
   },
 ];
 
@@ -276,14 +329,17 @@ const StudentUpdateFields = [
     type: "text",
     section: "Student Information",
     fullWidth: true,
-    required: true,
-    inputProps: {
-      maxLength: 10,
-      minLength: 10,
-    },
-    validation: (value: string) => value === "" || /^\d{10}$/.test(value),
-    helperText: "Carne must have 10 digits",
+    disabled: true,
   },
+  {
+    id: "userName",
+    label: "Username",
+    type: "text",
+    section: "Student Information",
+    fullWidth: true,
+    disabled: true,
+  },
+
   {
     id: "name",
     label: "Name",
@@ -299,7 +355,7 @@ const StudentUpdateFields = [
     id: "campusBranch",
     label: "Campus Branch",
     type: "dropdown",
-    section: "Student Information",
+    section: "Campus Information",
     fullWidth: true,
     required: true,
   },
@@ -307,9 +363,17 @@ const StudentUpdateFields = [
     id: "career",
     label: "Career",
     type: "dropdown",
-    section: "Student Information",
+    section: "Campus Information",
     fullWidth: true,
     required: true,
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Student Contact",
+    fullWidth: true,
+    disabled: true,
   },
 ];
 
@@ -394,6 +458,8 @@ export {
   DefaultAdminAssistant,
   DefaultStudent,
   DefaultTeacher,
+  DefaultUpdateStudent,
+  DefaultUpdateTeacher,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,

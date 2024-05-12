@@ -20,6 +20,8 @@ export {
   DefaultAdminAssistant,
   DefaultStudent,
   DefaultTeacher,
+  DefaultUpdateStudent,
+  DefaultUpdateTeacher,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,
