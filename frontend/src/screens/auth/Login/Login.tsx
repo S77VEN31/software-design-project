@@ -69,7 +69,7 @@ const Login = () => {
               required
               id="email"
               onChange={handleChange}
-              label="Email Address"
+              label="Email"
               name="email"
               autoComplete="email"
               autoFocus

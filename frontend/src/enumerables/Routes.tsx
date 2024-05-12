@@ -45,7 +45,7 @@ const appRoutes = [
   {
     apiSlug: "/teams/get",
     path: "/home/teams",
-    label: "TEAMS",
+    label: "EQUIPOS",
     inNav: true,
     element: <div>Teams</div>,
   },
@@ -76,7 +76,7 @@ const appRoutes = [
   {
     apiSlug: "/students/get",
     path: "/home/students",
-    label: "STUDENTS",
+    label: "ESTUDIANTES",
     inNav: true,
     element: <StudentsScreen />,
   },
@@ -118,7 +118,7 @@ const appRoutes = [
   {
     apiSlug: "/teachers/get",
     path: "/home/teachers",
-    label: "TEACHERS",
+    label: "PROFESORES",
     inNav: true,
     element: <TeachersScreen />,
   },
@@ -160,7 +160,7 @@ const appRoutes = [
   {
     apiSlug: "/schedules/get",
     path: "/home/schedules",
-    label: "SCHEDULES",
+    label: "HORARIOS",
     inNav: true,
     element: <SchedulesScreen />,
   },

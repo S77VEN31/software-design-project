@@ -25,7 +25,7 @@ const passwordRegex =
 const TeacherFields = [
   {
     id: "idNumber",
-    label: "ID Number",
+    label: "Cédula",
     type: "text",
     section: "Información del Profesor",
     fullWidth: true,
@@ -40,7 +40,7 @@ const TeacherFields = [
   },
   {
     id: "userName",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
     section: "Información del Profesor",
     fullWidth: true,
@@ -66,7 +66,7 @@ const TeacherFields = [
   },
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "password",
     section: "Información del Profesor",
     fullWidth: true,
@@ -82,7 +82,7 @@ const TeacherFields = [
 
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -90,7 +90,7 @@ const TeacherFields = [
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -112,7 +112,7 @@ const TeacherFields = [
   },
   {
     id: "description",
-    label: "Description",
+    label: "Descripción",
     type: "textarea",
     section: "Sobre mi",
     multiline: true,
@@ -124,7 +124,7 @@ const TeacherFields = [
   },
   {
     id: "roles",
-    label: "Coordinator",
+    label: "Coordinador",
     type: "checkbox",
     section: "Roles",
     fullWidth: true,
@@ -134,7 +134,7 @@ const TeacherFields = [
 const TeacherUpdateFields = [
   {
     id: "idNumber",
-    label: "ID Number",
+    label: "Cédula",
     type: "text",
     section: "Información del Profesor",
     fullWidth: true,
@@ -142,7 +142,7 @@ const TeacherUpdateFields = [
   },
   {
     id: "userName",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
     section: "Información del Profesor",
     fullWidth: true,
@@ -161,7 +161,7 @@ const TeacherUpdateFields = [
   },
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -169,7 +169,7 @@ const TeacherUpdateFields = [
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -185,7 +185,7 @@ const TeacherUpdateFields = [
   },
   {
     id: "description",
-    label: "Description",
+    label: "Descripción",
     type: "textarea",
     section: "Sobre mi",
     multiline: true,
@@ -197,7 +197,7 @@ const TeacherUpdateFields = [
   },
   {
     id: "roles",
-    label: "Coordinator",
+    label: "Coordinador",
     type: "checkbox",
     section: "Roles",
     fullWidth: true,
@@ -239,7 +239,7 @@ const StudentFields = [
   },
   {
     id: "userName",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
     section: "Información del Estudiante",
     fullWidth: true,
@@ -254,7 +254,7 @@ const StudentFields = [
 
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "password",
     section: "Información del Estudiante",
     fullWidth: true,
@@ -280,7 +280,7 @@ const StudentFields = [
   },
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -288,7 +288,7 @@ const StudentFields = [
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -310,7 +310,7 @@ const StudentFields = [
   },
   {
     id: "description",
-    label: "Description",
+    label: "Descripción",
     type: "textarea",
     section: "Sobre mi",
     multiline: true,
@@ -333,7 +333,7 @@ const StudentUpdateFields = [
   },
   {
     id: "userName",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
     section: "Información del Estudiante",
     fullWidth: true,
@@ -353,7 +353,7 @@ const StudentUpdateFields = [
   },
   {
     id: "campusBranch",
-    label: "Campus Branch",
+    label: "Sede",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -361,7 +361,7 @@ const StudentUpdateFields = [
   },
   {
     id: "career",
-    label: "Career",
+    label: "Carrera",
     type: "dropdown",
     section: "Información del Campus",
     fullWidth: true,
@@ -389,12 +389,12 @@ const DefaultAdmin: Admin = {
 const AdminFields = [
   {
     id: "idNumber",
-    label: "ID Number",
+    label: "Cédula",
     type: "text",
   },
   {
     id: "username",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
   },
   {
@@ -404,7 +404,7 @@ const AdminFields = [
   },
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "text",
   },
   {
@@ -426,12 +426,12 @@ const DefaultAdminAssistant: AdminAssistant = {
 const AdminAssistantFields = [
   {
     id: "idNumber",
-    label: "ID Number",
+    label: "Cédula",
     type: "text",
   },
   {
     id: "username",
-    label: "Username",
+    label: "Nombre de usuario",
     type: "text",
   },
   {
@@ -441,7 +441,7 @@ const AdminAssistantFields = [
   },
   {
     id: "password",
-    label: "Password",
+    label: "Contraseña",
     type: "text",
   },
   {
