@@ -14,7 +14,8 @@ import {
   userRoutes,
   commentRoutes,
   campusBranchRoutes,
-  teamRoutes
+  teamRoutes,
+  scheduleRoutes
 } from "./routes";
 
 // Express app instance
@@ -44,5 +45,6 @@ app.use("/api", activityRoutes);
 app.use("/api", campusBranchRoutes);
 app.use("/api", commentRoutes);
 app.use("/api", teamRoutes);
+app.use("/api", scheduleRoutes);
 
 export default app;
