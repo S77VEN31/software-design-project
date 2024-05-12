@@ -42,7 +42,7 @@ const Students = () => {
       render: (name) => <strong>{name}</strong>,
     },
     {
-      header: "Careera",
+      header: "Carrera",
       accessor: "career",
       render: (career) => <span>{career[0].name}</span>,
     },

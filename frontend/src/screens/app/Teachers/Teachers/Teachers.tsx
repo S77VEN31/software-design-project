@@ -67,6 +67,13 @@ const Teachers = () => {
         </div>
       ),
     },
+    {
+      header: "Es Coordinator",
+      accessor: "roles",
+      render: (roles) => (
+        <span>{roles.includes("Coordinator") ? "Sí" : "No"}</span>
+      ),
+    },
   ];
 
   const tableLayoutProps = {

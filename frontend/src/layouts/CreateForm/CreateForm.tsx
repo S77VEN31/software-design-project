@@ -89,7 +89,7 @@ const CreateForm = ({
     const selectedBranch = dropdownOptions.campusBranches.find(
       (branch) => branch._id === campusBranchId
     );
-
+    console.log(selectedBranch);
     if (selectedBranch) {
       setDropdownOptions((prevOptions) => ({
         ...prevOptions,
@@ -99,7 +99,7 @@ const CreateForm = ({
     }
     setFormData({
       ...formData,
-      campusBranch: [campusBranchId],
+      campusBranch: selectedBranch ? [selectedBranch._id] : [""],
     });
   };
 
@@ -109,6 +109,7 @@ const CreateForm = ({
       career: [careerId],
     });
   };
+
   const handleAddCoordinatorRole = (state: boolean) => {
     const isCoordinator = formData.roles.includes("Coordinator");
     if (state) {
