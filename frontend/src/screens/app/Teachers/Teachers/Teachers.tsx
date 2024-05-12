@@ -103,7 +103,7 @@ const Teachers = () => {
         variant="contained"
         onClick={() => navigation("/home/teacher/add")}
       >
-        Add Teacher
+        Agregar Profesor
       </Button>
     ),
     children: <DataTable data={teachers} columns={columns} />,
