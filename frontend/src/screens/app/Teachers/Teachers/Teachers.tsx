@@ -33,7 +33,7 @@ const Teachers = () => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
-  // Columns with edit and delete actions
+
   const columns: TableColumn<Teacher, keyof Teacher>[] = [
     {
       accessor: "idNumber",
