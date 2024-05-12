@@ -146,7 +146,7 @@ const Students = () => {
         <div className={styles.modal}>
           <h2
             className={styles.warning}
-          >{`Are you sure you want to delete ${selectedStudent?.name}?`}</h2>
+          >{`Seguro de que quieres eliminar a ${selectedStudent?.name}?`}</h2>
           <hr />
           <div className={styles.rowContainer}>
             <div className={styles.row}>
@@ -158,15 +158,15 @@ const Students = () => {
               <p>{selectedStudent?.carne}</p>
             </div>
           </div>
-          <p className={styles.warning}>This action cannot be undone.</p>
+          <p className={styles.warning}>Esta accion no se puede deshacer.</p>
           <div className={styles.buttons}>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={() => setOpen(false)}>Cancelar</Button>
             <Button
               onClick={() => {
                 deleteStudent(selectedStudent?._id);
               }}
             >
-              Delete
+              Eliminar
             </Button>
           </div>
         </div>

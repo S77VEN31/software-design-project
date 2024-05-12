@@ -150,20 +150,20 @@ const Teachers = () => {
         <div className={styles.modal}>
           <h2
             className={styles.warning}
-          >{`Are you sure you want to delete ${selectedTeacher?.name}?`}</h2>
+          >{`Seguro de que quieres eliminar a ${selectedTeacher?.name}?`}</h2>
           <div className={styles.row}>
-            <h4>Name:</h4>
+            <h4>Nombre:</h4>
             <p>{selectedTeacher?.name}</p>
           </div>
           <div className={styles.row}>
-            <h4>ID Number:</h4>
+            <h4>Cédula:</h4>
             <p>{selectedTeacher?.idNumber}</p>
           </div>
-          <p className={styles.warning}>This action cannot be undone.</p>
+          <p className={styles.warning}>Esta accion no se puede deshacer.</p>
           <div className={styles.buttons}>
-            <Button onClick={() => setOpen(false)}>Cancel</Button>
+            <Button onClick={() => setOpen(false)}>Cancelar</Button>
             <Button onClick={() => deleteTeacher(selectedTeacher?._id)}>
-              Delete
+              Eliminar
             </Button>
           </div>
         </div>
