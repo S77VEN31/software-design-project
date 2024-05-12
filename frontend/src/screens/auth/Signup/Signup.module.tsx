@@ -10,7 +10,6 @@ const styles = {
     backgroundColor: "primary.main",
   },
   form: {
-    mt: 3,
     width: "100%",
   },
   button: {

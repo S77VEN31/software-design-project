@@ -57,12 +57,7 @@ const Signup = () => {
         <Typography component="h1" variant="h5">
           Register
         </Typography>
-        <Box
-          component="form"
-          noValidate
-          onSubmit={handleSubmit}
-          sx={styles.form}
-        >
+        <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
           <Box sx={styles.inputs}>
             <TextField
               autoComplete="given-userName"
@@ -97,6 +92,22 @@ const Signup = () => {
               onChange={handleChange}
               required
               fullWidth
+              error={
+                registerData.email !== "" &&
+                !(
+                  registerData.email.endsWith("@estudiantec.cr") ||
+                  registerData.email.endsWith("@itcr.ac.cr")
+                )
+              }
+              helperText={
+                registerData.email !== "" &&
+                !(
+                  registerData.email.endsWith("@estudiantec.cr") ||
+                  registerData.email.endsWith("@itcr.ac.cr")
+                )
+                  ? "Email must end with @estudiantec.cr or @itcr.ac.cr"
+                  : ""
+              }
               id="email"
               label="Email Address"
               name="email"

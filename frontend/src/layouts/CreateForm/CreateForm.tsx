@@ -166,7 +166,22 @@ const CreateForm = ({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // if any formData field is "N/A" change the value to empty string
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    for (const key in formData) {
+      if (formData[key as keyof FormData] === "N/A") {
+        setFormData({
+          ...formData,
+          [key]: "",
+        });
+      }
+    }
+    console.log(formData);
+  }, [formData]);
 
   useEffect(() => {
     console.log(formData);
@@ -194,7 +209,7 @@ const CreateForm = ({
           }))
         : options || [];
 
-    const recognizedFields = ["campusBranch", "career", "roles"];
+    const recognizedFields = ["campusBranch", "career", "roles", "active"];
     const handleChangeFunctions:
       | HandleChangeCheckboxFunction
       | HandleChangeInputFunction = {
@@ -205,8 +220,15 @@ const CreateForm = ({
         handleCareerChange(event.target.value),
       roles: (event: ChangeEvent<HTMLInputElement>) =>
         handleAddCoordinatorRole(event.target.checked),
+      active: (event: ChangeEvent<HTMLInputElement>) =>
+        handleChange(id, event.target.checked as unknown as string),
       default: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
         handleChange(id, event.target.value),
+    };
+
+    const handleCheckedFunctions = {
+      roles: () => formData.roles.includes("Coordinator"),
+      active: () => (formData.active ? true : false),
     };
 
     switch (type) {
@@ -266,6 +288,8 @@ const CreateForm = ({
                 ? helperText
                 : ""
             }
+            disabled={formData[id as keyof FormData] === "N/A" ? true : false}
+            required={formData[id as keyof FormData] === "" ? true : false}
           />
         );
       case "dropdown":
@@ -323,7 +347,10 @@ const CreateForm = ({
             control={
               <Checkbox
                 {...field}
-                checked={formData.roles.includes("Coordinator")}
+                checked={
+                  // @ts-expect-error - Esto no debería ser necesario
+                  handleCheckedFunctions[id]()
+                }
                 className={styles.formField}
                 value={formData[id as keyof FormData] || ""}
                 onChange={
@@ -333,10 +360,15 @@ const CreateForm = ({
                 }
               />
             }
-            label={label}
+            label={
+              label
+                ? label
+                : formData[id as keyof FormData]
+                ? "Activo"
+                : "Inactivo"
+            }
           />
         );
-
       default:
         return <div>Unsupported field type</div>;
     }
