@@ -60,21 +60,41 @@ const Teachers = () => {
         <span>{roles.includes("Coordinator") ? "Sí" : "No"}</span>
       ),
     },
+  ];
+
+  const actions = [
     {
+      permission: checkPermission(permissions, "TEACHER", "PUT"),
+      component: (id: string) => (
+        <IconButton onClick={() => navigation(`/home/teacher/edit/${id}`)}>
+          <Edit />
+        </IconButton>
+      ),
+    },
+    {
+      permission: checkPermission(permissions, "TEACHER", "DELETE"),
+      component: (id: string) => (
+        <IconButton onClick={() => handleModal(id)}>
+          <Delete />
+        </IconButton>
+      ),
+    },
+  ];
+
+  // Add the actions column if any permissions are granted
+  if (actions.some((action) => action.permission)) {
+    columns.push({
       header: "Actions",
       accessor: "_id",
       render: (id) => (
         <div>
-          <IconButton onClick={() => navigation(`/home/teacher/edit/${id}`)}>
-            <Edit />
-          </IconButton>
-          <IconButton onClick={() => handleModal(id)}>
-            <Delete />
-          </IconButton>
+          {actions.map((action) =>
+            action.permission ? action.component(id) : null
+          )}
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   const tableLayoutProps = {
     title: "TEACHERS",
