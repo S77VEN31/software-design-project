@@ -53,21 +53,40 @@ const Students = () => {
       header: "Correo",
       accessor: "email",
     },
+  ];
+
+  const actions = [
     {
+      permission: checkPermission(permissions, "STUDENT", "PUT"),
+      component: (id: string) => (
+        <IconButton onClick={() => navigation(`/home/teacher/edit/${id}`)}>
+          <Edit />
+        </IconButton>
+      ),
+    },
+    {
+      permission: checkPermission(permissions, "STUDENT", "DELETE"),
+      component: (id: string) => (
+        <IconButton onClick={() => handleModal(id)}>
+          <Delete />
+        </IconButton>
+      ),
+    },
+  ];
+
+  if (actions.some((action) => action.permission)) {
+    columns.push({
       header: "Actions",
       accessor: "_id",
       render: (id) => (
         <div>
-          <IconButton onClick={() => navigation(`/home/student/edit/${id}`)}>
-            <Edit />
-          </IconButton>
-          <IconButton onClick={() => handleModal(id)}>
-            <Delete />
-          </IconButton>
+          {actions.map((action) =>
+            action.permission ? action.component(id) : null
+          )}
         </div>
       ),
-    },
-  ];
+    });
+  }
 
   const tableLayoutProps = {
     title: "STUDENTS",
