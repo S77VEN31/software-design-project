@@ -61,7 +61,7 @@ const Login = () => {
         <Box sx={styles.paper}>
           <Avatar sx={styles.avatar} />
           <Typography component="h1" variant="h5">
-            Sign in
+            Iniciar Sesión
           </Typography>
           <Box component="form" onSubmit={handleSubmit} sx={styles.form}>
             <TextField
@@ -79,7 +79,7 @@ const Login = () => {
               required
               name="password"
               onChange={handleChange}
-              label="Password"
+              label="Contraseña"
               type="password"
               id="password"
               autoComplete="current-password"
@@ -87,19 +87,21 @@ const Login = () => {
             <Box sx={styles.buttons}>
               <FormControlLabel
                 control={<Checkbox value="remember" sx={styles.checkbox} />}
-                label="Remember me"
+                label="Recuerdame"
               />
               <Button
                 type="submit"
                 variant="contained"
                 sx={styles.submitButton}
               >
-                Log In
+                Iniciar Sesión
               </Button>
             </Box>
             <Box sx={styles.buttons}>
-              <Link to="/register">Forgot password?</Link>
-              <Link to="/register">Don't have an account? Sign Up</Link>
+              <Link to="/register">
+                Olvidaste tu contraseña? Recuperala aquí
+              </Link>
+              <Link to="/register">No tienes cuenta? Registrate aquí</Link>
             </Box>
           </Box>
         </Box>
