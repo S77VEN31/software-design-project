@@ -4,6 +4,7 @@ import CampusBranch from "./campusBranch.model";
 import Career from "./career.model";
 import Comment from "./comments.model";
 import Schedule from "./schedule.model";
+import Team from "./team.model";
 import {
   AdminAssistantUser,
   AdminUser,
@@ -22,6 +23,7 @@ export {
   TeacherUser,
   User,
   Comment,
-  Schedule
+  Schedule,
+  Team,
 };
 

@@ -4,3 +4,4 @@ export * from "./career.controller";
 export * from "./user.controllers";
 export * from "./campusBranch.controller";
 export * from "./comment.controller";
+export * from "./team.controller";
