@@ -84,7 +84,7 @@ const Teachers = () => {
   // Add the actions column if any permissions are granted
   if (actions.some((action) => action.permission)) {
     columns.push({
-      header: "Actions",
+      header: "Acciones",
       accessor: "_id",
       render: (id) => (
         <div>
@@ -97,7 +97,7 @@ const Teachers = () => {
   }
 
   const tableLayoutProps = {
-    title: "TEACHERS",
+    title: "Profesores",
     button: checkPermission(permissions, "TEACHER", "POST") && (
       <Button
         variant="contained"

@@ -86,8 +86,8 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Create Student"
-        createButtonText="Add Student"
+        layoutTitle="Crear Estudiante"
+        createButtonText="Agregar Estudiante"
         request={createStudentRequest}
         fields={StudentFields}
         initialData={DefaultStudent}
@@ -100,8 +100,8 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Edit Student"
-        createButtonText="Update Student"
+        layoutTitle="Editar Estudiante"
+        createButtonText="Actualizar Estudiante"
         request={updateStudentRequest}
         fields={StudentUpdateFields}
         initialData={DefaultUpdateStudent}
@@ -128,8 +128,8 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Create Teacher"
-        createButtonText="Add Teacher"
+        layoutTitle="Crear Profesor"
+        createButtonText="Agregar Profesor"
         request={createTeacherRequest}
         fields={TeacherFields}
         initialData={DefaultTeacher}
@@ -142,8 +142,8 @@ const appRoutes = [
     inNav: false,
     element: (
       <CreateFormLayout
-        layoutTitle="Edit Teacher"
-        createButtonText="Update Teacher"
+        layoutTitle="Editar Profesor"
+        createButtonText="Actualizar Profesor"
         request={updateTeacherRequest}
         fields={TeacherUpdateFields}
         initialData={DefaultUpdateTeacher}
@@ -151,7 +151,6 @@ const appRoutes = [
       />
     ),
   },
-
   {
     apiSlug: "/teacher/get",
     path: "/home/teacher/view/:id",

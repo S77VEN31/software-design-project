@@ -25,6 +25,7 @@ const Menu = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  
   return (
     <main className={styles.menu}>
       <SideNavBar />
@@ -34,7 +35,7 @@ const Menu = () => {
             sx={{ bgcolor: "primary.main", cursor: "pointer" }}
             onClick={handleClick}
           >
-            A
+            U
           </Avatar>
           <SelectableMenu anchorEl={anchorEl} open={open} onClose={handleClose}>
             <MenuItem

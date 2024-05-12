@@ -59,7 +59,7 @@ const Students = () => {
     {
       permission: checkPermission(permissions, "STUDENT", "PUT"),
       component: (id: string) => (
-        <IconButton onClick={() => navigation(`/home/teacher/edit/${id}`)}>
+        <IconButton onClick={() => navigation(`/home/student/edit/${id}`)}>
           <Edit />
         </IconButton>
       ),
@@ -76,7 +76,7 @@ const Students = () => {
 
   if (actions.some((action) => action.permission)) {
     columns.push({
-      header: "Actions",
+      header: "Acciones",
       accessor: "_id",
       render: (id) => (
         <div>
@@ -89,7 +89,7 @@ const Students = () => {
   }
 
   const tableLayoutProps = {
-    title: "STUDENTS",
+    title: "Estudiantes",
     button: checkPermission(permissions, "STUDENT", "POST") && (
       <Button
         variant="contained"
