@@ -55,7 +55,7 @@ const TeacherFields = [
 
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
     section: "Información del Profesor",
     fullWidth: true,
@@ -150,7 +150,7 @@ const TeacherUpdateFields = [
   },
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
     section: "Información del Profesor",
     fullWidth: true,
@@ -269,7 +269,7 @@ const StudentFields = [
   },
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
     section: "Información del Estudiante",
     fullWidth: true,
@@ -342,7 +342,7 @@ const StudentUpdateFields = [
 
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
     section: "Información del Estudiante",
     fullWidth: true,
@@ -409,7 +409,7 @@ const AdminFields = [
   },
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
   },
 ];
@@ -446,7 +446,7 @@ const AdminAssistantFields = [
   },
   {
     id: "name",
-    label: "Name",
+    label: "Nombre",
     type: "text",
   },
 ];
