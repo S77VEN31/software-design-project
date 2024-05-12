@@ -79,7 +79,7 @@ export type FormData = Student | Teacher;
 
 export type Field = {
   id: string;
-  label: string;
+  label?: string;
   options?: { value: string; label: string }[];
   type: string;
   section: string;

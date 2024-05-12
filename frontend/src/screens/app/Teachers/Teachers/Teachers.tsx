@@ -13,6 +13,8 @@ import { TableLayout } from "@layouts";
 import { deleteTeacherRequest, getTeacherRequest } from "@api";
 // Utils
 import { checkPermission } from "@utils";
+// Hooks
+import { useResponseToast } from "@hooks";
 // Interfaces
 interface Career {
   _id: string;
@@ -33,6 +35,8 @@ const Teachers = () => {
   const [teachers, setTeachers] = useState<Teacher[]>([]);
   const [selectedTeacher, setSelectedTeacher] = useState<Teacher | null>(null);
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  // Hooks
+  const toast = useResponseToast();
 
   const columns: TableColumn<Teacher, keyof Teacher>[] = [
     {
@@ -131,12 +135,14 @@ const Teachers = () => {
 
   const deleteTeacher = async (id: string) => {
     deleteTeacherRequest(id)
-      .then(() => {
+      .then((response) => {
         getTeachers(); // Refresh the list after deletion
         setOpen(false);
+        toast(200, response.message);
       })
       .catch((error) => {
         console.log(error);
+        toast(500, ["Error al eliminar el profesor"]);
       });
   };
 

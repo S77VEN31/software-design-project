@@ -13,6 +13,8 @@ import { TableLayout } from "@layouts";
 import { deleteStudentRequest, getStudentRequest } from "@api";
 // Utils
 import { checkPermission } from "@utils";
+// Hooks
+import { useResponseToast } from "@hooks";
 // Interfaces
 interface Career {
   _id: string;
@@ -33,6 +35,8 @@ const Students = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  // Hooks
+  const toast = useResponseToast();
 
   const columns: TableColumn<Student, keyof Student>[] = [
     {
@@ -113,11 +117,10 @@ const Students = () => {
     getStudentRequest()
       .then((response) => {
         setStudents(response);
-        console.log(response);
       })
       .catch((error) => {
-        // TODO: Handle error
         console.log(error);
+        toast(500 , ["Error al obtener los estudiantes"]);
       });
   };
 
@@ -127,9 +130,11 @@ const Students = () => {
         console.log(response);
         getStudents();
         setOpen(false);
+        toast(200, response.message);
       })
       .catch((error) => {
         console.log(error);
+        toast(500, ["Error al eliminar el estudiante"]);
       });
   };
 
@@ -140,9 +145,8 @@ const Students = () => {
 
   useEffect(() => {
     getStudents();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {}, [open]);
 
   return (
     <div className={styles.students}>

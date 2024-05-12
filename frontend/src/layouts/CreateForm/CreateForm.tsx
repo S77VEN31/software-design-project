@@ -1,6 +1,6 @@
 // React
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 // Styles
 import styles from "./CreateForm.module.css";
 // Components
@@ -17,6 +17,8 @@ import {
 import { getCampusBranchRequest } from "@api";
 // Types
 import { CampusBranch, Career, Field, FormData } from "@enumerables";
+// Hooks
+import { useResponseToast } from "@hooks";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Request = (...args: any[]) => Promise<any>;
@@ -28,6 +30,7 @@ interface CreateFormProps {
   request: Request;
   layoutTitle: string;
   getRequest?: Request;
+  routeToGo?: string;
 }
 
 interface DropdownOptions {
@@ -52,6 +55,7 @@ const CreateForm = ({
   createButtonText,
   layoutTitle,
   getRequest,
+  routeToGo,
 }: CreateFormProps) => {
   const [formData, setFormData] = useState<FormData>(initialData);
   const [showPassword, setShowPassword] = useState(false);
@@ -60,7 +64,9 @@ const CreateForm = ({
     campusBranches: [],
     careers: [],
   });
-
+  // Hooks
+  const toast = useResponseToast();
+  const navigation = useNavigate();
   const { id } = useParams();
 
   const getCampusBranches = async () => {
@@ -141,15 +147,19 @@ const CreateForm = ({
               setFormData(response);
             })
             .catch((error) => {
-              console.error(error);
+              console.log(error);
+              toast(500, ["Error al obtener los datos del usuario"]);
             });
         } else {
           setFormData(initialData);
         }
+        toast(200, response.message);
+        routeToGo && navigation(routeToGo);
         console.log(response);
       })
       .catch((error) => {
         console.log(error);
+        toast(500, ["Error al guardar los datos"]);
       });
   };
 
@@ -162,7 +172,7 @@ const CreateForm = ({
           setFormData(response);
         })
         .catch((error) => {
-          console.error(error);
+          toast(error.status, error.message);
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
