@@ -70,6 +70,9 @@ const TeacherUser = User.discriminator(
     ],
     career: [{ type: Schema.Types.ObjectId, ref: "Career", required: true }],
     idNumber: { type: String, required: true, unique: true },
+    coordinatorId: {
+      type: String,
+    },
   })
 );
 
@@ -101,3 +104,4 @@ const AdminAssistantUser = User.discriminator(
 
 // Exportación de modelos
 export { AdminAssistantUser, AdminUser, StudentUser, TeacherUser, User };
+
