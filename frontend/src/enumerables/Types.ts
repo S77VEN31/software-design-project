@@ -79,6 +79,7 @@ export type FormData = Student | Teacher;
 
 export type Field = {
   id: string;
+  disabled?: boolean;
   label?: string;
   options?: { value: string; label: string }[];
   type: string;

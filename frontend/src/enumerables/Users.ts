@@ -33,7 +33,6 @@ const TeacherFields = [
       maxLength: 9,
       minLength: 9,
     },
-    // valitation must be 9 digits numeric strictly
     validation: (value: string) => value === "" || /^\d{9}$/.test(value),
     helperText: "ID Number must have 9 digits",
     required: true,
@@ -52,7 +51,6 @@ const TeacherFields = [
     helperText: "Username must have at least 4 characters",
     required: true,
   },
-
   {
     id: "name",
     label: "Nombre",
@@ -79,7 +77,6 @@ const TeacherFields = [
       "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character",
     required: true,
   },
-
   {
     id: "campusBranch",
     label: "Sede",
@@ -335,7 +332,6 @@ const StudentUpdateFields = [
     section: "Información del Estudiante",
     fullWidth: true,
     disabled: true,
-    validation: (value: string) => value === "" || /^\d{10}$/.test(value),
     inputProps: {
       maxLength: 10,
       minLength: 10,

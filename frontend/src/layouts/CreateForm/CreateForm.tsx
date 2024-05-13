@@ -182,18 +182,6 @@ const CreateForm = ({
   }, []);
 
   useEffect(() => {
-    for (const key in formData) {
-      if (formData[key as keyof FormData] === "N/A") {
-        setFormData({
-          ...formData,
-          [key]: "",
-        });
-      }
-    }
-    console.log(formData);
-  }, [formData]);
-
-  useEffect(() => {
     console.log(formData);
     if (formData.career.length === 0) {
       setIsCareerDisabled(true);
@@ -298,7 +286,6 @@ const CreateForm = ({
                 ? helperText
                 : ""
             }
-            disabled={formData[id as keyof FormData] === "N/A" ? true : false}
             required={formData[id as keyof FormData] === "" ? true : false}
           />
         );
