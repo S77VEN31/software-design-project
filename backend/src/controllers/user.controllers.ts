@@ -172,15 +172,44 @@ class Teacher extends BaseUser {
 
   async update(id: string, updateData: any, role: string) {
     try {
-      const { roles } = updateData;
+      const { roles, campusBranch } = updateData;
       if (!roles.includes("Coordinator")) {
         updateData.coordinatorId = null;
+      }
+
+      const campusBranchObject = await CampusBranch.findOne({
+        _id: campusBranch,
+      });
+
+      if (!campusBranchObject) {
+        throw new Error(`Campus branch not found`);
+      }
+
+      const coordinators = await TeacherUser.find({
+        campusBranch: campusBranch,
+        roles: { $in: ["Coordinator"] },
+      });
+
+      let newCoordinatorId = "";
+      if (coordinators && coordinators.length > 0) {
+        const lastCoordinator = coordinators[coordinators.length - 1];
+        const lastCoordinatorNumber = parseInt(
+          // @ts-expect-error Property 'coordinatorId' does not exist on type 'Document'
+          lastCoordinator.coordinatorId.match(/\d+$/)[0]
+        );
+        const newCoordinatorNumber = lastCoordinatorNumber + 1;
+        newCoordinatorId = `${campusBranchObject.initials}${newCoordinatorNumber}`;
+      } else {
+        newCoordinatorId = `${campusBranchObject.initials}1`;
+      }
+
+      if (roles.includes("Coordinator")) {
+        updateData.coordinatorId = newCoordinatorId;
       }
 
       const user = await TeacherUser.findOneAndUpdate(
         { _id: id, roles: { $in: [role] } },
         updateData,
-
         { new: true, runValidators: true }
       ).populate("campusBranch", "career");
 
