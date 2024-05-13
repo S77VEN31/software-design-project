@@ -55,27 +55,43 @@ const AdminUser = User.discriminator('AdminUser', new Schema({
   },
 }));
 
-const TeacherUser = User.discriminator('TeacherUser', new Schema({
-  description: { type: String },
-  campusBranch: [{ type: Schema.Types.ObjectId, ref: "CampusBranch", required: true }],
-  career: [{ type: Schema.Types.ObjectId, ref: "Career", required: true }],
-  idNumber: { type: String, required: true },
-}));
+const TeacherUser = User.discriminator(
+  "TeacherUser",
+  new Schema({
+    description: { type: String },
+    campusBranch: [
+      { type: Schema.Types.ObjectId, ref: "CampusBranch", required: true },
+    ],
+    career: [{ type: Schema.Types.ObjectId, ref: "Career", required: true }],
+    idNumber: { type: String, required: true, unique: true },
+  })
+);
 
-const StudentUser = User.discriminator('StudentUser', new Schema({
-  description: { type: String },
-  campusBranch: [{ type: Schema.Types.ObjectId, ref: "CampusBranch", required: true }],
-  career: [{ type: Schema.Types.ObjectId, ref: "Career", required: true }],
-  carne: { type: String, required: true },
-}));
+const StudentUser = User.discriminator(
+  "StudentUser",
+  new Schema({
+    description: { type: String },
+    campusBranch: [
+      { type: Schema.Types.ObjectId, ref: "CampusBranch", required: true },
+    ],
+    career: [{ type: Schema.Types.ObjectId, ref: "Career", required: true }],
+    carne: { type: String, required: true, unique: true },
+  })
+);
 
-const AdminAssistantUser = User.discriminator('AdminAssistantUser', new Schema({
-  campusBranch: [{
-    type: Schema.Types.ObjectId,
-    ref: "CampusBranch",
-    required: true
-  }]
-}));
+const AdminAssistantUser = User.discriminator(
+  "AdminAssistantUser",
+  new Schema({
+    campusBranch: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "CampusBranch",
+        required: true,
+      },
+    ],
+    idNumber: { type: String, required: true, unique: true },
+  })
+);
 
 // Exportación de modelos
 export { AdminAssistantUser, AdminUser, StudentUser, TeacherUser, User };
