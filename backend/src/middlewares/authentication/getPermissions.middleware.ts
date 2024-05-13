@@ -30,7 +30,7 @@ class StudentStrategy implements PermissionStrategy {
   }
 }
 
-class AdministrativeAssistantStrategy implements PermissionStrategy {
+class AdminAssistantStrategy implements PermissionStrategy {
   getPermissions(): Permission[] {
     return AdministrativeAssistantPermissions;
   }
@@ -46,7 +46,7 @@ class PermissionManager {
   private static roleStrategyMap: { [role: string]: PermissionStrategy } = {
     Teacher: new TeacherStrategy(),
     Student: new StudentStrategy(),
-    AdministrativeAssistant: new AdministrativeAssistantStrategy(),
+    AdminAssistant: new AdminAssistantStrategy(),
     Admin: new AdminStrategy(),
     Coordinator: new CoordinatorStrategy(),
   };
