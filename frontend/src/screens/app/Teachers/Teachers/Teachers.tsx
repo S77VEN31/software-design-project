@@ -68,6 +68,12 @@ const Teachers = () => {
       objectAccessor: (roles) => (roles.includes("Coordinator") ? "Sí" : "No"),
     },
     {
+      accessor: "coordinatorId",
+      header: "ID del Coordinador",
+      render: (coordinatorId) => coordinatorId || "N/A",
+      objectAccessor: (coordinatorId) => coordinatorId || "N/A",
+    },
+    {
       header: "Estado",
       accessor: "active",
       render: (active) => (active ? "Activo" : "Inactivo"),

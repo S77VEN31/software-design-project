@@ -13,6 +13,7 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
+import { MuiTelInput } from "mui-tel-input";
 // Api
 import { getCampusBranchRequest } from "@api";
 // Types
@@ -64,6 +65,7 @@ const CreateForm = ({
     campusBranches: [],
     careers: [],
   });
+  const [phones, setPhones] = useState<{ [key: string]: string }>({});
   // Hooks
   const toast = useResponseToast();
   const navigation = useNavigate();
@@ -82,6 +84,13 @@ const CreateForm = ({
         careers: campusBranches[0].careers,
       }));
     }
+  };
+
+  const handlePhoneChange = (id: string, value: string) => {
+    setPhones((prevPhones) => ({
+      ...prevPhones,
+      [id]: value,
+    }));
   };
 
   const handleChange = (id: string, value: string) => {
@@ -139,6 +148,7 @@ const CreateForm = ({
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
+
     request(formData, id ? id : null)
       .then((response) => {
         if (getRequest) {
@@ -176,10 +186,35 @@ const CreateForm = ({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // if any formData field is "N/A" change the value to empty string
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    const newPhones: { [key: string]: string } = {};
+    fields.forEach((field) => {
+      if (field.type === "tel") {
+        // @ts-expect-error - Esto no debería ser necesario
+        newPhones[field.id] = formData[field.id as keyof FormData] || "";
+      }
+    });
+    setPhones(newPhones);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(
+    () => {
+      // crea un array de strings con los teléfonos
+      const phonesArray = Object.values(phones);
+      setFormData({
+        ...formData,
+        phones: phonesArray,
+      });
+    },
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [phones]
+  );
 
   useEffect(() => {
     console.log(formData);
@@ -364,6 +399,14 @@ const CreateForm = ({
                 ? "Activo"
                 : "Inactivo"
             }
+          />
+        );
+      case "tel":
+        return (
+          <MuiTelInput
+            {...field}
+            value={phones[field.id] || ""}
+            onChange={(value) => handlePhoneChange(field.id, value)}
           />
         );
       default:

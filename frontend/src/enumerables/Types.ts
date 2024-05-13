@@ -22,6 +22,7 @@ export type Teacher = {
   name: string;
   campusBranch: string[];
   career: string[];
+  phones: string[];
 };
 
 export type Student = {
