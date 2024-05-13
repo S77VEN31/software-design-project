@@ -10,6 +10,7 @@ const DefaultTeacher: Teacher = {
   name: "",
   campusBranch: [],
   career: [],
+  phones: [],
 };
 
 const DefaultUpdateTeacher: Teacher = {
@@ -17,6 +18,7 @@ const DefaultUpdateTeacher: Teacher = {
   campusBranch: [],
   career: [],
   roles: ["Teacher"],
+  phones: [],
 };
 
 const passwordRegex =
@@ -90,6 +92,22 @@ const TeacherFields = [
     label: "Carrera",
     type: "dropdown",
     section: "Información del Campus",
+    fullWidth: true,
+    required: true,
+  },
+  {
+    id: "personal",
+    label: "Personal",
+    type: "tel",
+    section: "Contacto",
+    fullWidth: true,
+    required: true,
+  },
+  {
+    id: "office",
+    label: "Oficina",
+    type: "tel",
+    section: "Contacto",
     fullWidth: true,
     required: true,
   },
