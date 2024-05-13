@@ -40,7 +40,9 @@ export const getTeam = async (req: Request, res: Response) => {
 
 export const getTeams = async (req: Request, res: Response) => {
     try {
-        const teams = await Team.find({});
+        const teams = await Team
+            .find({})
+            .populate({ path: "coordinator", select: ["name"]});
 
         return res.status(200).json(teams)
     } catch (error) {

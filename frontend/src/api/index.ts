@@ -15,6 +15,8 @@ import {
 } from "./user.services";
 // Enumerable services
 import { getCampusBranchRequest } from "./enumerable.services";
+// Teams services
+import { getTeamRequest, createTeamRequest, updateTeamRequest, deleteTeamRequest } from "./team.services";
 
 export {
   api,
@@ -30,5 +32,9 @@ export {
   setAuthHeaders,
   updateStudentRequest,
   updateTeacherRequest,
+  getTeamRequest,
+  createTeamRequest,
+  updateTeamRequest,
+  deleteTeamRequest,
 };
 

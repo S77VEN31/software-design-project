@@ -5,6 +5,7 @@ import {
   SignupScreen,
   StudentsScreen,
   TeachersScreen,
+  TeamsScreen,
 } from "@screens";
 // Layouts
 import { CreateFormLayout } from "@layouts";
@@ -43,11 +44,11 @@ const errorRoutes = [
 
 const appRoutes = [
   {
-    apiSlug: "/teams/get",
+    apiSlug: "/team/get",
     path: "/home/teams",
     label: "EQUIPOS",
     inNav: true,
-    element: <div>Teams</div>,
+    element: <TeamsScreen />,
   },
   {
     apiSlug: "/team/post",
@@ -57,13 +58,13 @@ const appRoutes = [
   },
   {
     apiSlug: "/team/put",
-    path: "/home/team/edit",
+    path: "/home/team/edit/:id",
     inNav: false,
     element: <div>Edit Team</div>,
   },
   {
     apiSlug: "/team/delete",
-    path: "/home/team/delete",
+    path: "/home/team/delete/:id",
     inNav: false,
     element: <div>Delete Team</div>,
   },
