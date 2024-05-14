@@ -13,6 +13,7 @@ export type Role =
   | "Coordinator";
 
 export type Teacher = {
+  _id?: string;
   active?: boolean;
   idNumber?: string;
   userName?: string;
@@ -26,6 +27,7 @@ export type Teacher = {
 };
 
 export type Student = {
+  _id?: string;
   active?: boolean;
   carne?: string;
   userName?: string;
@@ -90,15 +92,6 @@ export type CampusBranch = {
   careers: Career[];
 };
 
-export type Team = {
-  code?: string,
-  name: string,
-  description: string,
-  students: string[],
-  teachers: string[],
-  coordinator: string
-}
-
 export type Option = {
   label: string;
   value: string;
@@ -113,7 +106,17 @@ export type Schedule = {
   activities: string[];
 };
 
-export type FormData = Student | Teacher | Schedule;
+export type Team = {
+  name: string;
+  code: string;
+  year: string;
+  description: string;
+  students: string[];
+  teachers: string[];
+  coordinator: string[];
+};
+
+export type FormData = Student | Teacher | Schedule | Team;  
 
 export type Field = {
   id: string;

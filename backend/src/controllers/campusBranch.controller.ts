@@ -1,47 +1,57 @@
 // Express
 import { Request, Response } from "express";
 // Models
-import { CampusBranch } from "../models";
+import { CampusBranch, TeacherUser } from "../models";
 
 export const addCampusBranch = async (req: Request, res: Response) => {
-    try {
-        const { 
-            name,
-            initials,
-            code,
-            location,
-            carrers
-        } = req.body;
+  try {
+    const { name, initials, code, location, carrers } = req.body;
 
-        const newCampusBranch = new CampusBranch({
-            name,
-            initials,
-            code,
-            location,
-            carrers
-        });
-        await newCampusBranch.save();
-        return res.status(200).json(newCampusBranch)
-    } catch (error: any) {
-        if (error.code === 11000) {
-            return res.status(400).json({ message: ["Campus branch code already in use"] })
-        }
-        return res.status(500).json({ message: [error] });
+    const newCampusBranch = new CampusBranch({
+      name,
+      initials,
+      code,
+      location,
+      carrers,
+    });
+    await newCampusBranch.save();
+    return res.status(200).json(newCampusBranch);
+  } catch (error: any) {
+    if (error.code === 11000) {
+      return res
+        .status(400)
+        .json({ message: ["Campus branch code already in use"] });
     }
+    return res.status(500).json({ message: [error] });
+  }
 };
 
 export const getCampusBranch = async (req: Request, res: Response) => {
-    try {
-        const { code } = req.params;
-        
-        const campusBranch = await CampusBranch
-            .findOne({ code })
-            .populate("careers");
+  try {
+    const { code } = req.params;
 
-        return res.status(200).json(campusBranch);
-    } catch (error: any) {
-        return res.status(500).json({ message: [error] });
-    }
+    const campusBranch = await CampusBranch.findOne({ code }).populate(
+      "careers"
+    );
+
+    return res.status(200).json(campusBranch);
+  } catch (error: any) {
+    return res.status(500).json({ message: [error] });
+  }
+};
+
+export const getCampusBranchTeachers = async (req: Request, res: Response) => {
+  try {
+    const { campusBranchId } = req.query;
+    // Get teachers from a campus branch campus branches are in campusBranch array
+    const teachers = await TeacherUser.find(
+      // in campusBranch array
+      { campusBranch: { $in: [campusBranchId] } }
+    );
+    return res.status(200).json(teachers);
+  } catch (error: any) {
+    return res.status(500).json({ message: [error] });
+  }
 };
 
 export const getCampusBranches = async (req: Request, res: Response) => {

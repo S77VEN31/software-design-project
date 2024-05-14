@@ -18,7 +18,12 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MuiTelInput } from "mui-tel-input";
 // Api
-import { getCampusBranchRequest, getTeamRequest } from "@api";
+import {
+  getCampusBranchRequest,
+  getCampusBranchTeachersRequest,
+  getStudentRequest,
+  getTeamRequest,
+} from "@api";
 // Types
 import {
   Activity,
@@ -26,12 +31,15 @@ import {
   Career,
   Field,
   FormData,
+  Student,
+  Teacher,
   TeamOverview,
 } from "@enumerables";
 // Hooks
 import { DropdownList } from "@components";
 import { useResponseToast } from "@hooks";
 import { formatDate } from "@utils";
+import dayjs from "dayjs";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Request = (...args: any[]) => Promise<any>;
@@ -51,6 +59,9 @@ interface DropdownOptions {
   careers: Career[];
   teams: TeamOverview[];
   activities: Activity[];
+  teachers: Teacher[];
+  coordinators: Teacher[];
+  students: Student[];
 }
 
 const CreateForm = ({
@@ -64,12 +75,31 @@ const CreateForm = ({
 }: CreateFormProps) => {
   const [formData, setFormData] = useState<FormData>(initialData);
   const [showPassword, setShowPassword] = useState(false);
-  const [isCareerDisabled, setIsCareerDisabled] = useState(true);
+
+  const [disabledOptions, setDisabledOptions] = useState({
+    teachers: true,
+    career: true,
+    coordinator: true,
+  });
+  const isInDisabledOptions = (id: string) => {
+    return Object.prototype.hasOwnProperty.call(disabledOptions, id)
+      ? disabledOptions[id as keyof typeof disabledOptions]
+      : false;
+  };
+  const toggleDisabledOptions = (id: string) => {
+    setDisabledOptions((prevOptions) => ({
+      ...prevOptions,
+      [id]: !prevOptions[id as keyof typeof disabledOptions],
+    }));
+  };
   const [dropdownOptions, setDropdownOptions] = useState<DropdownOptions>({
     campusBranches: [],
     careers: [],
     teams: [],
     activities: [],
+    teachers: [],
+    coordinators: [],
+    students: [],
   });
   const [phones, setPhones] = useState<{ [key: string]: string }>({});
   // Hooks
@@ -103,6 +133,29 @@ const CreateForm = ({
     }));
   };
 
+  const getTeachersAndCoordinators = async (campusBranchId: string) => {
+    const teachers = await getCampusBranchTeachersRequest(campusBranchId);
+    const coordinators = teachers.filter((teacher: Teacher) =>
+      teacher.roles.includes("Coordinator")
+    );
+    const filteredTeachers = teachers.filter(
+      (teacher: Teacher) => !teacher.roles.includes("Coordinator")
+    );
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      teachers: filteredTeachers,
+      coordinators,
+    }));
+  };
+
+  const getStudents = async () => {
+    const students = await getStudentRequest();
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      students,
+    }));
+  };
+
   /**
    * This set of functions is used to handle the changes in the form fields
    */
@@ -117,13 +170,15 @@ const CreateForm = ({
     const selectedBranch = dropdownOptions.campusBranches.find(
       (branch) => branch._id === campusBranchId
     );
-    console.log(selectedBranch);
     if (selectedBranch) {
       setDropdownOptions((prevOptions) => ({
         ...prevOptions,
         careers: selectedBranch.careers,
       }));
-      setIsCareerDisabled(false);
+      getTeachersAndCoordinators(selectedBranch._id);
+      toggleDisabledOptions("teachers");
+      toggleDisabledOptions("career");
+      toggleDisabledOptions("coordinator");
     }
     setFormData({
       ...formData,
@@ -137,19 +192,6 @@ const CreateForm = ({
       career: [careerId],
     });
   };
-
-  useEffect(
-    () => {
-      // @ts-expect-error - Esto no debería ser necesario
-      if (formData.career && formData.career.length === 0) {
-        setIsCareerDisabled(true);
-      } else {
-        setIsCareerDisabled(false);
-      }
-    },
-    // @ts-expect-error - Esto no debería ser necesario
-    [formData.career]
-  );
 
   const handleAddCoordinatorRole = (state: boolean) => {
     // @ts-expect-error - Esto no debería ser necesario
@@ -181,6 +223,8 @@ const CreateForm = ({
       [id]: value,
     }));
   };
+
+  useEffect(() => {}, [disabledOptions]);
 
   useEffect(() => {
     const newPhones: { [key: string]: string } = {};
@@ -235,6 +279,7 @@ const CreateForm = ({
   useEffect(() => {
     getCampusBranches();
     getTeams();
+    getStudents();
     if (getRequest) {
       getRequest(id)
         .then((response) => {
@@ -286,6 +331,21 @@ const CreateForm = ({
           value: activity._id,
           label: activity.name,
         }))
+      : id === "teachers"
+      ? dropdownOptions.teachers.map((teacher) => ({
+          value: teacher._id,
+          label: teacher.name,
+        }))
+      : id === "coordinator"
+      ? dropdownOptions.coordinators.map((coordinator) => ({
+          value: coordinator._id,
+          label: coordinator.name,
+        }))
+      : id === "students"
+      ? dropdownOptions.students.map((student) => ({
+          value: student._id,
+          label: student.name,
+        }))
       : [];
 
     const recognizedFields = [
@@ -299,7 +359,12 @@ const CreateForm = ({
       "endDate",
       "personal",
       "office",
+      "year",
+      "teachers",
+      "coordinator",
+      "students",
     ];
+
     const handleChangeFunctions = {
       campusBranch: (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -313,12 +378,23 @@ const CreateForm = ({
       teams: (event: ChangeEvent<HTMLInputElement>) =>
         handleChange(id, [event.target.value]),
       activities: (list: string[]) => handleChange(id, list),
+      teachers: (list: string[]) => handleChange(id, list),
+      students: (list: string[]) => handleChange(id, list),
+      coordinator: (event: ChangeEvent<HTMLInputElement>) =>
+        handleChange(id, [event.target.value]),
       personal: (value: string) => handlePhoneChange(id, value),
       office: (value: string) => handlePhoneChange(id, value),
       startDate: (date: Date | null) =>
         handleChange(id, date?.toISOString() || ""),
       endDate: (date: Date | null) =>
         handleChange(id, date?.toISOString() || ""),
+      year: (date: Date | null) =>
+        handleChange(
+          id,
+          dayjs(date as Date)
+            .year()
+            .toString() || ""
+        ),
       default: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
         handleChange(id, event.target.value),
     };
@@ -402,7 +478,7 @@ const CreateForm = ({
           <TextField
             {...field}
             select
-            disabled={id === "career" && isCareerDisabled}
+            disabled={isInDisabledOptions(id)}
             className={styles.formField}
             onChange={changeFunctionSelector(id)}
             value={formData[id as keyof FormData]}
@@ -487,17 +563,40 @@ const CreateForm = ({
                   required,
                 },
               }}
+              minDate={dayjs()}
             />
           </LocalizationProvider>
         );
       case "dropdown-list":
         return (
           <DropdownList
+            {...field}
+            disabled={isInDisabledOptions(id)}
+            // @ts-expect-error - is a { value: string; label: string }[]
             options={optionsArray}
             // @ts-expect-error - is an string[]
             selectedOptions={formData[id]}
             setSelectedOptions={changeFunctionSelector(id)}
           />
+        );
+      case "year":
+        return (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              minDate={dayjs().year(1971)}
+              maxDate={dayjs().year(new Date().getFullYear() + 1)}
+              views={["year"]}
+              openTo="year"
+              sx={fullWidth ? { width: "100%" } : {}}
+              label={formData[id as keyof FormData] || label}
+              onChange={changeFunctionSelector(id)}
+              slotProps={{
+                textField: {
+                  required,
+                },
+              }}
+            />
+          </LocalizationProvider>
         );
       default:
         return <div>Unsupported field type</div>;

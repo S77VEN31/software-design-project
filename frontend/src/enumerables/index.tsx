@@ -38,12 +38,7 @@ export {
   TeacherUpdateFields,
 } from "./Users";
 // Teams
-export {
-  CreateTeamFields,
-  DefaultTeam,
-  UpdateTeamFields,
-  DefaultUpdateTeam
-} from "./Teams";
+export { DefaultTeam, TeamFields, UpdateTeamFields } from "./Teams";
 // Routes
 export { Routes } from "./Routes";
 

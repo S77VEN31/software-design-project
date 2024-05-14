@@ -24,22 +24,20 @@ import {
   updateTeacherRequest,
   updateTeamRequest,
 } from "@api";
-import { TeamForm } from "@components";
 import {
-  CreateTeamFields,
   DefaultSchedule,
   DefaultStudent,
   DefaultTeacher,
   DefaultTeam,
   DefaultUpdateStudent,
   DefaultUpdateTeacher,
-  DefaultUpdateTeam,
   ScheduleFields,
   ScheduleUpdateFields,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,
   TeacherUpdateFields,
+  TeamFields,
   UpdateTeamFields,
 } from "@enumerables";
 
@@ -69,11 +67,11 @@ const appRoutes = [
     path: "/home/team/add",
     inNav: false,
     element: (
-      <TeamForm 
+      <CreateFormLayout
         layoutTitle="Crear equipo"
         createButtonText="Agregar equipo"
         request={createTeamRequest}
-        fields={CreateTeamFields}
+        fields={TeamFields}
         initialData={DefaultTeam}
         routeToGo="/home/teams"
       />
@@ -83,21 +81,17 @@ const appRoutes = [
     apiSlug: "/team/put",
     path: "/home/team/edit/:code",
     inNav: false,
-    element: <TeamForm 
-    layoutTitle="Editar equipo"
-    createButtonText="Editar equipo"
-    request={updateTeamRequest}
-    fields={UpdateTeamFields}
-    initialData={DefaultUpdateTeam}
-    getRequest={getTeamRequest}
-    routeToGo="/home/teams"
-  />,
-  },
-  {
-    apiSlug: "/team/delete",
-    path: "/home/team/delete/:id",
-    inNav: false,
-    element: <div>Delete Team</div>,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Editar equipo"
+        createButtonText="Editar equipo"
+        request={updateTeamRequest}
+        fields={UpdateTeamFields}
+        initialData={DefaultTeam}
+        getRequest={getTeamRequest}
+        routeToGo="/home/teams"
+      />
+    ),
   },
   {
     apiSlug: "/team/get",
@@ -230,12 +224,6 @@ const appRoutes = [
         routeToGo="/home/schedules"
       />
     ),
-  },
-  {
-    apiSlug: "/schedule/delete",
-    path: "/home/schedule/delete",
-    inNav: false,
-    element: <div>Delete Schedule</div>,
   },
   {
     apiSlug: "/schedule/get",
