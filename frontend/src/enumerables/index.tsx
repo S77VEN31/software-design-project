@@ -15,6 +15,7 @@ export type {
   Student,
   Teacher,
   Team,
+  TeamOverview,
 } from "./Types";
 // Enums
 export {
@@ -36,6 +37,13 @@ export {
   TeacherFields,
   TeacherUpdateFields,
 } from "./Users";
+// Teams
+export {
+  CreateTeamFields,
+  DefaultTeam,
+  UpdateTeamFields,
+  DefaultUpdateTeam
+} from "./Teams";
 // Routes
 export { Routes } from "./Routes";
 

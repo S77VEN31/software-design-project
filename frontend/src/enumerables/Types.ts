@@ -67,7 +67,7 @@ export type Career = {
   __v: number;
 };
 
-export type Team = {
+export type TeamOverview = {
   _id: string;
   name: string;
   code: string;
@@ -89,6 +89,15 @@ export type CampusBranch = {
   code: string;
   careers: Career[];
 };
+
+export type Team = {
+  code?: string,
+  name: string,
+  description: string,
+  students: string[],
+  teachers: string[],
+  coordinator: string
+}
 
 export type Option = {
   label: string;
