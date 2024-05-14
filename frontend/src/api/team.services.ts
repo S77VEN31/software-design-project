@@ -22,7 +22,7 @@ export const updateTeamRequest = async (team: FormData, code: string) => {
     return response.data;
 }
 
-export const deleteTeamRequest = async (code: string) => {
-    const response = await api.delete(`${VITE_API_TEAMS}/${code}`);
-    return response.data;
+export const deleteTeamRequest = async (id: string) => {
+  const response = await api.delete(`${VITE_API_TEAMS}?id=${id}`);
+  return response.data;
 };

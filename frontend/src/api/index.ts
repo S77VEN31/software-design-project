@@ -16,23 +16,40 @@ import {
 // Schedule services
 import { createScheduleRequest, deleteScheduleRequest, getScheduleRequest, updateScheduleRequest } from "./schedule.services";
 // Enumerable services
-import { getCampusBranchRequest } from "./enumerable.services";
+import {
+  getCampusBranchRequest,
+  getCampusBranchTeachersRequest,
+} from "./enumerable.services";
 // Teams services
-import { getTeamRequest, createTeamRequest, updateTeamRequest, deleteTeamRequest } from "./team.services";
+import {
+  createTeamRequest,
+  deleteTeamRequest,
+  getTeamRequest,
+  updateTeamRequest,
+} from "./team.services";
 
 export {
-  api, createScheduleRequest, createStudentRequest, createTeacherRequest, deleteScheduleRequest, deleteStudentRequest,
+  api,
+  createScheduleRequest,
+  createStudentRequest,
+  createTeacherRequest,
+  createTeamRequest,
+  deleteScheduleRequest,
+  deleteStudentRequest,
   deleteTeacherRequest,
-  getCampusBranchRequest, getScheduleRequest, getStudentRequest,
-  getTeacherRequest, loginRequest,
+  deleteTeamRequest,
+  getCampusBranchRequest,
+  getCampusBranchTeachersRequest,
+  getScheduleRequest,
+  getStudentRequest,
+  getTeacherRequest,
+  getTeamRequest,
+  loginRequest,
   registerRequest,
   setAuthHeaders,
   updateScheduleRequest,
   updateStudentRequest,
   updateTeacherRequest,
-  getTeamRequest,
-  createTeamRequest,
   updateTeamRequest,
-  deleteTeamRequest,
 };
 

@@ -10,7 +10,7 @@ import { Button, IconButton, Modal } from "@mui/material";
 // Layouts
 import { TableLayout } from "@layouts";
 // Api
-import { getTeamRequest, deleteTeamRequest } from "@api";
+import { deleteTeamRequest, getTeamRequest } from "@api";
 // Utils
 import { checkPermission } from "@utils";
 // Hooks
@@ -21,12 +21,15 @@ interface Coordinator {
   name: string;
 }
 interface Team extends Record<string, TableRenderable> {
-    _id: string;
-    name: string;
-    code: any;
-    description: string;
-    coordinator: Coordinator;
-    createdAt: Date;
+  name: string;
+  code: string;
+  description: string;
+  coordinator: Coordinator[];
+  createdAt: Date;
+  campusBranch: string[];
+  career: string[];
+  students: string[];
+  teachers: string[];
 }
 
 const Teams = () => {
@@ -42,41 +45,68 @@ const Teams = () => {
 
   const columns: TableColumn<Team, keyof Team>[] = [
     {
-        accessor: "code",
-        header: "Código",
+      accessor: "code",
+      header: "Código",
     },
     {
-        accessor: "name",
-        header: "Nombre",
-        render: (name) => <strong>{name}</strong>,
+      accessor: "name",
+      header: "Nombre",
+      render: (name) => <strong>{name}</strong>,
     },
     {
-        accessor: "description",
-        header: "Descripción",
-        render: (description) => <span>{
-            description.length > 63 ? description.slice(0,60).concat("...") : description
-          }</span>,
+      accessor: "year",
+      header: "Año",
+      render: (year) => <strong>{year || "N/A"}</strong>,
+      objectAccessor: (year) => year,
     },
     {
-        accessor: "coordinator",
-        header: "Coordinador",
-        render: (coordinator) => <span>{coordinator.name}</span>,
+      accessor: "coordinator",
+      header: "Coordinador",
+      render: (coordinator) =>
+        (coordinator.length > 0 && coordinator[0].name) || "N/A",
+      objectAccessor: (coordinator) =>
+        (coordinator.length > 0 && coordinator[0].name) || "N/A",
+    },
+    {
+      accessor: "students",
+      header: "Estudiantes",
+      render: (students) => students.length,
+    },
+    {
+      accessor: "teachers",
+      header: "Profesores",
+      render: (teachers) => teachers.length,
+    },
+    {
+      accessor: "campusBranch",
+      header: "Sede",
+      render: (campusBranch) =>
+        campusBranch.length > 0 ? campusBranch[0].name : "N/A",
+      objectAccessor: (campusBranch) =>
+        (campusBranch.length > 0 && campusBranch[0].name) || "N/A",
+    },
+    {
+      accessor: "career",
+      header: "Carrera",
+      render: (career) => (career.length > 0 ? career[0].name : "N/A"),
+      objectAccessor: (career) =>
+        (career.length > 0 && career[0].name) || "N/A",
     },
   ];
 
   const actions = [
     {
-        permission: checkPermission(permissions, "TEAM", "PUT"),
-        component: (code: string) => (
-          <IconButton onClick={() => navigation(`/home/team/edit/${code}`)}>
-            <Edit />
-          </IconButton>
-        ),
+      permission: checkPermission(permissions, "TEAM", "PUT"),
+      component: (code: string) => (
+        <IconButton onClick={() => navigation(`/home/team/edit/${code}`)}>
+          <Edit />
+        </IconButton>
+      ),
     },
     {
       permission: checkPermission(permissions, "TEAM", "DELETE"),
-      component: (code: string) => (
-        <IconButton onClick={() => handleModal(code)}>
+      component: (id: string) => (
+        <IconButton onClick={() => handleModal(id)}>
           <Delete />
         </IconButton>
       ),
@@ -86,7 +116,7 @@ const Teams = () => {
   if (actions.some((action) => action.permission)) {
     columns.push({
       header: "Acciones",
-      accessor: "code",
+      accessor: "_id",
       render: (id) => (
         <div>
           {actions.map((action) =>
@@ -100,10 +130,7 @@ const Teams = () => {
   const tableLayoutProps = {
     title: "Equipos",
     button: checkPermission(permissions, "TEAM", "POST") && (
-      <Button
-        variant="contained"
-        onClick={() => navigation("/home/team/add")}
-      >
+      <Button variant="contained" onClick={() => navigation("/home/team/add")}>
         Agregar Equipo
       </Button>
     ),
@@ -114,6 +141,7 @@ const Teams = () => {
     getTeamRequest()
       .then((response) => {
         setTeams(response);
+        console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -121,8 +149,8 @@ const Teams = () => {
       });
   };
 
-  const deleteTeam = async (code: string) => {
-    deleteTeamRequest(code)
+  const deleteTeam = async (id: string) => {
+    deleteTeamRequest(id)
       .then((response) => {
         console.log(response);
         getTeams();
@@ -135,51 +163,52 @@ const Teams = () => {
       });
   };
 
-  const handleModal = (code: string) => {
-    setSelectedTeam(teams.find((team) => team.code === code) || null);
+  const handleModal = (id: string) => {
+    setSelectedTeam(teams.find((team) => team._id === id) || null);
     setOpen(!open);
   };
 
   useEffect(() => {
     getTeams();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div className={styles.teams}>
-        <Modal
-          open={open}
-          onClose={() => setOpen(false)}
-          className={styles.modalContainer}
-        >
-          <div className={styles.modal}>
-            <h2
-              className={styles.warning}
-            >{`Seguro de que quieres eliminar a ${selectedTeam?.name}?`}</h2>
-            <hr />
-            <div className={styles.rowContainer}>
-              <div className={styles.row}>
-                <h4>Nombre:</h4>
-                <p>{selectedTeam?.name}</p>
-              </div>
-              <div className={styles.row}>
-                <h4>Código:</h4>
-                <p>{selectedTeam?.code}</p>
-              </div>
-              <p className={styles.warning}>Esta accion no se puede deshacer.</p>
-              <div className={styles.buttons}>
-                <Button onClick={() => setOpen(false)}>Cancelar</Button>
-                <Button
-                  onClick={() => {
-                    deleteTeam(selectedTeam?.code);
-                  }}
-                >
-                  Eliminar
-                </Button>
-              </div>
-            </div>   
-          </div>   
-        </Modal>
-        <TableLayout {...tableLayoutProps} />
+      <Modal
+        open={open}
+        onClose={() => setOpen(false)}
+        className={styles.modalContainer}
+      >
+        <div className={styles.modal}>
+          <h2
+            className={styles.warning}
+          >{`Seguro de que quieres eliminar a ${selectedTeam?.name}?`}</h2>
+          <hr />
+          <div className={styles.rowContainer}>
+            <div className={styles.row}>
+              <h4>Nombre:</h4>
+              <p>{selectedTeam?.name}</p>
+            </div>
+            <div className={styles.row}>
+              <h4>Código:</h4>
+              <p>{selectedTeam?.code}</p>
+            </div>
+            <p className={styles.warning}>Esta accion no se puede deshacer.</p>
+            <div className={styles.buttons}>
+              <Button onClick={() => setOpen(false)}>Cancelar</Button>
+              <Button
+                onClick={() => {
+                  deleteTeam(selectedTeam?._id);
+                }}
+              >
+                Eliminar
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+      <TableLayout {...tableLayoutProps} />
     </div>
   );
 };

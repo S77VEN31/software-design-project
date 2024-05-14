@@ -6,3 +6,4 @@ export const formatDate = (date: string, mask?: string) => {
   }
   return dateFormat(date, mask);
 };
+

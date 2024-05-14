@@ -19,8 +19,6 @@ export const getTeacherRequest = async (id?: string) => {
   return response.data;
 };
 
-
-
 export const createStudentRequest = async (student: FormData) => {
   const response = await api.post(VITE_API_STUDENT, student);
   return response.data;

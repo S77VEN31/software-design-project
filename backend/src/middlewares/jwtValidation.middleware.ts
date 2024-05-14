@@ -34,7 +34,8 @@ export const authRequired = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const token = req.cookies.token;
+  const token = req.cookies.token; 
+
   console.log("Token:", token);
   if (!token) {
     res.status(401).json({ message: "Unauthorized no token" });
