@@ -46,6 +46,7 @@ const Schedules = () => {
     {
       accessor: "status",
       header: "Status",
+      render: (status) => (status === "active" ? "Activo" : "Inactivo"),
     },
     {
       accessor: "startDate",
@@ -64,7 +65,7 @@ const Schedules = () => {
     {
       permission: checkPermission(permissions, "STUDENT", "PUT"),
       component: (id: string) => (
-        <IconButton onClick={() => navigation(`/home/schedules/edit/${id}`)}>
+        <IconButton onClick={() => navigation(`/home/schedule/edit/${id}`)}>
           <Edit />
         </IconButton>
       ),
@@ -121,11 +122,11 @@ const Schedules = () => {
       .then(() => {
         getSchedules();
         setOpen(false);
-        toast(200, ["Estudiante eliminado correctamente"]);
+        toast(200, ["Horario eliminado correctamente"]);
       })
       .catch((error) => {
         console.log(error);
-        toast(500, ["Error al eliminar el estudiante"]);
+        toast(500, ["Error al eliminar el horario"]);
       });
   };
 
