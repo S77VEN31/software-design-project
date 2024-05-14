@@ -14,13 +14,17 @@ import {
   createScheduleRequest,
   createStudentRequest,
   createTeacherRequest,
+  createTeamRequest,
   getScheduleRequest,
   getStudentRequest,
   getTeacherRequest,
+  getTeamRequest,
   updateScheduleRequest,
   updateStudentRequest,
   updateTeacherRequest,
+  updateTeamRequest,
 } from "@api";
+import { TeamForm } from "@components";
 import {
   CreateTeamFields,
   DefaultSchedule,
@@ -38,7 +42,6 @@ import {
   TeacherUpdateFields,
   UpdateTeamFields,
 } from "@enumerables";
-import { TeamForm } from "@components";
 
 const authenticationRoutes = [
   { path: "/", element: <LoginScreen /> },
