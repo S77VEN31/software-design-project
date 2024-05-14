@@ -31,7 +31,7 @@ import {
 // Hooks
 import { DropdownList } from "@components";
 import { useResponseToast } from "@hooks";
-import dayjs from "dayjs";
+import { formatDate } from "@utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Request = (...args: any[]) => Promise<any>;
@@ -276,7 +276,7 @@ const CreateForm = ({
           value: career._id,
           label: career.name,
         }))
-      : id === "team"
+      : id === "teams"
       ? dropdownOptions.teams.map((team) => ({
           value: team._id,
           label: team.name,
@@ -293,7 +293,7 @@ const CreateForm = ({
       "career",
       "roles",
       "active",
-      "team",
+      "teams",
       "activities",
       "startDate",
       "endDate",
@@ -310,8 +310,8 @@ const CreateForm = ({
         handleAddCoordinatorRole(event.target.checked),
       active: (event: ChangeEvent<HTMLInputElement>) =>
         handleChange(id, event.target.checked as unknown as string),
-      team: (event: ChangeEvent<HTMLInputElement>) =>
-        handleChange(id, event.target.value),
+      teams: (event: ChangeEvent<HTMLInputElement>) =>
+        handleChange(id, [event.target.value]),
       activities: (list: string[]) => handleChange(id, list),
       personal: (value: string) => handlePhoneChange(id, value),
       office: (value: string) => handlePhoneChange(id, value),
@@ -480,8 +480,8 @@ const CreateForm = ({
             <DatePicker
               {...field}
               onChange={changeFunctionSelector(id)}
+              label={formatDate(formData[id as keyof FormData]) || label}
               sx={fullWidth ? { width: "100%" } : {}}
-              minDate={dayjs()}
               slotProps={{
                 textField: {
                   required,

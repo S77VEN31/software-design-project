@@ -18,7 +18,11 @@ export type {
   TeamOverview,
 } from "./Types";
 // Enums
-export { DefaultSchedule, ScheduleFields } from "./Schedules";
+export {
+  DefaultSchedule,
+  ScheduleFields,
+  ScheduleUpdateFields,
+} from "./Schedules";
 export {
   AdminAssistantFields,
   AdminFields,

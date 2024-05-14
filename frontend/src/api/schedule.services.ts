@@ -7,7 +7,7 @@ const { VITE_API_SCHEDULE } = import.meta.env;
 
 export const getScheduleRequest = async (id?: string) => {
   const response = await api.get(
-    id ? `${VITE_API_SCHEDULE}?id=${id}` : VITE_API_SCHEDULE
+    id ? `${VITE_API_SCHEDULE}/${id}` : VITE_API_SCHEDULE
   );
   return response.data;
 };

@@ -14,13 +14,12 @@ import {
   createScheduleRequest,
   createStudentRequest,
   createTeacherRequest,
-  createTeamRequest,
+  getScheduleRequest,
   getStudentRequest,
   getTeacherRequest,
-  getTeamRequest,
+  updateScheduleRequest,
   updateStudentRequest,
   updateTeacherRequest,
-  updateTeamRequest,
 } from "@api";
 import {
   CreateTeamFields,
@@ -32,6 +31,7 @@ import {
   DefaultUpdateTeacher,
   DefaultUpdateTeam,
   ScheduleFields,
+  ScheduleUpdateFields,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,
@@ -214,9 +214,19 @@ const appRoutes = [
   },
   {
     apiSlug: "/schedule/put",
-    path: "/home/schedule/edit",
+    path: "/home/schedule/edit/:id",
     inNav: false,
-    element: <div>Edit Schedule</div>,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Editar Horario"
+        createButtonText="Actualizar Horario"
+        request={updateScheduleRequest}
+        getRequest={getScheduleRequest}
+        fields={ScheduleUpdateFields}
+        initialData={DefaultSchedule}
+        routeToGo="/home/schedules"
+      />
+    ),
   },
   {
     apiSlug: "/schedule/delete",

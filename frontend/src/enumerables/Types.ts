@@ -109,7 +109,7 @@ export type Schedule = {
   status: string;
   startDate: string;
   endDate: string;
-  team?: string;
+  teams: string[];
   activities: string[];
 };
 
