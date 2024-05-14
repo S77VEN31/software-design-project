@@ -82,8 +82,8 @@ export const updateTeam = async (req: Request, res: Response) => {
 
 export const deleteTeam = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
-    await Team.findOneAndDelete({ _id: id });
+    const { id } = req.query;
+    await Team.findByIdAndDelete(id);
     return res.status(200).json({ message: ["Equipo eliminado exitosamente"] });
   } catch (error) {
     return res.status(500).json({ message: [error] });
