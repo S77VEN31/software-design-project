@@ -216,7 +216,7 @@ const TeamForm = ({
         } else {
           setFormData(initialData);
         }
-        toast(200, response.message);
+        toast(200, ["Se ha creado/actualizado con exito"]);
         routeToGo && navigation(routeToGo);
         console.log(response);
       })
