@@ -7,7 +7,7 @@ const { VITE_API_TEAMS } = import.meta.env;
 
 export const getTeamRequest = async (code?: string) => {
     const response = await api.get(
-        code ? `${VITE_API_TEAMS}?code=${code}` : VITE_API_TEAMS
+        code ? `${VITE_API_TEAMS}/${code}` : VITE_API_TEAMS
     );
     return response.data;
 };
@@ -18,11 +18,11 @@ export const createTeamRequest = async (team: FormData) => {
 };
 
 export const updateTeamRequest = async (team: FormData, code: string) => {
-    const response = await api.put(`${VITE_API_TEAMS}?code=${code}`, team);
+    const response = await api.put(`${VITE_API_TEAMS}/${code}`, team);
     return response.data;
 }
 
 export const deleteTeamRequest = async (code: string) => {
-    const response = await api.delete(`${VITE_API_TEAMS}?code=${code}`);
+    const response = await api.delete(`${VITE_API_TEAMS}/${code}`);
     return response.data;
 };

@@ -2,6 +2,7 @@
   margin: 0 auto;
   display: flex;
   flex: 1;
+  color: #000;
 }
 /* define colores globales */
 :root {

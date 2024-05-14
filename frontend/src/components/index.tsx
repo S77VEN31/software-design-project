@@ -5,5 +5,6 @@ import DataTable, {
   TableColumn,
   TableRenderable,
 } from "./Tables/DataTable/DataTable";
-export { DataTable, SideNavBar };
+import TeamForm from "./TeamForm/TeamForm";
+export { DataTable, SideNavBar, TeamForm };
 export type { TableColumn, TableRenderable };

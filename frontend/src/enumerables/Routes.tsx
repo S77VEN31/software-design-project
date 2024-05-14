@@ -13,21 +13,29 @@ import { CreateFormLayout } from "@layouts";
 import {
   createStudentRequest,
   createTeacherRequest,
+  createTeamRequest,
   getStudentRequest,
   getTeacherRequest,
+  getTeamRequest,
   updateStudentRequest,
   updateTeacherRequest,
+  updateTeamRequest,
 } from "@api";
 import {
+  CreateTeamFields,
   DefaultStudent,
   DefaultTeacher,
+  DefaultTeam,
   DefaultUpdateStudent,
   DefaultUpdateTeacher,
+  DefaultUpdateTeam,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,
   TeacherUpdateFields,
+  UpdateTeamFields,
 } from "@enumerables";
+import { TeamForm } from "@components";
 
 const authenticationRoutes = [
   { path: "/", element: <LoginScreen /> },
@@ -54,13 +62,30 @@ const appRoutes = [
     apiSlug: "/team/post",
     path: "/home/team/add",
     inNav: false,
-    element: <div>Add Team</div>,
+    element: (
+      <TeamForm 
+        layoutTitle="Crear equipo"
+        createButtonText="Agregar equipo"
+        request={createTeamRequest}
+        fields={CreateTeamFields}
+        initialData={DefaultTeam}
+        routeToGo="/home/teams"
+      />
+    ),
   },
   {
     apiSlug: "/team/put",
-    path: "/home/team/edit/:id",
+    path: "/home/team/edit/:code",
     inNav: false,
-    element: <div>Edit Team</div>,
+    element: <TeamForm 
+    layoutTitle="Editar equipo"
+    createButtonText="Editar equipo"
+    request={updateTeamRequest}
+    fields={UpdateTeamFields}
+    initialData={DefaultUpdateTeam}
+    getRequest={getTeamRequest}
+    routeToGo="/home/teams"
+  />,
   },
   {
     apiSlug: "/team/delete",

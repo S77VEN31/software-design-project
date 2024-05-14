@@ -75,6 +75,15 @@ export type CampusBranch = {
   careers: Career[];
 };
 
+export type Team = {
+  code?: string,
+  name: string,
+  description: string,
+  students: string[],
+  teachers: string[],
+  coordinator: string
+}
+
 export type FormData = Student | Teacher;
 
 export type Field = {
