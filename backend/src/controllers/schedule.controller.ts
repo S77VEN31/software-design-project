@@ -21,7 +21,12 @@ export const addSchedule = async (req: Request, res: Response) => {
             activities,    
         });
         await newSchedule.save();
-        return res.status(200).json(newSchedule);
+        return res
+          .status(200)
+          .json({
+            message: ["Se creo correctamente el horario"],
+            schedule: newSchedule,
+          });
     } catch (error) {
         return res.status(500).json({ message: [error] });
     }

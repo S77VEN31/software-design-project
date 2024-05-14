@@ -10,6 +10,7 @@ import {
 import { CreateFormLayout } from "@layouts";
 // User Enums
 import {
+  createScheduleRequest,
   createStudentRequest,
   createTeacherRequest,
   getStudentRequest,
@@ -18,10 +19,12 @@ import {
   updateTeacherRequest,
 } from "@api";
 import {
+  DefaultSchedule,
   DefaultStudent,
   DefaultTeacher,
   DefaultUpdateStudent,
   DefaultUpdateTeacher,
+  ScheduleFields,
   StudentFields,
   StudentUpdateFields,
   TeacherFields,
@@ -172,7 +175,16 @@ const appRoutes = [
     apiSlug: "/schedule/post",
     path: "/home/schedule/add",
     inNav: false,
-    element: <div>Add Schedule</div>,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Crear Horario"
+        createButtonText="Agregar Horario"
+        request={createScheduleRequest}
+        fields={ScheduleFields}
+        initialData={DefaultSchedule}
+        routeToGo="/home/schedules"
+      />
+    ),
   },
   {
     apiSlug: "/schedule/put",
