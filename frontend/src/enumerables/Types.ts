@@ -67,6 +67,20 @@ export type Career = {
   __v: number;
 };
 
+export type Team = {
+  _id: string;
+  name: string;
+  code: string;
+  description: string;
+};
+
+export type Activity = {
+  _id: string;
+  name: string;
+  code: string;
+  description: string;
+};
+
 export type CampusBranch = {
   location: Location;
   _id: string;
@@ -76,7 +90,21 @@ export type CampusBranch = {
   careers: Career[];
 };
 
-export type FormData = Student | Teacher;
+export type Option = {
+  label: string;
+  value: string;
+};
+
+export type Schedule = {
+  name: string;
+  status: string;
+  startDate: string;
+  endDate: string;
+  team?: string;
+  activities: string[];
+};
+
+export type FormData = Student | Teacher | Schedule;
 
 export type Field = {
   id: string;
