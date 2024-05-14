@@ -5,17 +5,17 @@ import CheckIcon from "@mui/icons-material/Check";
 import CloseIcon from "@mui/icons-material/Close";
 import { Autocomplete, IconButton, TextField } from "@mui/material";
 
-interface CustomizedHookProps {
+interface DropdownListProps {
   options: Option[];
   selectedOptions: string[];
   setSelectedOptions: (string: string | string[]) => void;
 }
 
-export function CustomizedHook({
+const DropdownList = ({
   options,
   selectedOptions,
   setSelectedOptions,
-}: CustomizedHookProps) {
+}: DropdownListProps) => {
   const handleDelete = (optionToDelete: string) => {
     const newSelectedOptions = selectedOptions.filter(
       (option) => option !== optionToDelete
@@ -61,4 +61,5 @@ export function CustomizedHook({
       )}
     />
   );
-}
+};
+export default DropdownList;

@@ -29,7 +29,7 @@ import {
   Team,
 } from "@enumerables";
 // Hooks
-import { CustomizedHook } from "@components";
+import { DropdownList } from "@components";
 import { useResponseToast } from "@hooks";
 import dayjs from "dayjs";
 
@@ -152,12 +152,14 @@ const CreateForm = ({
   );
 
   const handleAddCoordinatorRole = (state: boolean) => {
+    // @ts-expect-error - Esto no debería ser necesario
     const isCoordinator = formData.roles.includes("Coordinator");
     if (state) {
       if (!isCoordinator) {
         // Si no está ya en la lista, lo añadimos
         setFormData({
           ...formData,
+          // @ts-expect-error - Esto no debería ser necesario
           roles: [...formData.roles, "Coordinator"],
         });
       }
@@ -166,6 +168,7 @@ const CreateForm = ({
         // Si está en la lista y desmarcamos la casilla, lo eliminamos
         setFormData({
           ...formData,
+          // @ts-expect-error - Esto no debería ser necesario
           roles: formData.roles.filter((role) => role !== "Coordinator"),
         });
       }
@@ -489,7 +492,7 @@ const CreateForm = ({
         );
       case "dropdown-list":
         return (
-          <CustomizedHook
+          <DropdownList
             options={optionsArray}
             // @ts-expect-error - is an string[]
             selectedOptions={formData[id]}

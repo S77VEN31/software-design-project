@@ -6,7 +6,7 @@ import DataTable, {
   TableRenderable,
 } from "./Tables/DataTable/DataTable";
 // Inputs
-import { CustomizedHook } from "./Inputs/DropdownList/DropdownList";
-export { CustomizedHook, DataTable, SideNavBar };
+import DropdownList from "./Inputs/DropdownList/DropdownList";
+export { DataTable, DropdownList, SideNavBar };
 export type { TableColumn, TableRenderable };
 
