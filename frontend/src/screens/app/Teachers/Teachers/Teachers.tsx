@@ -51,7 +51,7 @@ const Teachers = () => {
     {
       header: "Careera",
       accessor: "career",
-      objectAccessor: (career) => career[0].name,
+      objectAccessor: (career) => (career.length > 0 ? career[0].name : "N/A"),
       render: (career) =>
         career.length > 0 ? <span>{career[0].name}</span> : <span>None</span>,
     },
@@ -66,6 +66,12 @@ const Teachers = () => {
         <span>{roles.includes("Coordinator") ? "Sí" : "No"}</span>
       ),
       objectAccessor: (roles) => (roles.includes("Coordinator") ? "Sí" : "No"),
+    },
+    {
+      accessor: "coordinatorId",
+      header: "ID del Coordinador",
+      render: (coordinatorId) => coordinatorId || "N/A",
+      objectAccessor: (coordinatorId) => coordinatorId || "N/A",
     },
     {
       header: "Estado",

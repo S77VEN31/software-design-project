@@ -51,7 +51,7 @@ const Students = () => {
     {
       header: "Carrera",
       accessor: "career",
-      objectAccessor: (career) => career[0].name,
+      objectAccessor: (career) => (career.length > 0 ? career[0].name : "N/A"),
       render: (career) =>
         career.length > 0 ? <span>{career[0].name}</span> : <span>None</span>,
     },

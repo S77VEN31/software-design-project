@@ -190,12 +190,6 @@ const AdministrativeAssistantPermissions = [
     selector: "STUDENT",
   },
   {
-    slug: "/student/delete",
-    description: "Delete students",
-    type: "DELETE",
-    selector: "STUDENT",
-  },
-  {
     slug: "/students/get",
     description: "Get students",
     type: "GET",
@@ -218,12 +212,6 @@ const AdministrativeAssistantPermissions = [
     slug: "/teacher/put",
     description: "Put teachers",
     type: "PUT",
-    selector: "TEACHER",
-  },
-  {
-    slug: "/teacher/delete",
-    description: "Delete teachers",
-    type: "DELETE",
     selector: "TEACHER",
   },
   {
@@ -525,3 +513,4 @@ export {
   StudentPermissions,
   TeacherPermissions,
 };
+

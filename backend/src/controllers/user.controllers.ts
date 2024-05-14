@@ -6,6 +6,7 @@ import bcrypt from "bcryptjs";
 import {
   AdminAssistantUser,
   AdminUser,
+  CampusBranch,
   StudentUser,
   TeacherUser,
 } from "../models";
@@ -25,6 +26,7 @@ class Admin extends BaseUser {
   async create(userData: any) {
     try {
       const { password, ...data } = userData;
+
       const passwordHash = await bcrypt.hash(password, 10);
       const user = await new AdminUser({
         ...data,
@@ -106,10 +108,40 @@ class Admin extends BaseUser {
 class Teacher extends BaseUser {
   async create(userData: any) {
     try {
-      const { password, ...data } = userData;
+      const { password, roles, campusBranch, ...data } = userData;
+
+      const campusBranchObject = await CampusBranch.findOne({
+        _id: campusBranch,
+      });
+
+      if (!campusBranchObject) {
+        throw new Error(`Campus branch not found`);
+      }
+
+      const coordinators = await TeacherUser.find({
+        campusBranch: campusBranch,
+        roles: { $in: ["Coordinator"] },
+      });
+
+      let newCoordinatorId = "";
+      if (coordinators && coordinators.length > 0) {
+        const lastCoordinator = coordinators[coordinators.length - 1];
+        const lastCoordinatorNumber = parseInt(
+          // @ts-expect-error Property 'coordinatorId' does not exist on type 'Document'
+          lastCoordinator.coordinatorId.match(/\d+$/)[0]
+        );
+        const newCoordinatorNumber = lastCoordinatorNumber + 1;
+        newCoordinatorId = `${campusBranchObject.initials}${newCoordinatorNumber}`;
+      } else {
+        newCoordinatorId = `${campusBranchObject.initials}1`;
+      }
+
       const passwordHash = await bcrypt.hash(password, 10);
       const user = await new TeacherUser({
         ...data,
+        roles,
+        campusBranch,
+        coordinatorId: roles.includes("Coordinator") ? newCoordinatorId : "",
         password: passwordHash,
       }).save();
       return user;
@@ -140,6 +172,41 @@ class Teacher extends BaseUser {
 
   async update(id: string, updateData: any, role: string) {
     try {
+      const { roles, campusBranch } = updateData;
+      if (!roles.includes("Coordinator")) {
+        updateData.coordinatorId = null;
+      }
+
+      const campusBranchObject = await CampusBranch.findOne({
+        _id: campusBranch,
+      });
+
+      if (!campusBranchObject) {
+        throw new Error(`Campus branch not found`);
+      }
+
+      const coordinators = await TeacherUser.find({
+        campusBranch: campusBranch,
+        roles: { $in: ["Coordinator"] },
+      });
+
+      let newCoordinatorId = "";
+      if (coordinators && coordinators.length > 0) {
+        const lastCoordinator = coordinators[coordinators.length - 1];
+        const lastCoordinatorNumber = parseInt(
+          // @ts-expect-error Property 'coordinatorId' does not exist on type 'Document'
+          lastCoordinator.coordinatorId.match(/\d+$/)[0]
+        );
+        const newCoordinatorNumber = lastCoordinatorNumber + 1;
+        newCoordinatorId = `${campusBranchObject.initials}${newCoordinatorNumber}`;
+      } else {
+        newCoordinatorId = `${campusBranchObject.initials}1`;
+      }
+
+      if (roles.includes("Coordinator")) {
+        updateData.coordinatorId = newCoordinatorId;
+      }
+
       const user = await TeacherUser.findOneAndUpdate(
         { _id: id, roles: { $in: [role] } },
         updateData,

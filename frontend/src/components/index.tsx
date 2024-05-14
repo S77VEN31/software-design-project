@@ -6,5 +6,8 @@ import DataTable, {
   TableRenderable,
 } from "./Tables/DataTable/DataTable";
 import TeamForm from "./TeamForm/TeamForm";
-export { DataTable, SideNavBar, TeamForm };
+// Inputs
+import DropdownList from "./Inputs/DropdownList/DropdownList";
+export { DataTable, DropdownList, SideNavBar, TeamForm };
 export type { TableColumn, TableRenderable };
+

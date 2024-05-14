@@ -38,6 +38,7 @@ export const updateStudentRequest = async (student: FormData, id: string) => {
 
 export const updateTeacherRequest = async (teacher: FormData, id: string) => {
   const response = await api.put(`${VITE_API_TEACHER}?id=${id}`, teacher);
+  console.log(teacher);
   return response.data;
 }
 

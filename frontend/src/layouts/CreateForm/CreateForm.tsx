@@ -13,12 +13,25 @@ import {
   MenuItem,
   TextField,
 } from "@mui/material";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { MuiTelInput } from "mui-tel-input";
 // Api
-import { getCampusBranchRequest } from "@api";
+import { getCampusBranchRequest, getTeamRequest } from "@api";
 // Types
-import { CampusBranch, Career, Field, FormData } from "@enumerables";
+import {
+  Activity,
+  CampusBranch,
+  Career,
+  Field,
+  FormData,
+  TeamOverview,
+} from "@enumerables";
 // Hooks
+import { DropdownList } from "@components";
 import { useResponseToast } from "@hooks";
+import dayjs from "dayjs";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Request = (...args: any[]) => Promise<any>;
@@ -36,16 +49,8 @@ interface CreateFormProps {
 interface DropdownOptions {
   campusBranches: CampusBranch[];
   careers: Career[];
-}
-
-interface HandleChangeInputFunction {
-  [key: string]: (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-}
-
-interface HandleChangeCheckboxFunction {
-  [key: string]: (event: ChangeEvent<HTMLInputElement>) => void;
+  teams: TeamOverview[];
+  activities: Activity[];
 }
 
 const CreateForm = ({
@@ -63,12 +68,18 @@ const CreateForm = ({
   const [dropdownOptions, setDropdownOptions] = useState<DropdownOptions>({
     campusBranches: [],
     careers: [],
+    teams: [],
+    activities: [],
   });
+  const [phones, setPhones] = useState<{ [key: string]: string }>({});
   // Hooks
   const toast = useResponseToast();
   const navigation = useNavigate();
   const { id } = useParams();
 
+  /**
+   * This set of functions is used to get the enumerable data from the API
+   */
   const getCampusBranches = async () => {
     const campusBranches = await getCampusBranchRequest();
     setDropdownOptions((prevOptions) => ({
@@ -84,7 +95,18 @@ const CreateForm = ({
     }
   };
 
-  const handleChange = (id: string, value: string) => {
+  const getTeams = async () => {
+    const teams = await getTeamRequest();
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      teams,
+    }));
+  };
+
+  /**
+   * This set of functions is used to handle the changes in the form fields
+   */
+  const handleChange = (id: string, value: string | string[]) => {
     setFormData({
       ...formData,
       [id]: value,
@@ -116,13 +138,28 @@ const CreateForm = ({
     });
   };
 
+  useEffect(
+    () => {
+      // @ts-expect-error - Esto no debería ser necesario
+      if (formData.career && formData.career.length === 0) {
+        setIsCareerDisabled(true);
+      } else {
+        setIsCareerDisabled(false);
+      }
+    },
+    // @ts-expect-error - Esto no debería ser necesario
+    [formData.career]
+  );
+
   const handleAddCoordinatorRole = (state: boolean) => {
+    // @ts-expect-error - Esto no debería ser necesario
     const isCoordinator = formData.roles.includes("Coordinator");
     if (state) {
       if (!isCoordinator) {
         // Si no está ya en la lista, lo añadimos
         setFormData({
           ...formData,
+          // @ts-expect-error - Esto no debería ser necesario
           roles: [...formData.roles, "Coordinator"],
         });
       }
@@ -131,14 +168,47 @@ const CreateForm = ({
         // Si está en la lista y desmarcamos la casilla, lo eliminamos
         setFormData({
           ...formData,
+          // @ts-expect-error - Esto no debería ser necesario
           roles: formData.roles.filter((role) => role !== "Coordinator"),
         });
       }
     }
   };
 
+  const handlePhoneChange = (id: string, value: string) => {
+    setPhones((prevPhones) => ({
+      ...prevPhones,
+      [id]: value,
+    }));
+  };
+
+  useEffect(() => {
+    const newPhones: { [key: string]: string } = {};
+    fields.forEach((field) => {
+      if (field.type === "tel") {
+        newPhones[field.id] = formData[field.id as keyof FormData] || "";
+      }
+    });
+    setPhones(newPhones);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(
+    () => {
+      // crea un array de strings con los teléfonos
+      const phonesArray = Object.values(phones);
+      setFormData({
+        ...formData,
+        phones: phonesArray,
+      });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [phones]
+  );
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
+
     request(formData, id ? id : null)
       .then((response) => {
         if (getRequest) {
@@ -148,14 +218,13 @@ const CreateForm = ({
             })
             .catch((error) => {
               console.log(error);
-              toast(500, ["Error al obtener los datos del usuario"]);
+              toast(500, ["Error al obtener los datos"]);
             });
         } else {
           setFormData(initialData);
         }
         toast(200, response.message);
         routeToGo && navigation(routeToGo);
-        console.log(response);
       })
       .catch((error) => {
         console.log(error);
@@ -165,7 +234,7 @@ const CreateForm = ({
 
   useEffect(() => {
     getCampusBranches();
-
+    getTeams();
     if (getRequest) {
       getRequest(id)
         .then((response) => {
@@ -176,53 +245,62 @@ const CreateForm = ({
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    // if any formData field is "N/A" change the value to empty string
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
-    for (const key in formData) {
-      if (formData[key as keyof FormData] === "N/A") {
-        setFormData({
-          ...formData,
-          [key]: "",
-        });
-      }
-    }
     console.log(formData);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
 
-  useEffect(() => {
-    console.log(formData);
-    if (formData.career.length === 0) {
-      setIsCareerDisabled(true);
-    } else {
-      setIsCareerDisabled(false);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData.career]);
-
   const renderField = (field: Field) => {
-    const { id, type, options, validation, helperText, label } = field;
+    const {
+      id,
+      type,
+      options,
+      validation,
+      helperText,
+      label,
+      required,
+      fullWidth,
+    } = field;
 
-    const optionsArray =
-      id === "campusBranch"
-        ? dropdownOptions.campusBranches.map((branch) => ({
-            value: branch._id,
-            label: branch.name,
-          }))
-        : id === "career"
-        ? dropdownOptions.careers.map((career) => ({
-            value: career._id,
-            label: career.name,
-          }))
-        : options || [];
+    const optionsArray = options
+      ? options
+      : id === "campusBranch"
+      ? dropdownOptions.campusBranches.map((branch) => ({
+          value: branch._id,
+          label: branch.name,
+        }))
+      : id === "career"
+      ? dropdownOptions.careers.map((career) => ({
+          value: career._id,
+          label: career.name,
+        }))
+      : id === "team"
+      ? dropdownOptions.teams.map((team) => ({
+          value: team._id,
+          label: team.name,
+        }))
+      : id === "activities"
+      ? dropdownOptions.activities.map((activity) => ({
+          value: activity._id,
+          label: activity.name,
+        }))
+      : [];
 
-    const recognizedFields = ["campusBranch", "career", "roles", "active"];
-    const handleChangeFunctions:
-      | HandleChangeCheckboxFunction
-      | HandleChangeInputFunction = {
+    const recognizedFields = [
+      "campusBranch",
+      "career",
+      "roles",
+      "active",
+      "team",
+      "activities",
+      "startDate",
+      "endDate",
+      "personal",
+      "office",
+    ];
+    const handleChangeFunctions = {
       campusBranch: (
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
       ) => handleCampusBranchChange(event.target.value),
@@ -232,12 +310,30 @@ const CreateForm = ({
         handleAddCoordinatorRole(event.target.checked),
       active: (event: ChangeEvent<HTMLInputElement>) =>
         handleChange(id, event.target.checked as unknown as string),
+      team: (event: ChangeEvent<HTMLInputElement>) =>
+        handleChange(id, event.target.value),
+      activities: (list: string[]) => handleChange(id, list),
+      personal: (value: string) => handlePhoneChange(id, value),
+      office: (value: string) => handlePhoneChange(id, value),
+      startDate: (date: Date | null) =>
+        handleChange(id, date?.toISOString() || ""),
+      endDate: (date: Date | null) =>
+        handleChange(id, date?.toISOString() || ""),
       default: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
         handleChange(id, event.target.value),
     };
 
+    const changeFunctionSelector = (id: string) => {
+      // @ts-expect-error - Esto no debería ser necesario
+      return handleChangeFunctions[
+        recognizedFields.includes(id) ? id : "default"
+      ];
+    };
+
     const handleCheckedFunctions = {
+      // @ts-expect-error - Esto no debería ser necesario
       roles: () => formData.roles.includes("Coordinator"),
+      // @ts-expect-error - Esto no debería ser necesario
       active: () => (formData.active ? true : false),
     };
 
@@ -248,7 +344,7 @@ const CreateForm = ({
             {...field}
             className={styles.formField}
             value={formData[id as keyof FormData] || ""}
-            onChange={(e) => handleChange(id, e.target.value)}
+            onChange={changeFunctionSelector(id)}
           />
         );
       case "password":
@@ -258,7 +354,7 @@ const CreateForm = ({
             className={styles.formField}
             type={showPassword ? "text" : type}
             value={formData[id as keyof FormData] || ""}
-            onChange={(e) => handleChange(id, e.target.value)}
+            onChange={changeFunctionSelector(id)}
             error={
               validation &&
               !validation(formData[id as keyof FormData] as string)
@@ -287,7 +383,7 @@ const CreateForm = ({
             {...field}
             className={styles.formField}
             value={formData[id as keyof FormData] || ""}
-            onChange={(e) => handleChange(id, e.target.value)}
+            onChange={changeFunctionSelector(id)}
             error={
               validation &&
               !validation(formData[id as keyof FormData] as string)
@@ -298,7 +394,6 @@ const CreateForm = ({
                 ? helperText
                 : ""
             }
-            disabled={formData[id as keyof FormData] === "N/A" ? true : false}
             required={formData[id as keyof FormData] === "" ? true : false}
           />
         );
@@ -309,11 +404,7 @@ const CreateForm = ({
             select
             disabled={id === "career" && isCareerDisabled}
             className={styles.formField}
-            onChange={
-              handleChangeFunctions[
-                recognizedFields.includes(id) ? id : "default"
-              ]
-            }
+            onChange={changeFunctionSelector(id)}
             value={formData[id as keyof FormData]}
           >
             {optionsArray!.map((option) => (
@@ -329,7 +420,7 @@ const CreateForm = ({
             {...field}
             className={styles.formField}
             value={formData[id as keyof FormData] || ""}
-            onChange={(e) => handleChange(id, e.target.value)}
+            onChange={changeFunctionSelector(id)}
             error={
               validation &&
               !validation(formData[id as keyof FormData] as string)
@@ -348,7 +439,7 @@ const CreateForm = ({
             {...field}
             className={styles.formField}
             value={formData[id as keyof FormData] || ""}
-            onChange={(e) => handleChange(id, e.target.value)}
+            onChange={changeFunctionSelector(id)}
           />
         );
       case "checkbox":
@@ -363,11 +454,7 @@ const CreateForm = ({
                 }
                 className={styles.formField}
                 value={formData[id as keyof FormData] || ""}
-                onChange={
-                  handleChangeFunctions[
-                    recognizedFields.includes(id) ? id : "default"
-                  ]
-                }
+                onChange={changeFunctionSelector(id)}
               />
             }
             label={
@@ -377,6 +464,39 @@ const CreateForm = ({
                 ? "Activo"
                 : "Inactivo"
             }
+          />
+        );
+      case "tel":
+        return (
+          <MuiTelInput
+            {...field}
+            value={phones[id] || ""}
+            onChange={changeFunctionSelector(id)}
+          />
+        );
+      case "date":
+        return (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              {...field}
+              onChange={changeFunctionSelector(id)}
+              sx={fullWidth ? { width: "100%" } : {}}
+              minDate={dayjs()}
+              slotProps={{
+                textField: {
+                  required,
+                },
+              }}
+            />
+          </LocalizationProvider>
+        );
+      case "dropdown-list":
+        return (
+          <DropdownList
+            options={optionsArray}
+            // @ts-expect-error - is an string[]
+            selectedOptions={formData[id]}
+            setSelectedOptions={changeFunctionSelector(id)}
           />
         );
       default:
