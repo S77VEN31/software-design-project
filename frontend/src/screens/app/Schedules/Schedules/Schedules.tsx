@@ -51,11 +51,13 @@ const Schedules = () => {
       accessor: "startDate",
       header: "Start Date",
       render: (date) => (date ? formatDate(date) : "N/A"),
+      objectAccessor: (date) => formatDate(date),
     },
     {
       accessor: "endDate",
       header: "End Date",
       render: (date) => (date ? formatDate(date) : "N/A"),
+      objectAccessor: (date) => formatDate(date),
     },
   ];
   const actions = [
