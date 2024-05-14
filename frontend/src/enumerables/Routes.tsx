@@ -79,7 +79,7 @@ const appRoutes = [
   },
   {
     apiSlug: "/team/put",
-    path: "/home/team/edit/:code",
+    path: "/home/team/edit/:id",
     inNav: false,
     element: (
       <CreateFormLayout

@@ -283,6 +283,8 @@ const CreateForm = ({
     if (getRequest) {
       getRequest(id)
         .then((response) => {
+          console.log(id);
+          console.log(response);
           setFormData(response);
         })
         .catch((error) => {
@@ -296,6 +298,10 @@ const CreateForm = ({
     console.log(formData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
+
+  useEffect(() => {
+    console.log(id);
+  }, [id]);  
 
   const renderField = (field: Field) => {
     const {

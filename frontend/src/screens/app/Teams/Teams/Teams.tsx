@@ -97,8 +97,8 @@ const Teams = () => {
   const actions = [
     {
       permission: checkPermission(permissions, "TEAM", "PUT"),
-      component: (code: string) => (
-        <IconButton onClick={() => navigation(`/home/team/edit/${code}`)}>
+      component: (id: string) => (
+        <IconButton onClick={() => navigation(`/home/team/edit/${id}`)}>
           <Edit />
         </IconButton>
       ),

@@ -16,8 +16,8 @@ import { createTeamSchema, updateTeamSchema } from "../schemas";
 const router = Router();
 
 router.get("/team", authRequired, getTeams);
+router.get("/team", authRequired, getTeam);
 router.delete("/team", authRequired, deleteTeam);
-router.get("/team/:code", authRequired, getTeam);
 router.post("/team", authRequired, schemaValidation(createTeamSchema), addTeam);
 router.put(
   "/team/:code",

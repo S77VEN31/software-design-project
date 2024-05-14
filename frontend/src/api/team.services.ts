@@ -5,11 +5,12 @@ import { FormData } from "@enumerables";
 // Enviroment variables
 const { VITE_API_TEAMS } = import.meta.env;
 
-export const getTeamRequest = async (code?: string) => {
-    const response = await api.get(
-        code ? `${VITE_API_TEAMS}/${code}` : VITE_API_TEAMS
-    );
-    return response.data;
+export const getTeamRequest = async (id?: string) => {
+  console.log("id", id);
+  const response = await api.get(
+    id ? `${VITE_API_TEAMS}?id=${id}` : VITE_API_TEAMS
+  );
+  return response.data;
 };
 
 export const createTeamRequest = async (team: FormData) => {

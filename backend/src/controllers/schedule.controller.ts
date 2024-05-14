@@ -37,7 +37,6 @@ export const getSchedule = async (req: Request, res: Response) => {
     const schedule = await Schedule.findById(id)
       .populate("activities")
       .populate("comments");
-
     return res.status(200).json(schedule);
   } catch (error) {
     return res.status(500).json({ message: [error] });

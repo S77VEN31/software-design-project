@@ -24,8 +24,9 @@ export const addTeam = async (req: Request, res: Response) => {
 
 export const getTeam = async (req: Request, res: Response) => {
   try {
-    const { code } = req.params;
-    const team = await Team.findOne({ code });
+    const { id } = req.query;
+    const team = await Team.findById(id);
+    console.log(team);
     return res.status(200).json(team);
   } catch (error) {
     return res.status(500).json({ message: [error] });
