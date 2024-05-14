@@ -26,7 +26,7 @@ import {
   Career,
   Field,
   FormData,
-  Team,
+  TeamOverview,
 } from "@enumerables";
 // Hooks
 import { DropdownList } from "@components";
@@ -49,7 +49,7 @@ interface CreateFormProps {
 interface DropdownOptions {
   campusBranches: CampusBranch[];
   careers: Career[];
-  teams: Team[];
+  teams: TeamOverview[];
   activities: Activity[];
 }
 
