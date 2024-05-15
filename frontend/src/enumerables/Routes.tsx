@@ -6,6 +6,7 @@ import {
   StudentsScreen,
   TeachersScreen,
   TeamsScreen,
+  ActivitiesScreen,
 } from "@screens";
 // Layouts
 import { CreateFormLayout } from "@layouts";
@@ -23,6 +24,9 @@ import {
   updateStudentRequest,
   updateTeacherRequest,
   updateTeamRequest,
+  updateActivityRequest,
+  getActivityRequest,
+  createActivityRequest,
 } from "@api";
 import {
   DefaultSchedule,
@@ -39,6 +43,9 @@ import {
   TeacherUpdateFields,
   TeamFields,
   UpdateTeamFields,
+  ActivityUpdateFields,
+  DefaultActivity,
+  ActivityFields,
 } from "@enumerables";
 
 const authenticationRoutes = [
@@ -234,26 +241,40 @@ const appRoutes = [
   {
     apiSlug: "/schedule/activities/get",
     path: "/home/schedule/activities",
-    inNav: false,
-    element: <div>Activities</div>,
+    inNav: true,
+    label: "ACTIVIDADES",
+    element: <ActivitiesScreen />,
   },
   {
     apiSlug: "/schedule/activity/post",
     path: "/home/schedule/activity/add",
     inNav: false,
-    element: <div>Add Activity</div>,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Crear Actividad"
+        createButtonText="Agregar Actividad"
+        request={createActivityRequest}
+        fields={ActivityFields}
+        initialData={DefaultActivity}
+        routeToGo="/home/schedule/activities"
+      />
+    ),
   },
   {
     apiSlug: "/schedule/activity/put",
-    path: "/home/schedule/activity/edit",
+    path: "/home/schedule/activity/edit/:id",
     inNav: false,
-    element: <div>Edit Activity</div>,
-  },
-  {
-    apiSlug: "/schedule/activity/delete",
-    path: "/home/schedule/activity/delete",
-    inNav: false,
-    element: <div>Delete Activity</div>,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Editar Actividad"
+        createButtonText="Actualizar Actividad"
+        request={updateActivityRequest}
+        fields={ActivityUpdateFields}
+        initialData={DefaultActivity}
+        getRequest={getActivityRequest}
+        routeToGo="/home/schedule/activities"
+      />
+    ),
   },
   {
     apiSlug: "/schedule/activity/get",
