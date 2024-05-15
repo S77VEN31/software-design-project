@@ -5,14 +5,14 @@ import { CampusBranch, TeacherUser } from "../models";
 
 export const addCampusBranch = async (req: Request, res: Response) => {
   try {
-    const { name, initials, code, location, carrers } = req.body;
+    const { name, initials, code, location, careers } = req.body;
 
     const newCampusBranch = new CampusBranch({
       name,
       initials,
       code,
       location,
-      carrers,
+      careers,
     });
     await newCampusBranch.save();
     return res.status(200).json(newCampusBranch);
