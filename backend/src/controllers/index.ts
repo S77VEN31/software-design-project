@@ -6,3 +6,4 @@ export * from "./campusBranch.controller";
 export * from "./comment.controller";
 export * from "./team.controller";
 export * from "./schedule.controller";
+export * from "./studentExcel.controller";
