@@ -6,5 +6,6 @@ import campusBranchRoutes from "./campusBranch.routes"
 import commentRoutes from "./comment.routes";
 import teamRoutes from "./team.routes";
 import scheduleRoutes from "./schedule.routes";
+import studentExcelRoutes from "./studentExcel.routes";
 
-export { activityRoutes, authenticationRoutes, careerRoutes, userRoutes, commentRoutes, campusBranchRoutes, teamRoutes, scheduleRoutes };
+export { activityRoutes, authenticationRoutes, careerRoutes, userRoutes, commentRoutes, campusBranchRoutes, teamRoutes, scheduleRoutes, studentExcelRoutes };
