@@ -5,6 +5,8 @@ import { RoleManager } from "./authentication/getRole.middleware";
 export * from "./jwtValidation.middleware";
 // Schema validation middleware
 export * from "./schemaValidation.middleware";
+// Get type middleware
+export * from "./getType.middleware";
 // User middlewares
 export * from "./user/addRole.middleware";
 

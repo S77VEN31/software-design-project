@@ -58,10 +58,10 @@ export const getSchedules = async (req: Request, res: Response) => {
 export const updateSchedule = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const updateScheduleData = req.body;
+    const updatedScheduleData = req.body;
     const updatedSchedule = await Schedule.findByIdAndUpdate(
       { _id: id },
-      updateScheduleData,
+      updatedScheduleData,
       { new: true }
     );
     return res.status(200).json({
@@ -76,10 +76,10 @@ export const updateSchedule = async (req: Request, res: Response) => {
 export const deleteSchedule = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await Schedule.findByIdAndDelete(id);
+    const deletedSchedule = await Schedule.findByIdAndDelete(id);
     return res
       .status(200)
-      .json({ message: ["Horario eliminado correctamente"] });
+      .json({ message: ["Horario eliminado correctamente"], deletedSchedule });
   } catch (error) {
     return res.status(500).json({ message: [error] });
   }

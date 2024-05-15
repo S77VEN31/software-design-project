@@ -42,12 +42,8 @@ export const getCampusBranch = async (req: Request, res: Response) => {
 
 export const getCampusBranchTeachers = async (req: Request, res: Response) => {
   try {
-    const { campusBranchId } = req.query;
-    // Get teachers from a campus branch campus branches are in campusBranch array
-    const teachers = await TeacherUser.find(
-      // in campusBranch array
-      { campusBranch: { $in: [campusBranchId] } }
-    );
+    const { id } = req.query;
+    const teachers = await TeacherUser.find({ campusBranch: { $in: [id] } });
     return res.status(200).json(teachers);
   } catch (error: any) {
     return res.status(500).json({ message: [error] });

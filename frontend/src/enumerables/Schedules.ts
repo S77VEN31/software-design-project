@@ -5,7 +5,6 @@ const DefaultSchedule: Schedule = {
   name: "",
   startDate: "",
   endDate: "",
-  status: "",
   activities: [],
   teams: [],
 };

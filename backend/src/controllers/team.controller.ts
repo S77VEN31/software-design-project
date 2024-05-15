@@ -26,7 +26,6 @@ export const getTeam = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
     const team = await Team.findById(id);
-    console.log(team);
     return res.status(200).json(team);
   } catch (error) {
     return res.status(500).json({ message: [error] });
@@ -38,7 +37,6 @@ export const getTeams = async (req: Request, res: Response) => {
     const teams = await Team.find({}).populate(
       "students teachers coordinator campusBranch career"
     );
-    console.log(teams);
     return res.status(200).json(teams);
   } catch (error) {
     return res.status(500).json({ message: [error] });
@@ -47,36 +45,19 @@ export const getTeams = async (req: Request, res: Response) => {
 
 export const updateTeam = async (req: Request, res: Response) => {
   try {
-    const { code } = req.params;
-    const { name, description, students, teachers, coordinator } = req.body;
-
-    const team = await Team.findOne({ code });
-    if (team) {
-      team.name = name;
-      team.description = description;
-      team.students = students;
-      team.teachers = teachers;
-      team.coordinator = coordinator;
-      await team.save();
-      return res.status(200).json(team);
-    }
-
-    const newTeam = new Team({
-      code,
-      name,
-      description,
-      students,
-      teachers,
-      coordinator,
+    const { id } = req.query;
+    const updatedTeamData = req.body;
+    console.log(updatedTeamData);
+    const updatedTeam = await Team.findByIdAndUpdate(
+      { _id: id },
+      updatedTeamData,
+      { new: true }
+    );
+    return res.status(200).json({
+      message: ["Equipo actualizado exitosamente"],
+      updatedTeam,
     });
-    await newTeam.save();
-    return res.status(200).json(newTeam);
   } catch (error: any) {
-    if (error.code === 11000) {
-      return res
-        .status(400)
-        .json({ message: ["The team code is already in use"] });
-    }
     return res.status(500).json({ message: [error] });
   }
 };
@@ -84,8 +65,10 @@ export const updateTeam = async (req: Request, res: Response) => {
 export const deleteTeam = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
-    await Team.findByIdAndDelete(id);
-    return res.status(200).json({ message: ["Equipo eliminado exitosamente"] });
+    const deletedTeam = await Team.findByIdAndDelete(id);
+    return res
+      .status(200)
+      .json({ message: ["Equipo eliminado exitosamente"], deletedTeam });
   } catch (error) {
     return res.status(500).json({ message: [error] });
   }
