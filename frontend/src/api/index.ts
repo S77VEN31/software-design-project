@@ -14,7 +14,16 @@ import {
   updateTeacherRequest,
 } from "./user.services";
 // Schedule services
-import { createScheduleRequest, deleteScheduleRequest, getScheduleRequest, updateScheduleRequest } from "./schedule.services";
+import {
+  createActivityRequest,
+  createScheduleRequest,
+  deleteActivityRequest,
+  deleteScheduleRequest,
+  getActivityRequest,
+  getScheduleRequest,
+  updateActivityRequest,
+  updateScheduleRequest,
+} from "./schedule.services";
 // Enumerable services
 import {
   getCampusBranchRequest,
@@ -30,14 +39,17 @@ import {
 
 export {
   api,
+  createActivityRequest,
   createScheduleRequest,
   createStudentRequest,
   createTeacherRequest,
   createTeamRequest,
+  deleteActivityRequest,
   deleteScheduleRequest,
   deleteStudentRequest,
   deleteTeacherRequest,
   deleteTeamRequest,
+  getActivityRequest,
   getCampusBranchRequest,
   getCampusBranchTeachersRequest,
   getScheduleRequest,
@@ -47,6 +59,7 @@ export {
   loginRequest,
   registerRequest,
   setAuthHeaders,
+  updateActivityRequest,
   updateScheduleRequest,
   updateStudentRequest,
   updateTeacherRequest,

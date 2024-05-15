@@ -22,6 +22,9 @@ export {
   DefaultSchedule,
   ScheduleFields,
   ScheduleUpdateFields,
+  DefaultActivity,
+  ActivityFields,
+  ActivityUpdateFields,
 } from "./Schedules";
 export {
   AdminAssistantFields,

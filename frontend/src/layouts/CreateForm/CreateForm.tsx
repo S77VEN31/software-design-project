@@ -19,9 +19,11 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MuiTelInput } from "mui-tel-input";
 // Api
 import {
+  getActivityRequest,
   getCampusBranchRequest,
   getCampusBranchTeachersRequest,
   getStudentRequest,
+  getTeacherRequest,
   getTeamRequest,
 } from "@api";
 // Types
@@ -63,6 +65,7 @@ interface DropdownOptions {
   teachers: Teacher[];
   coordinators: Teacher[];
   students: Student[];
+  organizers: Teacher[];
 }
 
 const CreateForm = ({
@@ -109,6 +112,7 @@ const CreateForm = ({
     teachers: [],
     coordinators: [],
     students: [],
+    organizers: [],
   });
   const [phones, setPhones] = useState<{ [key: string]: string }>({});
   // Hooks
@@ -149,6 +153,22 @@ const CreateForm = ({
       teams,
     }));
   };
+
+  const getOrganizers = async () => {
+    const organizers = await getTeacherRequest();
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      organizers,
+    }));
+  };
+
+  const getActivities = async () => {
+    const activities = await getActivityRequest();
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      activities,
+    }));
+  };
   /**
    * This use effect is used to get the teachers and coordinators from the API when the campus branch changes
    * It also enables the disabled options for teachers, coordinator and career when the campus branch is selected
@@ -164,6 +184,7 @@ const CreateForm = ({
           toggleDisabledOptions("teachers");
           toggleDisabledOptions("career");
           toggleDisabledOptions("coordinator");
+          toggleDisabledOptions("organizers");
         }
       }
     },
@@ -233,6 +254,7 @@ const CreateForm = ({
     }
     setFormData({
       ...formData,
+      // @ts-expect-error - Its existence is optional
       campusBranch: selectedBranch ? [selectedBranch._id] : [""],
     });
   };
@@ -240,6 +262,7 @@ const CreateForm = ({
   const handleCareerChange = (careerId: string) => {
     setFormData({
       ...formData,
+      // @ts-expect-error - Its existence is optional
       career: [careerId],
     });
   };
@@ -247,6 +270,7 @@ const CreateForm = ({
   const handleAddRoles = (role: Role) => {
     setFormData({
       ...formData,
+      // @ts-expect-error - Its existence is optional
       roles: [role],
     });
   };
@@ -275,6 +299,7 @@ const CreateForm = ({
       const phonesArray = Object.values(phones);
       setFormData({
         ...formData,
+        // @ts-expect-error - Its existence is optional
         phones: phonesArray,
       });
     },
@@ -304,7 +329,8 @@ const CreateForm = ({
       })
       .catch((error) => {
         console.log(error);
-        toast(500, ["Error al guardar los datos"]);
+        console.log(error.response.data.message);
+        toast(500, error.response.data.message);
       });
   };
 
@@ -313,6 +339,8 @@ const CreateForm = ({
     getTeams();
     getStudents();
     setDisabledOptionsFromFields();
+    getOrganizers();
+    getActivities();
     if (getRequest) {
       getRequest(id)
         .then((response) => {
@@ -380,6 +408,11 @@ const CreateForm = ({
           value: student._id,
           label: student.name,
         }))
+      : id === "organizers"
+      ? dropdownOptions.organizers.map((organizer) => ({
+          value: organizer._id,
+          label: organizer.name,
+        }))
       : [];
 
     const recognizedFields = [
@@ -388,10 +421,12 @@ const CreateForm = ({
       "roles",
       "teams",
       "activities",
+      "dateTime",
       "startDate",
       "endDate",
       "personal",
       "office",
+      "organizers",
       "year",
       "teachers",
       "coordinator",
@@ -411,6 +446,7 @@ const CreateForm = ({
       activities: (list: string[]) => handleChange(id, list),
       teachers: (list: string[]) => handleChange(id, list),
       students: (list: string[]) => handleChange(id, list),
+      organizers: (list: string[]) => handleChange(id, list),
       coordinator: (event: ChangeEvent<HTMLInputElement>) =>
         handleChange(id, [event.target.value]),
       personal: (value: string) => handlePhoneChange(id, value),
@@ -418,6 +454,8 @@ const CreateForm = ({
       startDate: (date: Date | null) =>
         handleChange(id, date?.toISOString() || ""),
       endDate: (date: Date | null) =>
+        handleChange(id, date?.toISOString() || ""),
+      dateTime: (date: Date | null) =>
         handleChange(id, date?.toISOString() || ""),
       year: (date: Date | null) =>
         handleChange(

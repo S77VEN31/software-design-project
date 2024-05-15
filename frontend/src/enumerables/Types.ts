@@ -79,13 +79,6 @@ export type Role =
     description: string;
   };
 
-  export type Activity = {
-    _id: string;
-    name: string;
-    code: string;
-    description: string;
-  };
-
   export type CampusBranch = {
     location: Location;
     _id: string;
@@ -109,28 +102,59 @@ export type Role =
     activities: string[];
   };
 
-export type Team = {
-  name: string;
-  code: string;
-  year: string;
-  description: string;
-  students: string[];
-  teachers: string[];
-  coordinator: string[];
-};
+  export type ActivityTypes =
+    | "Orientation"
+    | "Motivational"
+    | "Support"
+    | "Technical"
+    | "Recreational";
+  export type ActivityModality = "Online" | "Presential";
+  export type ActivityStatus = "Planned" | "Notified" | "Realized" | "Canceled";
 
-export type FormData = Student | Teacher | Schedule | Team;  
+  export type Activity = {
+    _id?: string;
+    type: ActivityTypes;
+    week: number;
+    name: string;
+    dateTime: string;
+    organizers: string[];
+    announcementDays: number;
+    reminderDays: number;
+    mode: ActivityModality;
+    status: ActivityStatus;
+    meetingLink: string;
+    poster: string;
+    evidence: string;
+    comments: string[];
+  };
 
-export type Field = {
-  id: string;
-  disabled?: boolean;
-  label?: string;
-  options?: { value: string; label: string }[];
-  type: string;
-  section: string;
-  fullWidth?: boolean;
-  inputProps?: { maxLength?: number; minLength?: number };
-  validation?: (value: string) => boolean;
-  helperText?: string;
-  required?: boolean;
-};
+  export type Team = {
+    name: string;
+    code: string;
+    year: string;
+    description: string;
+    students: string[];
+    teachers: string[];
+    coordinator: string[];
+  };
+
+  export type FormData = Student | Teacher | Schedule | Team | Activity;
+
+  export type Field = {
+    id: string;
+    disabled?: boolean;
+    label?: string;
+    options?: { value: string; label: string }[];
+    type: string;
+    section: string;
+    fullWidth?: boolean;
+    inputProps?: {
+      maxLength?: number;
+      minLength?: number;
+      max?: number;
+      min?: number;
+    };
+    validation?: (value: string) => boolean;
+    helperText?: string;
+    required?: boolean;
+  };
