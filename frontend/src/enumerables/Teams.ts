@@ -63,6 +63,7 @@ const TeamFields = [
     section: "Información General",
     fullWidth: true,
     required: true,
+    disabled: true,
   },
   {
     id: "coordinator",
@@ -71,6 +72,7 @@ const TeamFields = [
     section: "Integrantes del Equipo",
     fullWidth: true,
     required: true,
+    disabled: true,
   },
   {
     id: "teachers",
@@ -79,6 +81,7 @@ const TeamFields = [
     section: "Integrantes del Equipo",
     fullWidth: true,
     required: true,
+    disabled: true,
   },
   {
     id: "students",
@@ -119,6 +122,7 @@ const UpdateTeamFields = [
       maxLength: 60,
       minLength: 5,
     },
+    disabled: true,
     validation: (value: string) => value === "" || value.length >= 5,
     helperText: "Name must have at least 5 characters",
   },
@@ -129,6 +133,7 @@ const UpdateTeamFields = [
     section: "Información General",
     fullWidth: true,
     required: true,
+    disabled: true,
     inputProps: {
       maxLength: 10,
       minLength: 5,
@@ -143,7 +148,6 @@ const UpdateTeamFields = [
     type: "year",
     section: "Información General",
     fullWidth: true,
-    required: true,
   },
   {
     id: "campusBranch",

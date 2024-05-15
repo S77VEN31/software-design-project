@@ -71,7 +71,7 @@ export const login = async (req: Request, res: Response) => {
       return res.status(400).json({ message: ["User not found"] });
     }
 
-    if (!userFound.active) {
+    if (userFound.status === "inactive") {
       return res.status(400).json({ message: ["User is not active"] });
     }
 

@@ -11,11 +11,7 @@ export const getCampusBranchRequest = async (id?: string) => {
   return response.data;
 };
 
-export const getCampusBranchTeachersRequest = async (
-  campusBranchId: string
-) => {
-  const response = await api.get(
-    `${VITE_API_CAMPUS_BRANCH_TEACHERS}?campusBranchId=${campusBranchId}`
-  );
+export const getCampusBranchTeachersRequest = async (id: string) => {
+  const response = await api.get(`${VITE_API_CAMPUS_BRANCH_TEACHERS}?id=${id}`);
   return response.data;
 };
