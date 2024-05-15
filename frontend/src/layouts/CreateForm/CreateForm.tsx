@@ -31,6 +31,7 @@ import {
   Career,
   Field,
   FormData,
+  Role,
   Student,
   Teacher,
   TeamOverview,
@@ -81,6 +82,14 @@ const CreateForm = ({
     career: true,
     coordinator: true,
   });
+  const setDisabledOptionsFromFields = () => {
+    fields.forEach((field) => {
+      setDisabledOptions((prevOptions) => ({
+        ...prevOptions,
+        [field.id]: field.disabled || false,
+      }));
+    });
+  };
   const isInDisabledOptions = (id: string) => {
     return Object.prototype.hasOwnProperty.call(disabledOptions, id)
       ? disabledOptions[id as keyof typeof disabledOptions]
@@ -125,29 +134,6 @@ const CreateForm = ({
     }
   };
 
-  const getTeams = async () => {
-    const teams = await getTeamRequest();
-    setDropdownOptions((prevOptions) => ({
-      ...prevOptions,
-      teams,
-    }));
-  };
-
-  const getTeachersAndCoordinators = async (campusBranchId: string) => {
-    const teachers = await getCampusBranchTeachersRequest(campusBranchId);
-    const coordinators = teachers.filter((teacher: Teacher) =>
-      teacher.roles.includes("Coordinator")
-    );
-    const filteredTeachers = teachers.filter(
-      (teacher: Teacher) => !teacher.roles.includes("Coordinator")
-    );
-    setDropdownOptions((prevOptions) => ({
-      ...prevOptions,
-      teachers: filteredTeachers,
-      coordinators,
-    }));
-  };
-
   const getStudents = async () => {
     const students = await getStudentRequest();
     setDropdownOptions((prevOptions) => ({
@@ -155,6 +141,75 @@ const CreateForm = ({
       students,
     }));
   };
+
+  const getTeams = async () => {
+    const teams = await getTeamRequest();
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      teams,
+    }));
+  };
+  /**
+   * This use effect is used to get the teachers and coordinators from the API when the campus branch changes
+   * It also enables the disabled options for teachers, coordinator and career when the campus branch is selected
+   **/
+  useEffect(
+    () => {
+      // @ts-expect-error - Its existence is optional
+      if (formData.campusBranch) {
+        // @ts-expect-error - Its existence is already checked
+        if (formData.campusBranch.length > 0) {
+          // @ts-expect-error - Its existence is already checked
+          getTeachersAndCoordinators(formData.campusBranch[0]);
+          toggleDisabledOptions("teachers");
+          toggleDisabledOptions("career");
+          toggleDisabledOptions("coordinator");
+        }
+      }
+    },
+    // @ts-expect-error - Its existence is optional
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [formData.campusBranch]
+  );
+
+  const getTeachersAndCoordinators = async (id: string) => {
+    const teachers = await getCampusBranchTeachersRequest(id);
+    // Filtered teachers are those that are not coordinators
+    const filteredTeachers = teachers.filter(
+      (teacher: Teacher) => !teacher.roles.includes("Coordinator")
+    );
+    // Coordinators are those that are not coordinators and are not already in the form data teachers list
+    const coordinators = teachers.filter(
+      (teacher: Teacher) =>
+        teacher.roles.includes("Coordinator") &&
+        // @ts-expect-error - Its existence is optional
+        !formData.teachers.includes(teacher._id)
+    );
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      teachers: filteredTeachers,
+      coordinators,
+    }));
+  };
+  /**
+   * This use effect is used to re render the coordinators and teachers list when the coordinators or teachers list changes
+   * It takes the campus branch id in consideration to get the teachers and coordinators of the selected campus branch
+   **/
+  useEffect(
+    () => {
+      // @ts-expect-error - Its existence is optional
+      if (formData.campusBranch) {
+        // @ts-expect-error - Its existence is already checked
+        if (formData.campusBranch.length > 0) {
+          // @ts-expect-error - Its existence is already checked
+          getTeachersAndCoordinators(formData.campusBranch[0]);
+        }
+      }
+    },
+    // @ts-expect-error - Its existence is optional
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [formData.teachers, formData.coordinator]
+  );
 
   /**
    * This set of functions is used to handle the changes in the form fields
@@ -175,10 +230,6 @@ const CreateForm = ({
         ...prevOptions,
         careers: selectedBranch.careers,
       }));
-      getTeachersAndCoordinators(selectedBranch._id);
-      toggleDisabledOptions("teachers");
-      toggleDisabledOptions("career");
-      toggleDisabledOptions("coordinator");
     }
     setFormData({
       ...formData,
@@ -193,28 +244,11 @@ const CreateForm = ({
     });
   };
 
-  const handleAddCoordinatorRole = (state: boolean) => {
-    // @ts-expect-error - Esto no debería ser necesario
-    const isCoordinator = formData.roles.includes("Coordinator");
-    if (state) {
-      if (!isCoordinator) {
-        // Si no está ya en la lista, lo añadimos
-        setFormData({
-          ...formData,
-          // @ts-expect-error - Esto no debería ser necesario
-          roles: [...formData.roles, "Coordinator"],
-        });
-      }
-    } else {
-      if (isCoordinator) {
-        // Si está en la lista y desmarcamos la casilla, lo eliminamos
-        setFormData({
-          ...formData,
-          // @ts-expect-error - Esto no debería ser necesario
-          roles: formData.roles.filter((role) => role !== "Coordinator"),
-        });
-      }
-    }
+  const handleAddRoles = (role: Role) => {
+    setFormData({
+      ...formData,
+      roles: [role],
+    });
   };
 
   const handlePhoneChange = (id: string, value: string) => {
@@ -223,8 +257,6 @@ const CreateForm = ({
       [id]: value,
     }));
   };
-
-  useEffect(() => {}, [disabledOptions]);
 
   useEffect(() => {
     const newPhones: { [key: string]: string } = {};
@@ -280,10 +312,10 @@ const CreateForm = ({
     getCampusBranches();
     getTeams();
     getStudents();
+    setDisabledOptionsFromFields();
     if (getRequest) {
       getRequest(id)
         .then((response) => {
-          console.log(id);
           console.log(response);
           setFormData(response);
         })
@@ -298,10 +330,6 @@ const CreateForm = ({
     console.log(formData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData]);
-
-  useEffect(() => {
-    console.log(id);
-  }, [id]);  
 
   const renderField = (field: Field) => {
     const {
@@ -358,7 +386,6 @@ const CreateForm = ({
       "campusBranch",
       "career",
       "roles",
-      "active",
       "teams",
       "activities",
       "startDate",
@@ -378,9 +405,7 @@ const CreateForm = ({
       career: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
         handleCareerChange(event.target.value),
       roles: (event: ChangeEvent<HTMLInputElement>) =>
-        handleAddCoordinatorRole(event.target.checked),
-      active: (event: ChangeEvent<HTMLInputElement>) =>
-        handleChange(id, event.target.checked as unknown as string),
+        handleAddRoles(event.target.value as Role),
       teams: (event: ChangeEvent<HTMLInputElement>) =>
         handleChange(id, [event.target.value]),
       activities: (list: string[]) => handleChange(id, list),
@@ -489,11 +514,17 @@ const CreateForm = ({
             onChange={changeFunctionSelector(id)}
             value={formData[id as keyof FormData]}
           >
-            {optionsArray!.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {optionsArray && optionsArray.length > 0 ? (
+              optionsArray.map((option) => (
+                <MenuItem key={option.value} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))
+            ) : (
+              <MenuItem disabled value="">
+                No hay opciones disponibles
               </MenuItem>
-            ))}
+            )}
           </TextField>
         );
       case "email":

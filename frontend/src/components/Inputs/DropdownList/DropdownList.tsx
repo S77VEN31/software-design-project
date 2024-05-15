@@ -33,6 +33,7 @@ const DropdownList = ({
 
   return (
     <Autocomplete
+      noOptionsText="No hay opciones disponibles"
       disabled={disabled}
       multiple
       id="tags-outlined"
@@ -44,9 +45,12 @@ const DropdownList = ({
       filterSelectedOptions
       getOptionLabel={(option) => option.label}
       renderInput={(params) => (
-        <TextField required={
-          selectedOptions.length === 0 ? required : false
-        } label={label} placeholder={placeholder} {...params} />
+        <TextField
+          required={selectedOptions.length === 0 ? required : false}
+          label={label}
+          placeholder={placeholder}
+          {...params}
+        />
       )}
       renderTags={(value, getTagProps) =>
         value.map((option, index) => (

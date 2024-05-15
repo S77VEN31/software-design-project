@@ -3,9 +3,11 @@ import mongoose, { Schema } from "mongoose";
 // Esquema base para todos los usuarios
 const baseUserSchema = new Schema(
   {
-    active: {
-      type: Boolean,
-      default: true,
+    status: {
+      type: String,
+      required: true,
+      enum: ["active", "inactive"],
+      default: "active",
     },
     userName: {
       type: String,

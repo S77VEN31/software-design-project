@@ -94,6 +94,7 @@ const TeacherFields = [
     section: "Información del Campus",
     fullWidth: true,
     required: true,
+    disabled: true,
   },
   {
     id: "personal",
@@ -139,10 +140,21 @@ const TeacherFields = [
   },
   {
     id: "roles",
-    label: "Coordinador",
-    type: "checkbox",
+    label: "Rol",
+    type: "dropdown",
+    options: [
+      {
+        value: "Coordinator",
+        label: "Coordinador",
+      },
+      {
+        value: "Teacher",
+        label: "Profesor",
+      },
+    ],
     section: "Roles",
     fullWidth: true,
+    required: true,
   },
 ];
 
@@ -212,15 +224,39 @@ const TeacherUpdateFields = [
   },
   {
     id: "roles",
-    label: "Coordinador",
-    type: "checkbox",
+    label: "Rol",
+    type: "dropdown",
+    options: [
+      {
+        value: "Coordinator",
+        label: "Coordinador",
+      },
+      {
+        value: "Teacher",
+        label: "Profesor",
+      },
+    ],
     section: "Roles",
     fullWidth: true,
+    required: true,
   },
   {
-    id: "active",
-    type: "checkbox",
-    section: "Estado",
+    id: "status",
+    label: "Status",
+    type: "dropdown",
+    options: [
+      {
+        value: "active",
+        label: "Activo",
+      },
+      {
+        value: "inactive",
+        label: "Inactivo",
+      },
+    ],
+    section: "Información del Profesor",
+    fullWidth: true,
+    required: true,
   },
 ];
 
@@ -313,6 +349,7 @@ const StudentFields = [
     section: "Información del Campus",
     fullWidth: true,
     required: true,
+    disabled: true,
   },
   {
     id: "email",
@@ -400,9 +437,22 @@ const StudentUpdateFields = [
     disabled: true,
   },
   {
-    id: "active",
-    type: "checkbox",
-    section: "Estado",
+    id: "status",
+    label: "Status",
+    type: "dropdown",
+    options: [
+      {
+        value: "active",
+        label: "Activo",
+      },
+      {
+        value: "inactive",
+        label: "Inactivo",
+      },
+    ],
+    section: "Información del Estudiante",
+    fullWidth: true,
+    required: true,
   },
 ];
 
