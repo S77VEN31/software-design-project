@@ -118,7 +118,7 @@ export type Role =
     name: string;
     dateTime: string;
     organizers: string[];
-    anouncementDays: number;
+    announcementDays: number;
     reminderDays: number;
     mode: ActivityModality;
     status: ActivityStatus;

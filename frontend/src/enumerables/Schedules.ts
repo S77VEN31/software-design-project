@@ -1,5 +1,5 @@
 // Types
-import { Schedule, Activity } from "@enumerables";
+import { Activity, Schedule } from "@enumerables";
 
 const DefaultSchedule: Schedule = {
   name: "",
@@ -76,6 +76,13 @@ const ScheduleFields = [
       maxLength: 100,
     },
   },
+  {
+    id: "activities",
+    label: "Actividades",
+    type: "dropdown-list",
+    section: "Actividades",
+    fullWidth: true,
+  },
 ];
 
 const ScheduleUpdateFields = [
@@ -143,6 +150,13 @@ const ScheduleUpdateFields = [
       maxLength: 100,
     },
   },
+  {
+    id: "activities",
+    label: "Actividades",
+    type: "dropdown-list",
+    section: "Actividades",
+    fullWidth: true,
+  },
 ];
 
 const DefaultActivity: Activity = {
@@ -151,7 +165,7 @@ const DefaultActivity: Activity = {
   name: "",
   dateTime: "",
   organizers: [],
-  anouncementDays: 1,
+  announcementDays: 1,
   reminderDays: 1,
   mode: "Online",
   status: "Planned",
@@ -169,6 +183,9 @@ const ActivityFields = [
     section: "Información de la Actividad",
     fullWidth: true,
     required: true,
+    validation: (value: string) =>
+      value === "" || (value.length >= 5 && value.length <= 60),
+    helperText: "El nombre debe tener entre 5 y 60 caracteres",
   },
   {
     id: "week",
@@ -214,9 +231,9 @@ const ActivityFields = [
   },
   {
     id: "dateTime",
-    label: "Fecha y Hora",
+    label: "Fecha de Inicio",
     type: "date",
-    section: "Información de la Actividad",
+    section: "Información del Horario",
     fullWidth: true,
     required: true,
   },
@@ -229,7 +246,7 @@ const ActivityFields = [
     required: true,
   },
   {
-    id: "anouncementDays",
+    id: "announcementDays",
     label: "Días de Anuncio",
     type: "number",
     section: "Configuración de la Actividad",
@@ -262,89 +279,16 @@ const ActivityFields = [
     fullWidth: true,
     required: true,
   },
-];
-
-const ActivityUpdateFields = [
   {
-    id: "type",
-    label: "Tipo",
-    type: "dropdown",
-    options: [
-      {
-        value: "Orientation",
-        label: "Orientación",
-      },
-      {
-        value: "Motivational",
-        label: "Motivacional",
-      },
-      {
-        value: "Support",
-        label: "Apoyo",
-      },
-      {
-        value: "Technical",
-        label: "Técnico",
-      },
-      {
-        value: "Recreational",
-        label: "Recreativo",
-      },
-    ],
-    section: "Información de la Actividad",
-    fullWidth: true,
-    required: true,
-  },
-  {
-    id: "week",
-    label: "Semana",
-    type: "number",
-    section: "Información de la Actividad",
-    inputProps: {
-      min: 1,
-      max: 18,
-    },
-    fullWidth: true,
-    required: true,
-  },
-  {
-    id: "name",
-    label: "Nombre",
+    id: "meetingLink",
+    label: "Link de Reunión",
     type: "text",
     section: "Información de la Actividad",
     fullWidth: true,
-    required: true,
-  },
-  {
-    id: "dateTime",
-    label: "Fecha y Hora",
-    type: "date",
-    section: "Información de la Actividad",
-    fullWidth: true,
-    required: true,
-  },
-  {
-    id: "organizers",
-    label: "Organizadores",
-    type: "dropdown",
-    section: "Información de la Actividad",
-    fullWidth: true,
-    required: true,
-  },
-  {
-    id: "anouncementDays",
-    label: "Días de Anuncio",
-    type: "number",
-    inputProps: {
-      min: 1,
-    },
-    section: "Información de la Actividad",
-    fullWidth: true,
-    required: true,
   },
   {
     id: "evidence",
-    label: "Descripción de Equipo",
+    label: "Evidencia de la actividad",
     type: "textarea",
     section: "Información Extra",
     fullWidth: true,
@@ -354,15 +298,84 @@ const ActivityUpdateFields = [
       maxLength: 100,
       minLength: 5,
     },
+    required: true,
+  },
+];
+
+const ActivityUpdateFields = [
+  {
+    id: "name",
+    label: "Nombre",
+    type: "text",
+    section: "Información de la Actividad",
+    fullWidth: true,
+    required: true,
+    validation: (value: string) =>
+      value === "" || (value.length >= 5 && value.length <= 60),
+    helperText: "El nombre debe tener entre 5 y 60 caracteres",
   },
   {
-    id: "reminderDays",
-    label: "Días de Recordatorio",
-    inputProps: {
-      min: 1,
-    },
+    id: "week",
+    label: "Semana",
     type: "number",
     section: "Información de la Actividad",
+    inputProps: {
+      min: 1,
+      max: 18,
+    },
+    fullWidth: true,
+    required: true,
+  },
+  {
+    id: "type",
+    label: "Tipo",
+    type: "dropdown",
+    options: [
+      {
+        value: "Orientation",
+        label: "Orientación",
+      },
+      {
+        value: "Motivational",
+        label: "Motivacional",
+      },
+      {
+        value: "Support",
+        label: "Apoyo",
+      },
+      {
+        value: "Technical",
+        label: "Técnico",
+      },
+      {
+        value: "Recreational",
+        label: "Recreativo",
+      },
+    ],
+    section: "Configuración de la Actividad",
+    fullWidth: true,
+    required: true,
+  },
+  {
+    id: "dateTime",
+    label: "Fecha de Inicio",
+    type: "date",
+    section: "Información del Horario",
+    fullWidth: true,
+  },
+  {
+    id: "organizers",
+    label: "Organizadores",
+    type: "dropdown-list",
+    section: "Configuración de la Actividad",
+    fullWidth: true,
+    required: true,
+  },
+  {
+    id: "announcementDays",
+    label: "Días de Anuncio",
+    type: "number",
+    section: "Configuración de la Actividad",
     fullWidth: true,
     required: true,
   },
@@ -370,6 +383,9 @@ const ActivityUpdateFields = [
     id: "mode",
     label: "Modalidad",
     type: "dropdown",
+    section: "Información de la Actividad",
+    fullWidth: true,
+    required: true,
     options: [
       {
         value: "Online",
@@ -381,34 +397,43 @@ const ActivityUpdateFields = [
       },
     ],
   },
-];
-
-/**
- *   {
-    id: "activities",
-    label: "Actividades",
-    type: "dropdown-list",
-    section: "Actividades",
-    options: [
-      {
-        value: "activity1",
-        label: "Actividad 1",
-      },
-      {
-        value: "activity2",
-        label: "Actividad 2",
-      },
-    ],
+  {
+    id: "reminderDays",
+    label: "Días de Recordatorio",
+    type: "number",
+    section: "Configuración de la Actividad",
     fullWidth: true,
     required: true,
   },
- */
+  {
+    id: "meetingLink",
+    label: "Link de Reunión",
+    type: "text",
+    section: "Información de la Actividad",
+    fullWidth: true,
+  },
+  {
+    id: "evidence",
+    label: "Evidencia de la actividad",
+    type: "textarea",
+    section: "Información Extra",
+    fullWidth: true,
+    multiline: true,
+    rows: 4,
+    inputProps: {
+      maxLength: 100,
+      minLength: 5,
+    },
+    required: true,
+  },
+];
+
 export {
+  ActivityFields,
+  ActivityUpdateFields,
+  DefaultActivity,
   DefaultSchedule,
   ScheduleFields,
   ScheduleUpdateFields,
-  DefaultActivity,
-  ActivityFields,
-  ActivityUpdateFields,
 };
 

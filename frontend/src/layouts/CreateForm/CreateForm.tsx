@@ -19,6 +19,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MuiTelInput } from "mui-tel-input";
 // Api
 import {
+  getActivityRequest,
   getCampusBranchRequest,
   getCampusBranchTeachersRequest,
   getStudentRequest,
@@ -158,6 +159,14 @@ const CreateForm = ({
     setDropdownOptions((prevOptions) => ({
       ...prevOptions,
       organizers,
+    }));
+  };
+
+  const getActivities = async () => {
+    const activities = await getActivityRequest();
+    setDropdownOptions((prevOptions) => ({
+      ...prevOptions,
+      activities,
     }));
   };
   /**
@@ -320,7 +329,8 @@ const CreateForm = ({
       })
       .catch((error) => {
         console.log(error);
-        toast(500, ["Error al guardar los datos"]);
+        console.log(error.response.data.message);
+        toast(500, error.response.data.message);
       });
   };
 
@@ -330,6 +340,7 @@ const CreateForm = ({
     getStudents();
     setDisabledOptionsFromFields();
     getOrganizers();
+    getActivities();
     if (getRequest) {
       getRequest(id)
         .then((response) => {
@@ -410,6 +421,7 @@ const CreateForm = ({
       "roles",
       "teams",
       "activities",
+      "dateTime",
       "startDate",
       "endDate",
       "personal",
@@ -442,6 +454,8 @@ const CreateForm = ({
       startDate: (date: Date | null) =>
         handleChange(id, date?.toISOString() || ""),
       endDate: (date: Date | null) =>
+        handleChange(id, date?.toISOString() || ""),
+      dateTime: (date: Date | null) =>
         handleChange(id, date?.toISOString() || ""),
       year: (date: Date | null) =>
         handleChange(
