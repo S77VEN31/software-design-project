@@ -5,23 +5,8 @@ import { Schedule } from "../models";
 
 export const addSchedule = async (req: Request, res: Response) => {
   try {
-    const { name, description, startDate, endDate, status, teams, activities } =
-      req.body;
-    const comments = [];
-    let initialDescription = "";
-    if (description) {
-      initialDescription = description;
-    }
-    const newSchedule = new Schedule({
-      name,
-      description: initialDescription,
-      startDate,
-      endDate,
-      status,
-      teams,
-      activities,
-    });
-    await newSchedule.save();
+    const scheduleData = req.body;
+    const newSchedule = await new Schedule({ ...scheduleData }).save();
     return res.status(200).json({
       message: ["Se creo correctamente el horario"],
       schedule: newSchedule,
@@ -33,7 +18,7 @@ export const addSchedule = async (req: Request, res: Response) => {
 
 export const getSchedule = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
     const schedule = await Schedule.findById(id)
       .populate("activities")
       .populate("comments");
@@ -57,7 +42,7 @@ export const getSchedules = async (req: Request, res: Response) => {
 
 export const updateSchedule = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
     const updatedScheduleData = req.body;
     const updatedSchedule = await Schedule.findByIdAndUpdate(
       { _id: id },
@@ -75,7 +60,7 @@ export const updateSchedule = async (req: Request, res: Response) => {
 
 export const deleteSchedule = async (req: Request, res: Response) => {
   try {
-    const { id } = req.params;
+    const { id } = req.query;
     const deletedSchedule = await Schedule.findByIdAndDelete(id);
     return res
       .status(200)

@@ -47,7 +47,6 @@ export const updateTeam = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
     const updatedTeamData = req.body;
-    console.log(updatedTeamData);
     const updatedTeam = await Team.findByIdAndUpdate(
       { _id: id },
       updatedTeamData,
