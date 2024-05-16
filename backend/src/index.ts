@@ -7,7 +7,7 @@ import { connect } from "./database"; // Conecta a la base de datos
 const port = process.env.PORT || 3000;
 
 // Middleware para servir archivos estáticos de la carpeta dist
-const distPath = path.join(__dirname, "../frontend/dist");
+const distPath = path.join(__dirname, "../../frontend/dist");
 app.use(express.static(distPath));
 
 // Ruta para servir el archivo HTML de la build de React
