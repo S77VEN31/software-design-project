@@ -14,6 +14,7 @@ const DefaultTeacher: Teacher = {
 };
 
 const DefaultUpdateTeacher: Teacher = {
+  status: "",
   name: "",
   campusBranch: [],
   career: [],
@@ -272,6 +273,7 @@ const DefaultStudent: Student = {
 };
 
 const DefaultUpdateStudent: Student = {
+  status: "",
   name: "",
   campusBranch: [],
   career: [],

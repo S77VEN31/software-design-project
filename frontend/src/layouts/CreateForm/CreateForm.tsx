@@ -5,14 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import styles from "./CreateForm.module.css";
 // Components
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import {
-  Button,
-  Checkbox,
-  FormControlLabel,
-  IconButton,
-  MenuItem,
-  TextField,
-} from "@mui/material";
+import { Button, IconButton, MenuItem, TextField } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -79,12 +72,15 @@ const CreateForm = ({
 }: CreateFormProps) => {
   const [formData, setFormData] = useState<FormData>(initialData);
   const [showPassword, setShowPassword] = useState(false);
-
   const [disabledOptions, setDisabledOptions] = useState({
     teachers: true,
     career: true,
     coordinator: true,
   });
+  /*
+   * This function is used to set the disabled options from the fields
+   * It is used to set the disabled options from the fields when the component mounts
+   */
   const setDisabledOptionsFromFields = () => {
     fields.forEach((field) => {
       setDisabledOptions((prevOptions) => ({
@@ -314,8 +310,22 @@ const CreateForm = ({
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
+    /*
+     * This function is used to send the data to the API
+     * It also resets the form data when the request is successful
+     * If there are numbers in the form data, they are converted to strings
+     */
+    const formDataCopy = { ...formData };
+    Object.keys(formDataCopy).forEach((key) => {
+      // @ts-expect-error - Its existence is optional
+      if (typeof formDataCopy[key] === "number") {
+        // @ts-expect-error - Its existence is optional
+        formDataCopy[key] = formDataCopy[key].toString();
+      }
+    });
+    console.log(formDataCopy);
 
-    request(formData, id ? id : null)
+    request(formDataCopy, id ? id : null)
       .then((response) => {
         if (getRequest) {
           getRequest(id)
@@ -358,11 +368,6 @@ const CreateForm = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    console.log(formData);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [formData]);
 
   const renderField = (field: Field) => {
     const {
@@ -589,29 +594,6 @@ const CreateForm = ({
             className={styles.formField}
             value={formData[id as keyof FormData] || ""}
             onChange={changeFunctionSelector(id)}
-          />
-        );
-        return (
-          <FormControlLabel
-            control={
-              <Checkbox
-                {...field}
-                checked={
-                  // @ts-expect-error - Esto no debería ser necesario
-                  handleCheckedFunctions[id]()
-                }
-                className={styles.formField}
-                value={formData[id as keyof FormData] || ""}
-                onChange={changeFunctionSelector(id)}
-              />
-            }
-            label={
-              label
-                ? label
-                : formData[id as keyof FormData]
-                ? "Activo"
-                : "Inactivo"
-            }
           />
         );
       case "tel":

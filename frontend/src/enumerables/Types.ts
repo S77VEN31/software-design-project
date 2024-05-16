@@ -12,7 +12,7 @@ export type Role =
   | "Admin"
   | "Coordinator";
 
-  export type Statuses = "active" | "inactive";
+  export type Statuses = "active" | "inactive" | "";
   export type Teacher = {
     _id?: string;
     status?: Statuses;

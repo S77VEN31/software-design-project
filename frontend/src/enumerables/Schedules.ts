@@ -2,6 +2,7 @@
 import { Activity, Schedule } from "@enumerables";
 
 const DefaultSchedule: Schedule = {
+  status: "",
   name: "",
   startDate: "",
   endDate: "",
