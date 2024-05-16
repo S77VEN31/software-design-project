@@ -1,8 +1,8 @@
 // Express
 import { Request, Response } from "express";
 // XLSX
-import * as XLSX from 'xlsx';
-// Models
+import * as XLSX from "xlsx";
+// Moongoose
 import { CampusBranch, StudentUser } from "../models";
 
 interface Career {
@@ -25,35 +25,60 @@ export const getStudentsExcel = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
 
-    const students: Student[] = id
-      ? await StudentUser.find({ campusBranch: id })
-          .populate("career")
-          .populate("campusBranch")
-      : await StudentUser.find().populate("career").populate("campusBranch");
-
-    const campusBranch = id ? await CampusBranch.findById(id) : null;
-    const name = campusBranch?.name || "Todos";
-
     const workbook = XLSX.utils.book_new();
 
-    const studentArray = students.map(({ carne, name, email, career }) => [
-      carne,
-      name,
-      email,
-      career.length ? career[0].name : "N/A",
-    ]);
+    if (id) {
+      // Obtener estudiantes de un campus específico
+      const students: Student[] = await StudentUser.find({ campusBranch: id })
+        .populate("career")
+        .populate("campusBranch");
 
-    const sheet = XLSX.utils.aoa_to_sheet([
-      ["Carné", "Nombre", "Email", "Carrera"],
-      ...studentArray,
-    ]);
-    XLSX.utils.book_append_sheet(workbook, sheet, "Estudiantes");
+      const campusBranch = await CampusBranch.findById(id);
+      const name = campusBranch?.name || "Desconocido";
+
+      const studentArray = students.map(({ carne, name, email, career }) => [
+        carne,
+        name,
+        email,
+        career.length ? career[0].name : "N/A",
+      ]);
+
+      const sheet = XLSX.utils.aoa_to_sheet([
+        ["Carné", "Nombre", "Email", "Carrera"],
+        ...studentArray,
+      ]);
+      XLSX.utils.book_append_sheet(workbook, sheet, name);
+    } else {
+      // Obtener todos los estudiantes y organizarlos por campus
+      const campusBranches = await CampusBranch.find();
+
+      for (const campus of campusBranches) {
+        const students: Student[] = await StudentUser.find({
+          campusBranch: campus._id,
+        })
+          .populate("career")
+          .populate("campusBranch");
+
+        const studentArray = students.map(({ carne, name, email, career }) => [
+          carne,
+          name,
+          email,
+          career.length ? career[0].name : "N/A",
+        ]);
+
+        const sheet = XLSX.utils.aoa_to_sheet([
+          ["Carné", "Nombre", "Email", "Carrera"],
+          ...studentArray,
+        ]);
+        XLSX.utils.book_append_sheet(workbook, sheet, campus.name);
+      }
+    }
 
     const file = XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename="Estudiantes_${name}.xlsx"`
+      `attachment; filename="Estudiantes_${id ? id : "Todos"}.xlsx"`
     );
     res.setHeader(
       "Content-Type",
