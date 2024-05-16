@@ -1,9 +1,6 @@
-// Express
 import { Request, Response } from "express";
-// XLSX
 import * as XLSX from "xlsx";
-// Moongoose
-import { CampusBranch, StudentUser } from "../models";
+import { CampusBranch, StudentUser } from "../models"; // Asegúrate de que los modelos estén correctamente importados
 
 interface Career {
   name: string;
@@ -24,6 +21,7 @@ interface CampusBranch {
 export const getStudentsExcel = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
+    console.log(`ID recibido: ${id}`);
 
     const workbook = XLSX.utils.book_new();
 
@@ -32,6 +30,7 @@ export const getStudentsExcel = async (req: Request, res: Response) => {
       const students: Student[] = await StudentUser.find({ campusBranch: id })
         .populate("career")
         .populate("campusBranch");
+      console.log(`Estudiantes encontrados: ${students.length}`);
 
       const campusBranch = await CampusBranch.findById(id);
       const name = campusBranch?.name || "Desconocido";
@@ -47,10 +46,11 @@ export const getStudentsExcel = async (req: Request, res: Response) => {
         ["Carné", "Nombre", "Email", "Carrera"],
         ...studentArray,
       ]);
-      XLSX.utils.book_append_sheet(workbook, sheet, name);
+      XLSX.utils.book_append_sheet(workbook, sheet, name.slice(0, 31));
     } else {
       // Obtener todos los estudiantes y organizarlos por campus
       const campusBranches = await CampusBranch.find();
+      console.log(`CampusBranches encontrados: ${campusBranches.length}`);
 
       for (const campus of campusBranches) {
         const students: Student[] = await StudentUser.find({
@@ -58,6 +58,9 @@ export const getStudentsExcel = async (req: Request, res: Response) => {
         })
           .populate("career")
           .populate("campusBranch");
+        console.log(
+          `Estudiantes encontrados para el campus ${campus.name}: ${students.length}`
+        );
 
         const studentArray = students.map(({ carne, name, email, career }) => [
           carne,
@@ -70,7 +73,7 @@ export const getStudentsExcel = async (req: Request, res: Response) => {
           ["Carné", "Nombre", "Email", "Carrera"],
           ...studentArray,
         ]);
-        XLSX.utils.book_append_sheet(workbook, sheet, campus.name);
+        XLSX.utils.book_append_sheet(workbook, sheet, campus.name.slice(0, 31));
       }
     }
 
@@ -86,6 +89,7 @@ export const getStudentsExcel = async (req: Request, res: Response) => {
     );
     res.status(200).send(file);
   } catch (error) {
-    res.status(500).json({ message: [error] });
+    console.error("Error al generar el archivo Excel:", error); // Agrega esto para registrar el error en la consola
+    res.status(500).json({ message: error }); // Asegúrate de devolver el mensaje de error correctamente
   }
 };
