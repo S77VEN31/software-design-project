@@ -55,9 +55,13 @@ export const getSchedules = async (req: Request, res: Response) => {
         const filteredSchedulesTeacher = schedules.filter((schedule) => {
           return schedule.teams.some((team) => {
             // @ts-ignore
-            return team.teachers.toString() === userId.toString();
+            return team.teachers.some(
+              // @ts-ignore
+              (teacher) => teacher.toString() === userId.toString()
+            );
           });
         });
+        console.log(filteredSchedulesTeacher);
         schedules = filteredSchedulesTeacher;
         break;
       case "Coordinator":
