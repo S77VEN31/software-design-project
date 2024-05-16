@@ -98,10 +98,10 @@ const CreateForm = ({
       ? disabledOptions[id as keyof typeof disabledOptions]
       : false;
   };
-  const toggleDisabledOptions = (id: string) => {
+  const toggleDisabledOptions = (id: string, state: boolean) => {
     setDisabledOptions((prevOptions) => ({
       ...prevOptions,
-      [id]: !prevOptions[id as keyof typeof disabledOptions],
+      [id]: state,
     }));
   };
   const [dropdownOptions, setDropdownOptions] = useState<DropdownOptions>({
@@ -181,11 +181,16 @@ const CreateForm = ({
         if (formData.campusBranch.length > 0) {
           // @ts-expect-error - Its existence is already checked
           getTeachersAndCoordinators(formData.campusBranch[0]);
-          toggleDisabledOptions("teachers");
-          toggleDisabledOptions("career");
-          toggleDisabledOptions("coordinator");
-          toggleDisabledOptions("organizers");
+          toggleDisabledOptions("teachers", false);
+          toggleDisabledOptions("career", false);
+          toggleDisabledOptions("coordinator", false);
+          toggleDisabledOptions("organizers", false);
         }
+      } else {
+        toggleDisabledOptions("teachers", true);
+        toggleDisabledOptions("career", true);
+        toggleDisabledOptions("coordinator", true);
+        toggleDisabledOptions("organizers", true);
       }
     },
     // @ts-expect-error - Its existence is optional
@@ -475,13 +480,6 @@ const CreateForm = ({
       ];
     };
 
-    const handleCheckedFunctions = {
-      // @ts-expect-error - Esto no debería ser necesario
-      roles: () => formData.roles.includes("Coordinator"),
-      // @ts-expect-error - Esto no debería ser necesario
-      active: () => (formData.active ? true : false),
-    };
-
     switch (type) {
       case "number":
         return (
@@ -593,7 +591,6 @@ const CreateForm = ({
             onChange={changeFunctionSelector(id)}
           />
         );
-      case "checkbox":
         return (
           <FormControlLabel
             control={
