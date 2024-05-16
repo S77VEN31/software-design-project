@@ -3,7 +3,7 @@
   "private": true,
   "scripts": {
     "start": "cd backend && npm start",
-    "install": "cd backend && npm install && cd ../frontend && npm install",
+    "install": "cd backend && npm install && cd frontend && npm install",
     "heroku-postbuild": "cd frontend && npm install && npm run build",
     "build": "cd backend && npm run build",
     "frontend": "cd frontend && npm start"
