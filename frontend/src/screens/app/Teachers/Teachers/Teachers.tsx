@@ -25,6 +25,7 @@ interface Teacher extends Record<string, TableRenderable> {
   name: string;
   career: Career[];
   email: string;
+  profilePicture: string;
 }
 
 const Teachers = () => {
@@ -39,6 +40,17 @@ const Teachers = () => {
   const toast = useResponseToast();
 
   const columns: TableColumn<Teacher, keyof Teacher>[] = [
+    {
+      accessor: "profilePicture",
+      header: "Foto",
+      render: (profilePicture) => (
+        <img
+          src={`https://api.dicebear.com/8.x/pixel-art/svg?seed=${profilePicture}`}
+          alt="profile"
+          className={styles.profile}
+        />
+      ),
+    },
     {
       accessor: "idNumber",
       header: "Cédula",

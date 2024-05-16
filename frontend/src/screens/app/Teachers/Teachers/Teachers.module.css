@@ -48,3 +48,8 @@
     justify-content: space-evenly;
     gap: 10px;
 }
+
+.profile {
+    max-width: 2rem;
+    border-radius: 50%;
+}
