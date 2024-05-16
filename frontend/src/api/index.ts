@@ -36,20 +36,25 @@ import {
   getTeamRequest,
   updateTeamRequest,
 } from "./team.services";
+// Comment services
+import {
+  addActivityCommentRequest,
+  addReplyCommentRequest,
+  deleteActivityCommentRequest,
+  getActivityCommentsRequest,
+} from "./comment.services";
 
 export {
-  api,
-  createActivityRequest,
-  createScheduleRequest,
+  addActivityCommentRequest,
+  addReplyCommentRequest, api,
+  createActivityRequest, createScheduleRequest,
   createStudentRequest,
   createTeacherRequest,
-  createTeamRequest,
-  deleteActivityRequest,
+  createTeamRequest, deleteActivityCommentRequest, deleteActivityRequest,
   deleteScheduleRequest,
   deleteStudentRequest,
   deleteTeacherRequest,
-  deleteTeamRequest,
-  getActivityRequest,
+  deleteTeamRequest, getActivityCommentsRequest, getActivityRequest,
   getCampusBranchRequest,
   getCampusBranchTeachersRequest,
   getScheduleRequest,
@@ -63,6 +68,6 @@ export {
   updateScheduleRequest,
   updateStudentRequest,
   updateTeacherRequest,
-  updateTeamRequest,
+  updateTeamRequest
 };
 
