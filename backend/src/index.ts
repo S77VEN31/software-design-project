@@ -7,11 +7,12 @@ import { connect } from "./database"; // Conecta a la base de datos
 const port = process.env.PORT || 3000;
 
 // Middleware para servir archivos estáticos de la carpeta build
-app.use(express.static(path.join(__dirname, "../frontend/build")));
+const buildPath = path.join(__dirname, "..", "frontend", "build");
+app.use(express.static(buildPath));
 
 // Ruta para servir el archivo HTML de la build de React
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+  res.sendFile(path.join(buildPath, "index.html"));
 });
 
 // Inicia el servidor
