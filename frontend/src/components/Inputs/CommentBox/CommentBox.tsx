@@ -41,6 +41,7 @@ const CommentBox = ({ userId, activityId }: CommentBoxProps) => {
 
   useEffect(() => {
     getComments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleCommentChange = (event: ChangeEvent<HTMLInputElement>) => {
