@@ -10,6 +10,7 @@ import Students from "./app/Students/Students/Students";
 import Teachers from "./app/Teachers/Teachers/Teachers";
 import Teams from "./app/Teams/Teams/Teams";
 import Activities from "./app/Activities/Activities/Activities";
+import Reports from "./app/Reports/Reports/Reports";
 export {
   Login as LoginScreen,
   Menu as MenuScreen,
@@ -19,5 +20,6 @@ export {
   Students as StudentsScreen,
   Teachers as TeachersScreen,
   Teams as TeamsScreen,
+  Reports as ReportsScreen
 };
 

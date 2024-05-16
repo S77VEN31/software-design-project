@@ -3,7 +3,7 @@ import { api } from "./api";
 // Types
 import { FormData } from "@enumerables";
 // Enviroment variables
-const { VITE_API_STUDENT, VITE_API_TEACHER } = import.meta.env;
+const { VITE_API_STUDENT, VITE_API_TEACHER, VITE_API_REPORTS } = import.meta.env;
 
 export const getStudentRequest = async (id?: string) => {
   const response = await api.get(
@@ -48,3 +48,8 @@ export const deleteTeacherRequest = async (id: string) => {
   const response = await api.delete(`${VITE_API_TEACHER}?id=${id}`);
   return response.data;
 }
+
+export const getStudentReportRequest = async (id: string="") => {
+  const response = await api.get(`${VITE_API_REPORTS}/${id}`);
+  return response.data;
+};

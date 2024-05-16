@@ -12,6 +12,7 @@ import {
   getTeacherRequest,
   updateStudentRequest,
   updateTeacherRequest,
+  getStudentReportRequest
 } from "./user.services";
 // Schedule services
 import {
@@ -64,5 +65,6 @@ export {
   updateStudentRequest,
   updateTeacherRequest,
   updateTeamRequest,
+  getStudentReportRequest,
 };
 

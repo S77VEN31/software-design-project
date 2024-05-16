@@ -61,6 +61,12 @@ const AdminPermissions = [
     type: "GET",
     selector: "STUDENT",
   },
+  {
+    slug: "/excel/students",
+    description: "Get Student Reports",
+    type: "GET",
+    selector: "STUDENT"
+  },
   //Teachers
   {
     slug: "/teachers/get",
@@ -194,6 +200,12 @@ const AdministrativeAssistantPermissions = [
     description: "Get students",
     type: "GET",
     selector: "STUDENT",
+  },
+  {
+    slug: "/excel/students",
+    description: "Get Student Reports",
+    type: "GET",
+    selector: "STUDENT"
   },
   //Teachers
   {
@@ -428,6 +440,12 @@ const CoordinatorPermissions = [
     description: "Get students",
     type: "GET",
     selector: "STUDENT",
+  },
+  {
+    slug: "/excel/students",
+    description: "Get Student Reports",
+    type: "GET",
+    selector: "STUDENT"
   },
   //Teachers
   {

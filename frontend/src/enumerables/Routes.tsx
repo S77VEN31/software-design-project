@@ -7,6 +7,7 @@ import {
   TeachersScreen,
   TeamsScreen,
   ActivitiesScreen,
+  ReportsScreen,
 } from "@screens";
 // Layouts
 import { CreateFormLayout } from "@layouts";
@@ -274,6 +275,14 @@ const appRoutes = [
         getRequest={getActivityRequest}
         routeToGo="/home/schedule/activities"
       />
+    ),
+  },
+  {
+    apiSlug: "/excel/students",
+    path: "/home/reports",
+    inNav: true,
+    element: (
+      <ReportsScreen />
     ),
   },
   {
