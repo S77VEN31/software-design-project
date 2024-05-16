@@ -2,12 +2,12 @@
 import axios from "axios";
 // Environment variables
 const {
-  //VITE_API_URL,
-  VITE_API_LOCAL_URL,
+  VITE_API_URL,
+  //VITE_API_LOCAL_URL,
 } = import.meta.env;
 
 const api = axios.create({
-  baseURL: VITE_API_LOCAL_URL,
+  baseURL: VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
