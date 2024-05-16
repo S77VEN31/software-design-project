@@ -16,4 +16,7 @@ export default defineConfig({
       "@hooks": "/src/hooks/index.tsx",
     },
   },
+  build: {
+    outDir: "dist", // This is for the backend to serve the frontend
+  },
 });
