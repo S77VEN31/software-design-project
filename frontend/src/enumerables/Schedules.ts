@@ -368,6 +368,32 @@ const ActivityUpdateFields = [
     required: true,
   },
   {
+    id: "status",
+    label: "Estado",
+    type: "dropdown",
+    fullWidth: true,
+    required: true,
+    section: "Configuración de la Actividad",
+    options: [
+      {
+        value: "Planned",
+        label: "Planeado",
+      },
+      {
+        value: "Notified",
+        label: "Notificado",
+      },
+      {
+        value: "Realized",
+        label: "Realizado",
+      },
+      {
+        value: "Canceled",
+        label: "Cancelado",
+      },
+    ],
+  },
+  {
     id: "dateTime",
     label: "Fecha de Inicio",
     type: "date",
