@@ -37,6 +37,9 @@ const Activities = () => {
     null
   );
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const userId = localStorage.getItem("id") || "";
+
   // Hooks
   const toast = useResponseToast();
 
@@ -132,7 +135,10 @@ const Activities = () => {
   };
 
   const getActivities = async () => {
-    getActivityRequest()
+    getActivityRequest({
+      userId,
+      roles,
+    })
       .then((response) => {
         setActivities(response);
       })

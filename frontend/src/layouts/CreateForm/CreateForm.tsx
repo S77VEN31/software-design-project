@@ -158,7 +158,7 @@ const CreateForm = ({
   };
 
   const getActivities = async () => {
-    const activities = await getActivityRequest();
+    const activities = await getActivityRequest({});
     setDropdownOptions((prevOptions) => ({
       ...prevOptions,
       activities,

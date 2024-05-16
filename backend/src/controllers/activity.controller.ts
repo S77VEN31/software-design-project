@@ -2,7 +2,7 @@
 import { Request, Response } from "express";
 // Mongoose
 // Models
-import { Activity } from "../models";
+import { Activity, Schedule } from "../models";
 
 export const addActivity = async (req: Request, res: Response) => {
   try {
@@ -22,7 +22,41 @@ export const addActivity = async (req: Request, res: Response) => {
 
 export const getActivities = async (req: Request, res: Response) => {
   try {
-    const activities = await Activity.find({}).populate("organizers");
+    const { userId, roles } = req.query;
+
+    if (!userId || !roles) {
+      return res.status(400).json({
+        message: ["Se requiere el id del usuario y los roles"],
+      });
+    }
+
+    const populateScheduleString = "activities teams";
+    let activities = await Activity.find({});
+    let schedules = await Schedule.find({}).populate(populateScheduleString);
+    switch (roles) {
+      case "Student":
+        // @ts-ignore
+        activities = schedules.flatMap((schedule) => {
+          const studentTeams = schedule.teams.filter((team) => {
+            // @ts-ignore
+            return team.students.some(
+              // @ts-ignore
+              (student) => student.toString() === userId.toString()
+            );
+          });
+          return studentTeams.length > 0 ? schedule.activities : [];
+        });
+        break;
+      case "Teacher":
+        activities = activities.filter((activity) => {
+          // @ts-ignore
+          return activity.organizers.some(
+            // @ts-ignore
+            (organizer) => organizer.toString() === userId.toString()
+          );
+        });
+        break;
+    }
     return res.status(200).json(activities);
   } catch (error: any) {
     return res.status(500).json({ message: [error] });
