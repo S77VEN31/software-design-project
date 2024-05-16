@@ -43,10 +43,11 @@ import {
   deleteActivityCommentRequest,
   getActivityCommentsRequest,
 } from "./comment.services";
+// Report services
+import { downloadExcel } from "./report.services";
 
 export {
-  addActivityCommentRequest,
-  addReplyCommentRequest, api,
+  addActivityCommentRequest, addReplyCommentRequest, api,
   createActivityRequest, createScheduleRequest,
   createStudentRequest,
   createTeacherRequest,
@@ -54,12 +55,11 @@ export {
   deleteScheduleRequest,
   deleteStudentRequest,
   deleteTeacherRequest,
-  deleteTeamRequest, getActivityCommentsRequest, getActivityRequest,
+  deleteTeamRequest, downloadExcel, getActivityCommentsRequest, getActivityRequest,
   getCampusBranchRequest,
   getCampusBranchTeachersRequest,
   getScheduleRequest,
-  getStudentRequest,
-  getTeacherRequest,
+  getStudentRequest, getTeacherRequest,
   getTeamRequest,
   loginRequest,
   registerRequest,
