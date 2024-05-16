@@ -58,7 +58,8 @@ export const createActivitySchema = z.object({
     }),
   meetingLink: z
     .string({ required_error: "The meeting link must be provided" })
-    .min(5, "The meeting link must be at least 5 characters"),
+    .min(5, "The meeting link must be at least 5 characters")
+    .optional(),
   poster: z
     // .instanceof(File)
     // .optional()
@@ -138,7 +139,8 @@ export const updateActivitySchema = z.object({
     }),
   meetingLink: z
     .string({ required_error: "The meeting link must be provided" })
-    .min(5, "The meeting link must be at least 5 characters"),
+    .min(5, "The meeting link must be at least 5 characters")
+    .optional(),
   poster: z
     // .instanceof(File)
     // .optional()

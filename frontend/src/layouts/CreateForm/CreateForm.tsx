@@ -26,7 +26,6 @@ import {
   Career,
   Field,
   FormData,
-  Role,
   Student,
   Teacher,
   TeamOverview,
@@ -260,22 +259,6 @@ const CreateForm = ({
     });
   };
 
-  const handleCareerChange = (careerId: string) => {
-    setFormData({
-      ...formData,
-      // @ts-expect-error - Its existence is optional
-      career: [careerId],
-    });
-  };
-
-  const handleAddRoles = (role: Role) => {
-    setFormData({
-      ...formData,
-      // @ts-expect-error - Its existence is optional
-      roles: [role],
-    });
-  };
-
   const handlePhoneChange = (id: string, value: string) => {
     setPhones((prevPhones) => ({
       ...prevPhones,
@@ -379,6 +362,7 @@ const CreateForm = ({
       label,
       required,
       fullWidth,
+      dependsOn,
     } = field;
 
     const optionsArray = options
@@ -448,17 +432,17 @@ const CreateForm = ({
         event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
       ) => handleCampusBranchChange(event.target.value),
       career: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-        handleCareerChange(event.target.value),
+        handleChange(id, [event.target.value]),
       roles: (event: ChangeEvent<HTMLInputElement>) =>
-        handleAddRoles(event.target.value as Role),
+        handleChange(id, [event.target.value]),
       teams: (event: ChangeEvent<HTMLInputElement>) =>
+        handleChange(id, [event.target.value]),
+      coordinator: (event: ChangeEvent<HTMLInputElement>) =>
         handleChange(id, [event.target.value]),
       activities: (list: string[]) => handleChange(id, list),
       teachers: (list: string[]) => handleChange(id, list),
       students: (list: string[]) => handleChange(id, list),
       organizers: (list: string[]) => handleChange(id, list),
-      coordinator: (event: ChangeEvent<HTMLInputElement>) =>
-        handleChange(id, [event.target.value]),
       personal: (value: string) => handlePhoneChange(id, value),
       office: (value: string) => handlePhoneChange(id, value),
       startDate: (date: Date | null) =>
@@ -484,7 +468,16 @@ const CreateForm = ({
         recognizedFields.includes(id) ? id : "default"
       ];
     };
-
+    /*
+     * This is used to conditionally render the field based on the dependsOn field
+     * If the dependsOn field is not met, the field is not rendered
+     */
+    if (dependsOn) {
+      const dependsOnValue = formData[dependsOn.id as keyof FormData];
+      if (dependsOnValue !== dependsOn.value) {
+        return null;
+      }
+    }
     switch (type) {
       case "number":
         return (
