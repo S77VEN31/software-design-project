@@ -48,13 +48,25 @@ export const getActivities = async (req: Request, res: Response) => {
         });
         break;
       case "Teacher":
-        activities = activities.filter((activity) => {
+        const organizer = activities.filter((activity) => {
           // @ts-ignore
           return activity.organizers.some(
             // @ts-ignore
             (organizer) => organizer.toString() === userId.toString()
           );
         });
+        const scheduled = schedules.flatMap((schedule) => {
+          const studentTeams = schedule.teams.filter((team) => {
+            // @ts-ignore
+            return team.teachers.some(
+              // @ts-ignore
+              (student) => student.toString() === userId.toString()
+            );
+          });
+          return studentTeams.length > 0 ? schedule.activities : [];
+        });
+        // @ts-ignore
+        activities = [...organizer, ...scheduled];
         break;
     }
     return res.status(200).json(activities);
