@@ -86,6 +86,16 @@ const Activities = () => {
         }
       },
     },
+    {
+      accessor: "evidence",
+      header: "Poster",
+      // open evidence in new tab if is a link
+      render: (evidence) => (
+        <a href={evidence} target="_blank" rel="noreferrer">
+          Poster
+        </a>
+      ),
+    },
   ];
 
   const actions = [
@@ -150,6 +160,7 @@ const Activities = () => {
       roles,
     })
       .then((response) => {
+        console.log(response);
         setActivities(response);
       })
       .catch((error) => {
