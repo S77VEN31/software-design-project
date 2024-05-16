@@ -161,12 +161,12 @@ const ScheduleUpdateFields = [
 
 const DefaultActivity: Activity = {
   type: "Orientation",
-  week: 1,
+  week: "1",
   name: "",
   dateTime: "",
   organizers: [],
-  announcementDays: 1,
-  reminderDays: 1,
+  announcementDays: "1",
+  reminderDays: "1",
   mode: "Online",
   status: "Planned",
   meetingLink: "",

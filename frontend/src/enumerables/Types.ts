@@ -114,12 +114,12 @@ export type Role =
   export type Activity = {
     _id?: string;
     type: ActivityTypes;
-    week: number;
+    week: string;
     name: string;
     dateTime: string;
     organizers: string[];
-    announcementDays: number;
-    reminderDays: number;
+    announcementDays: string;
+    reminderDays: string;
     mode: ActivityModality;
     status: ActivityStatus;
     meetingLink: string;
