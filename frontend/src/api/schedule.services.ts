@@ -11,6 +11,12 @@ interface GetScheduleRequestParams {
   roles?: string[];
 }
 
+interface GetActivityRequestParams {
+  id?: string;
+  userId?: string;
+  roles?: string[];
+}
+
 export const getScheduleRequest = async ({
   id,
   userId,
@@ -26,9 +32,17 @@ export const getScheduleRequest = async ({
   return response.data;
 };
 
-export const getActivityRequest = async (id?: string) => {
+export const getActivityRequest = async ({
+  id,
+  userId,
+  roles,
+}: GetActivityRequestParams) => {
   const response = await api.get(
-    id ? `${VITE_API_ACTIVITY}?id=${id}` : VITE_API_ACTIVITY
+    id
+      ? `${VITE_API_ACTIVITY}?id=${id}`
+      : userId
+      ? `${VITE_API_ACTIVITY}?userId=${userId}&roles=${roles}`
+      : VITE_API_ACTIVITY
   );
   return response.data;
 };

@@ -38,8 +38,6 @@ export const getSchedules = async (req: Request, res: Response) => {
     const populateString = "activities teams comments";
     let schedules = await Schedule.find({}).populate(populateString);
 
-    // get every studentid in schedules teams
-    schedules = await Schedule.find({}).populate(populateString);
     switch (roles) {
       case "Student":
         const filteredSchedules = schedules.filter((schedule) => {
