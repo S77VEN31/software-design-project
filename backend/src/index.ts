@@ -1,15 +1,23 @@
-// Express app
-import app from "./app";
-// Connection to database
-import { connect } from "./database";
+import express from "express";
+import path from "path";
+import app from "./app"; // Importa la configuración de tu aplicación Express
+import { connect } from "./database"; // Conecta a la base de datos
 
-// Define the port to listen on, using the PORT environment variable or default to 3000
+// Define el puerto
 const port = process.env.PORT || 3000;
-// Start server
+
+// Middleware para servir archivos estáticos de la carpeta build
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+// Ruta para servir el archivo HTML de la build de React
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
+});
+
+// Inicia el servidor
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+  // Conecta a la base de datos
+  connect();
+  console.log("Database connected");
 });
-// Connect to database
-connect();
-// Log message
-console.log("Server running");
