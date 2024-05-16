@@ -4,8 +4,13 @@ import { useNavigate } from "react-router-dom";
 // Styles
 import styles from "./Activities.module.css";
 // Components
-import { DataTable, TableColumn, TableRenderable } from "@components";
-import { Delete, Edit } from "@mui/icons-material";
+import {
+  CommentBox,
+  DataTable,
+  TableColumn,
+  TableRenderable,
+} from "@components";
+import { Comment, Delete, Edit } from "@mui/icons-material";
 import { Button, IconButton, Modal } from "@mui/material";
 // Layouts
 import { TableLayout } from "@layouts";
@@ -28,10 +33,9 @@ interface Activity extends Record<string, TableRenderable> {
 }
 
 const Activities = () => {
-  // Navigation
   const navigation = useNavigate();
-  // States
   const [open, setOpen] = useState(false);
+  const [commentOpen, setCommentOpen] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(
     null
@@ -39,8 +43,6 @@ const Activities = () => {
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
   const roles = JSON.parse(localStorage.getItem("roles") || "[]");
   const userId = localStorage.getItem("id") || "";
-
-  // Hooks
   const toast = useResponseToast();
 
   const columns: TableColumn<Activity, keyof Activity>[] = [
@@ -102,6 +104,14 @@ const Activities = () => {
       component: (id: string) => (
         <IconButton onClick={() => handleModal(id)}>
           <Delete />
+        </IconButton>
+      ),
+    },
+    {
+      permission: true,
+      component: (id: string) => (
+        <IconButton onClick={() => handleCommentModal(id)}>
+          <Comment />
         </IconButton>
       ),
     },
@@ -167,6 +177,13 @@ const Activities = () => {
     setOpen(!open);
   };
 
+  const handleCommentModal = (id: string) => {
+    setSelectedActivity(
+      activities.find((activity) => activity._id === id) || null
+    );
+    setCommentOpen(!commentOpen);
+  };
+
   useEffect(() => {
     getActivities();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -216,6 +233,13 @@ const Activities = () => {
             </Button>
           </div>
         </div>
+      </Modal>
+      <Modal
+        open={commentOpen}
+        onClose={() => setCommentOpen(false)}
+        className={styles.modalContainer}
+      >
+        <CommentBox userId={userId} activityId={selectedActivity?._id} />
       </Modal>
       <TableLayout {...tableLayoutProps} />
     </div>

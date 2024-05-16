@@ -7,6 +7,10 @@ const commentModel = new Schema(
       type: String,
       required: true,
     },
+    activity: {
+      type: Schema.Types.ObjectId,
+      ref: "Activity",
+    },
     author: {
       type: Schema.Types.ObjectId,
       ref: "User",

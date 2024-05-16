@@ -102,6 +102,15 @@ export type Role =
     activities: string[];
   };
 
+  export type Comment = {
+    _id: string;
+    content: string;
+    createdAt: string;
+    updatedAt: string;
+    author: Teacher;
+    replies: Comment[];
+  };
+
   export type ActivityTypes =
     | "Orientation"
     | "Motivational"

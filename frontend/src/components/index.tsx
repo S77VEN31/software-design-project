@@ -7,7 +7,8 @@ import DataTable, {
 } from "./Tables/DataTable/DataTable";
 import TeamForm from "./TeamForm/TeamForm";
 // Inputs
+import CommentBox from "./Inputs/CommentBox/CommentBox";
 import DropdownList from "./Inputs/DropdownList/DropdownList";
-export { DataTable, DropdownList, SideNavBar, TeamForm };
+export { CommentBox, DataTable, DropdownList, SideNavBar, TeamForm };
 export type { TableColumn, TableRenderable };
 

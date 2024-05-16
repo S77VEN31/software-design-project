@@ -5,6 +5,7 @@ export type {
   AdminAssistant,
   CampusBranch,
   Career,
+  Comment,
   Field,
   FormData,
   Location,
@@ -19,12 +20,12 @@ export type {
 } from "./Types";
 // Enums
 export {
+  ActivityFields,
+  ActivityUpdateFields,
+  DefaultActivity,
   DefaultSchedule,
   ScheduleFields,
   ScheduleUpdateFields,
-  DefaultActivity,
-  ActivityFields,
-  ActivityUpdateFields,
 } from "./Schedules";
 export {
   AdminAssistantFields,
