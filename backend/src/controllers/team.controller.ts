@@ -34,9 +34,33 @@ export const getTeam = async (req: Request, res: Response) => {
 
 export const getTeams = async (req: Request, res: Response) => {
   try {
-    const teams = await Team.find({}).populate(
-      "students teachers coordinator campusBranch career"
-    );
+    const { userId, roles } = req.query;
+
+    if (!userId || !roles) {
+      return res.status(400).json({
+        message: ["Se requiere el id del usuario y los roles"],
+      });
+    }
+
+    const populateString = "students teachers coordinator campusBranch career";
+    let teams;
+
+    switch (roles) {
+      case "Student":
+        teams = await Team.find({ students: userId }).populate(populateString);
+        break;
+      case "Teacher":
+        teams = await Team.find({ teachers: userId }).populate(populateString);
+        break;
+      case "Coordinator":
+        teams = await Team.find({ coordinator: userId }).populate(
+          populateString
+        );
+        break;
+      default:
+        teams = await Team.find().populate(populateString);
+        break;
+    }
     return res.status(200).json(teams);
   } catch (error) {
     return res.status(500).json({ message: [error] });

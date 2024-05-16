@@ -5,9 +5,23 @@ import { FormData } from "@enumerables";
 // Enviroment variables
 const { VITE_API_SCHEDULE, VITE_API_ACTIVITY } = import.meta.env;
 
-export const getScheduleRequest = async (id?: string) => {
+interface GetScheduleRequestParams {
+  id?: string;
+  userId?: string;
+  roles?: string[];
+}
+
+export const getScheduleRequest = async ({
+  id,
+  userId,
+  roles,
+}: GetScheduleRequestParams) => {
   const response = await api.get(
-    id ? `${VITE_API_SCHEDULE}?id=${id}` : VITE_API_SCHEDULE
+    id
+      ? `${VITE_API_SCHEDULE}?id=${id}`
+      : userId
+      ? `${VITE_API_SCHEDULE}?userId=${userId}&roles=${roles}`
+      : VITE_API_SCHEDULE
   );
   return response.data;
 };

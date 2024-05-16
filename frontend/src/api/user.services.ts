@@ -5,9 +5,23 @@ import { FormData } from "@enumerables";
 // Enviroment variables
 const { VITE_API_STUDENT, VITE_API_TEACHER } = import.meta.env;
 
-export const getStudentRequest = async (id?: string) => {
+interface GetUserRequestParams {
+  id?: string;
+  userId?: string;
+  roles?: string[];
+}
+
+export const getStudentRequest = async ({
+  id,
+  userId,
+  roles,
+}: GetUserRequestParams) => {
   const response = await api.get(
-    id ? `${VITE_API_STUDENT}?id=${id}` : VITE_API_STUDENT
+    id
+      ? `${VITE_API_STUDENT}?id=${id}`
+      : userId
+      ? `${VITE_API_STUDENT}?userId=${userId}&roles=${roles}`
+      : VITE_API_STUDENT
   );
   return response.data;
 };

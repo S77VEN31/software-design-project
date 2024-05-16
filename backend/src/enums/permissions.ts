@@ -257,24 +257,6 @@ const TeacherPermissions = [
     selector: "TEAMS",
   },
   {
-    slug: "/team/post",
-    description: "Post team",
-    type: "POST",
-    selector: "TEAM",
-  },
-  {
-    slug: "/team/put",
-    description: "Put team",
-    type: "PUT",
-    selector: "TEAM",
-  },
-  {
-    slug: "/team/delete",
-    description: "Delete team",
-    type: "DELETE",
-    selector: "TEAM",
-  },
-  {
     slug: "/team/get",
     description: "Get team",
     type: "GET",
@@ -321,12 +303,6 @@ const TeacherPermissions = [
     selector: "ACTIVITIES",
   },
   {
-    slug: "/schedule/activity/put",
-    description: "Put schedule activities",
-    type: "PUT",
-    selector: "ACTIVITY",
-  },
-  {
     slug: "/schedule/activity/get",
     description: "Get schedule activities",
     type: "GET",
@@ -347,32 +323,6 @@ const StudentPermissions = [
     description: "Get team",
     type: "GET",
     selector: "TEAM",
-  },
-  // Students
-  {
-    slug: "/students/get",
-    description: "Get students",
-    type: "GET",
-    selector: "STUDENTS",
-  },
-  {
-    slug: "/students/get",
-    description: "Get students",
-    type: "GET",
-    selector: "STUDENT",
-  },
-  //Teachers
-  {
-    slug: "/teachers/get",
-    description: "Get teachers",
-    type: "GET",
-    selector: "TEACHERS",
-  },
-  {
-    slug: "/teacher/get",
-    description: "Get teachers",
-    type: "GET",
-    selector: "TEACHER",
   },
   //Schedule
   {
@@ -416,6 +366,12 @@ const CoordinatorPermissions = [
     type: "GET",
     selector: "TEAM",
   },
+  {
+    slug: "/team/put",
+    description: "Put team",
+    type: "PUT",
+    selector: "TEAM",
+  },
   // Students
   {
     slug: "/students/get",
@@ -427,6 +383,12 @@ const CoordinatorPermissions = [
     slug: "/students/get",
     description: "Get students",
     type: "GET",
+    selector: "STUDENT",
+  },
+  {
+    slug: "/student/put",
+    description: "Put students",
+    type: "PUT",
     selector: "STUDENT",
   },
   //Teachers

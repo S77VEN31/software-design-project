@@ -48,9 +48,9 @@ const Login = () => {
     event.preventDefault();
     loginRequest(loginData)
       .then((response) => {
-        const { permissions, token } = response;
-        login(token, permissions);
-        navigation("/home/students");
+        const { permissions, token, id, roles } = response;
+        login(token, permissions, roles, id);
+        navigation("/home/teams");
         if (response.status === 400)  {
           toast(400, response.message);
         }

@@ -35,6 +35,9 @@ const Students = () => {
   const [students, setStudents] = useState<Student[]>([]);
   const [selectedStudent, setSelectedStudent] = useState<Student | null>(null);
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const userId = localStorage.getItem("id") || "";
+
   // Hooks
   const toast = useResponseToast();
 
@@ -113,13 +116,16 @@ const Students = () => {
   };
 
   const getStudents = async () => {
-    getStudentRequest()
+    getStudentRequest({
+      userId,
+      roles,
+    })
       .then((response) => {
         setStudents(response);
       })
       .catch((error) => {
         console.log(error);
-        toast(500 , ["Error al obtener los estudiantes"]);
+        toast(500, ["Error al obtener los estudiantes"]);
       });
   };
 

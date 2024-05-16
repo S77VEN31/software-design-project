@@ -102,6 +102,8 @@ export const login = async (req: Request, res: Response) => {
     return res.status(200).json({
       permissions,
       token,
+      id: userFound._id,
+      roles: userFound.roles,
     });
   } catch (error) {
     console.log(error);

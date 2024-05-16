@@ -19,9 +19,7 @@ export const addSchedule = async (req: Request, res: Response) => {
 export const getSchedule = async (req: Request, res: Response) => {
   try {
     const { id } = req.query;
-    const schedule = await Schedule.findById(id)
-      .populate("activities")
-      .populate("comments");
+    const schedule = await Schedule.findById(id).populate("comments");
     return res.status(200).json(schedule);
   } catch (error) {
     return res.status(500).json({ message: [error] });
@@ -30,10 +28,52 @@ export const getSchedule = async (req: Request, res: Response) => {
 
 export const getSchedules = async (req: Request, res: Response) => {
   try {
-    const schedules = await Schedule.find({})
-      .populate("activities")
-      .populate("teams")
-      .populate("comments");
+    const { userId, roles } = req.query;
+
+    if (!userId || !roles) {
+      return res.status(400).json({
+        message: ["Se requiere el id del usuario y los roles"],
+      });
+    }
+    const populateString = "activities teams comments";
+    let schedules = await Schedule.find({}).populate(populateString);
+
+    // get every studentid in schedules teams
+    schedules = await Schedule.find({}).populate(populateString);
+    switch (roles) {
+      case "Student":
+        const filteredSchedules = schedules.filter((schedule) => {
+          return schedule.teams.some((team) => {
+            // @ts-ignore
+            return team.students.some(
+              // @ts-ignore
+              (student) => student.toString() === userId.toString()
+            );
+          });
+        });
+        schedules = filteredSchedules;
+        break;
+      case "Teacher":
+        const filteredSchedulesTeacher = schedules.filter((schedule) => {
+          return schedule.teams.some((team) => {
+            // @ts-ignore
+            return team.teachers.toString() === userId.toString();
+          });
+        });
+        schedules = filteredSchedulesTeacher;
+        break;
+      case "Coordinator":
+        const filteredSchedulesCoordinator = schedules.filter((schedule) => {
+          return schedule.teams.some((team) => {
+            // @ts-ignore
+            return team.coordinator.toString() === userId.toString();
+          });
+        });
+        schedules = filteredSchedulesCoordinator;
+        break;
+      default:
+        break;
+    }
     return res.status(200).json(schedules);
   } catch (error) {
     return res.status(500).json({ message: [error] });
