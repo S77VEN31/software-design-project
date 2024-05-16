@@ -128,7 +128,7 @@ const Teachers = () => {
   };
 
   const getTeachers = async () => {
-    getTeacherRequest()
+    getTeacherRequest({})
       .then((response) => {
         setTeachers(response);
         console.log(response);

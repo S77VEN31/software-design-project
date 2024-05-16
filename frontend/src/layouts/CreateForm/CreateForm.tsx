@@ -76,6 +76,8 @@ const CreateForm = ({
     career: true,
     coordinator: true,
   });
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const userId = localStorage.getItem("id") || "";
   /*
    * This function is used to set the disabled options from the fields
    * It is used to set the disabled options from the fields when the component mounts
@@ -142,7 +144,10 @@ const CreateForm = ({
   };
 
   const getTeams = async () => {
-    const teams = await getTeamRequest({});
+    const teams = await getTeamRequest({
+      userId,
+      roles,
+    });
     setDropdownOptions((prevOptions) => ({
       ...prevOptions,
       teams,
@@ -150,7 +155,7 @@ const CreateForm = ({
   };
 
   const getOrganizers = async () => {
-    const organizers = await getTeacherRequest();
+    const organizers = await getTeacherRequest({});
     setDropdownOptions((prevOptions) => ({
       ...prevOptions,
       organizers,
@@ -158,7 +163,10 @@ const CreateForm = ({
   };
 
   const getActivities = async () => {
-    const activities = await getActivityRequest({});
+    const activities = await getActivityRequest({
+      userId,
+      roles,
+    });
     setDropdownOptions((prevOptions) => ({
       ...prevOptions,
       activities,

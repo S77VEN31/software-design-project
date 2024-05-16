@@ -35,7 +35,6 @@ export const getTeam = async (req: Request, res: Response) => {
 export const getTeams = async (req: Request, res: Response) => {
   try {
     const { userId, roles } = req.query;
-
     if (!userId || !roles) {
       return res.status(400).json({
         message: ["Se requiere el id del usuario y los roles"],
