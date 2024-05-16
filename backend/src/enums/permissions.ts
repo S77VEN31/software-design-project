@@ -270,12 +270,6 @@ const TeacherPermissions = [
     selector: "STUDENTS",
   },
   {
-    slug: "/student/post",
-    description: "Post students",
-    type: "POST",
-    selector: "STUDENT",
-  },
-  {
     slug: "/students/get",
     description: "Get students",
     type: "GET",
