@@ -195,7 +195,7 @@ const ActivityFields = [
     section: "Información de la Actividad",
     inputProps: {
       min: 1,
-      max: 18,
+      max: 16,
     },
     fullWidth: true,
     required: true,
@@ -253,6 +253,9 @@ const ActivityFields = [
     section: "Configuración de la Actividad",
     fullWidth: true,
     required: true,
+    inputProps: {
+      min: 1,
+    },
   },
   {
     id: "mode",
@@ -279,6 +282,9 @@ const ActivityFields = [
     section: "Configuración de la Actividad",
     fullWidth: true,
     required: true,
+    inputProps: {
+      min: 1,
+    },
   },
   {
     id: "meetingLink",
@@ -326,7 +332,7 @@ const ActivityUpdateFields = [
     section: "Información de la Actividad",
     inputProps: {
       min: 1,
-      max: 18,
+      max: 16,
     },
     fullWidth: true,
     required: true,
@@ -383,6 +389,9 @@ const ActivityUpdateFields = [
     section: "Configuración de la Actividad",
     fullWidth: true,
     required: true,
+    inputProps: {
+      min: 1,
+    },
   },
   {
     id: "mode",
@@ -409,6 +418,9 @@ const ActivityUpdateFields = [
     section: "Configuración de la Actividad",
     fullWidth: true,
     required: true,
+    inputProps: {
+      min: 1,
+    },
   },
   {
     id: "meetingLink",
