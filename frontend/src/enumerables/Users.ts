@@ -2,6 +2,7 @@
 import { Admin, AdminAssistant, Student, Teacher } from "@enumerables";
 
 const DefaultTeacher: Teacher = {
+  profilePicture: "",
   idNumber: "",
   userName: "",
   email: "",
@@ -14,6 +15,7 @@ const DefaultTeacher: Teacher = {
 };
 
 const DefaultUpdateTeacher: Teacher = {
+  profilePicture: "",
   status: "",
   name: "",
   campusBranch: [],
@@ -26,6 +28,12 @@ const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,}$/;
 
 const TeacherFields = [
+  {
+    id: "profilePicture",
+    label: "Foto de perfil",
+    type: "profile-picture",
+    section: "Información del Profesor",
+  },
   {
     id: "idNumber",
     label: "Cédula",
@@ -160,6 +168,12 @@ const TeacherFields = [
 ];
 
 const TeacherUpdateFields = [
+  {
+    id: "profilePicture",
+    label: "Foto de perfil",
+    type: "profile-picture",
+    section: "Información del Profesor",
+  },
   {
     id: "idNumber",
     label: "Cédula",

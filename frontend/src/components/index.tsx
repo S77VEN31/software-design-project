@@ -8,6 +8,8 @@ import DataTable, {
 // Inputs
 import CommentBox from "./Inputs/CommentBox/CommentBox";
 import DropdownList from "./Inputs/DropdownList/DropdownList";
-export { CommentBox, DataTable, DropdownList, SideNavBar };
+// Cards
+import Avatar from "./Cards/Avatar/Avatar";
+export { Avatar, CommentBox, DataTable, DropdownList, SideNavBar };
 export type { TableColumn, TableRenderable };
 

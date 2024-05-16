@@ -1,0 +1,23 @@
+.container {
+    display: flex;
+  
+    align-items: center;
+    justify-content: center;
+    margin: 0.5rem;
+    gap: 1rem;
+}
+
+.profileImage {
+    min-height: 100px;
+  display: flex;
+  min-height: 100px;
+  max-width: 10rem;
+  border-radius: 50%;
+  background-color: var(--primary);
+}
+
+.profileImage img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}

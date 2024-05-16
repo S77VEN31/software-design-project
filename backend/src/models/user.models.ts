@@ -27,7 +27,7 @@ const baseUserSchema = new Schema(
       trim: true,
     },
     profilePicture: {
-      type: Buffer,
+      type: String,
     },
     name: {
       type: String,

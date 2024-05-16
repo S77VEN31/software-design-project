@@ -14,6 +14,7 @@ export type Role =
 
   export type Statuses = "active" | "inactive" | "";
   export type Teacher = {
+    profilePicture?: string;
     _id?: string;
     status?: Statuses;
     idNumber?: string;

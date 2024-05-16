@@ -31,7 +31,7 @@ import {
   TeamOverview,
 } from "@enumerables";
 // Hooks
-import { DropdownList } from "@components";
+import { Avatar, DropdownList } from "@components";
 import { useResponseToast } from "@hooks";
 import { formatDate } from "@utils";
 import dayjs from "dayjs";
@@ -652,6 +652,19 @@ const CreateForm = ({
               }}
             />
           </LocalizationProvider>
+        );
+      case "profile-picture":
+        return (
+          <Avatar
+            changeAvatar={() =>
+              setFormData({
+                ...formData,
+                // @ts-expect-error - Its existence is optional
+                profilePicture: Math.random().toString(36).substring(7),
+              })
+            }
+            seed={formData[id as keyof FormData]}
+          />
         );
       default:
         return <div>Unsupported field type</div>;
