@@ -9,6 +9,7 @@ import {
   CampusBranch,
   StudentUser,
   TeacherUser,
+  Team,
 } from "../models";
 // Types
 import { Role } from "../types";
@@ -19,7 +20,7 @@ abstract class BaseUser {
   abstract read(id: string, role: string): Promise<any>;
   abstract update(id: string, updateData: any, role: string): Promise<any>;
   abstract delete(id: string, role: string): Promise<any>;
-  abstract list(): Promise<any>;
+  abstract list(userId: string, roles: string): Promise<any>;
 }
 
 class Admin extends BaseUser {
@@ -177,7 +178,7 @@ class Teacher extends BaseUser {
   async update(id: string, updateData: any, role: string) {
     try {
       const { roles, campusBranch } = updateData;
-    
+
       const campusBranchObject = await CampusBranch.findOne({
         _id: campusBranch,
       });
@@ -232,7 +233,7 @@ class Teacher extends BaseUser {
     try {
       const user = await TeacherUser.findOneAndDelete({
         _id: id,
-        roles: { $in: [role,  "Coordinator"] },
+        roles: { $in: [role, "Coordinator"] },
       });
 
       if (!user) {
@@ -331,13 +332,43 @@ class Student extends BaseUser {
     }
   }
 
-  async list() {
+  async list(userId: string, roles: string) {
+    const populateString = "campusBranch career";
+    const selectString = "-password";
+    let users;
     try {
-      // Ommit password field
-      const users = await StudentUser.find()
-        .select("-password")
-        .populate("campusBranch")
-        .populate("career");
+      switch (roles) {
+        case "Teacher":
+          const teacherTeams = await Team.find({
+            teachers: { $in: [userId] },
+          }).select("students");
+          const teacherStudentIds = teacherTeams.flatMap(
+            (team) => team.students
+          );
+          users = await StudentUser.find({ _id: { $in: teacherStudentIds } })
+            .populate(populateString)
+            .select(selectString);
+          break;
+        case "Coordinator":
+          const coordinatorTeams = await Team.find({
+            coordinator: { $in: [userId] },
+          }).select("students");
+          const coordinatorStudentIds = coordinatorTeams.flatMap(
+            (team) => team.students
+          );
+          users = await StudentUser.find({
+            _id: { $in: coordinatorStudentIds },
+          })
+            .populate(populateString)
+            .select(selectString);
+          break;
+        default:
+          users = await StudentUser.find()
+            .populate(populateString)
+            .select(selectString)
+            .populate(populateString);
+          break;
+      }
       return users;
     } catch (error: any) {
       throw new Error(`Error listing student users: ${error.message}`);
@@ -439,7 +470,11 @@ export class UserFactory {
   static async handleUserOperation(req: Request, res: Response) {
     const { method } = req;
     const role = req.params.role as Role;
-    const id = req.query.id as string;
+    const { id, roles, userId } = req.query as {
+      id: string;
+      roles: string;
+      userId: string;
+    };
     const userData = req.body;
 
     const user = new roleClassMap[role]();
@@ -449,7 +484,9 @@ export class UserFactory {
         case "POST":
           try {
             const newUser = await user.create(userData);
-            res.status(201).json({ message: [`Usuario creado`], user: newUser });
+            res
+              .status(201)
+              .json({ message: [`Usuario creado`], user: newUser });
           } catch (error: any) {
             res.status(400).json({ message: [error.message] });
           }
@@ -460,29 +497,33 @@ export class UserFactory {
               const userFound = await user.read(id, role);
               res.status(200).json(userFound);
             } catch (error: any) {
-              res.status(400).json({ message: [error.message]});
+              res.status(400).json({ message: [error.message] });
             }
           } else {
             try {
-              const users = await user.list();
+              const users = await user.list(userId, roles);
               res.status(200).json(users);
             } catch (error: any) {
-              res.status(400).json({ message: [error.message]});
+              res.status(400).json({ message: [error.message] });
             }
           }
           break;
         case "PUT":
           try {
             const updatedUser = await user.update(id, userData, role);
-            res.status(200).json({ message: [`Usuario actualizado`], user: updatedUser});
+            res
+              .status(200)
+              .json({ message: [`Usuario actualizado`], user: updatedUser });
           } catch (error: any) {
-            res.status(400).json({ message: [error.message]});
+            res.status(400).json({ message: [error.message] });
           }
           break;
         case "DELETE":
           try {
             const deletedUser = await user.delete(id, role);
-            res.status(200).json({ message: [`Usuario borrado`], user: deletedUser});
+            res
+              .status(200)
+              .json({ message: [`Usuario borrado`], user: deletedUser });
           } catch (error: any) {
             res.status(400).json({ message: [error.message] });
           }

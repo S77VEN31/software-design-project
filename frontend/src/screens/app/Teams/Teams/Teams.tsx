@@ -40,6 +40,8 @@ const Teams = () => {
   const [teams, setTeams] = useState<Team[]>([]);
   const [selectedTeam, setSelectedTeam] = useState<Team | null>(null);
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const userId = localStorage.getItem("id") || "";
   // Hooks
   const toast = useResponseToast();
 
@@ -138,7 +140,7 @@ const Teams = () => {
   };
 
   const getTeams = async () => {
-    getTeamRequest()
+    getTeamRequest({ userId, roles })
       .then((response) => {
         setTeams(response);
         console.log(response);

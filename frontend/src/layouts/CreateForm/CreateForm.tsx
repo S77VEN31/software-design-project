@@ -134,7 +134,7 @@ const CreateForm = ({
   };
 
   const getStudents = async () => {
-    const students = await getStudentRequest();
+    const students = await getStudentRequest({});
     setDropdownOptions((prevOptions) => ({
       ...prevOptions,
       students,
@@ -142,7 +142,7 @@ const CreateForm = ({
   };
 
   const getTeams = async () => {
-    const teams = await getTeamRequest();
+    const teams = await getTeamRequest({});
     setDropdownOptions((prevOptions) => ({
       ...prevOptions,
       teams,
@@ -311,7 +311,7 @@ const CreateForm = ({
     request(formDataCopy, id ? id : null)
       .then((response) => {
         if (getRequest) {
-          getRequest(id)
+          getRequest({ id })
             .then((response) => {
               setFormData(response);
             })
@@ -340,7 +340,7 @@ const CreateForm = ({
     getOrganizers();
     getActivities();
     if (getRequest) {
-      getRequest(id)
+      getRequest({ id })
         .then((response) => {
           console.log(response);
           setFormData(response);

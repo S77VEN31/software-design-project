@@ -35,6 +35,9 @@ const Schedules = () => {
     null
   );
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
+  const userId = localStorage.getItem("id") || "";
+
   // Hooks
   const toast = useResponseToast();
 
@@ -108,8 +111,12 @@ const Schedules = () => {
   };
 
   const getSchedules = async () => {
-    getScheduleRequest()
+    getScheduleRequest({
+      userId,
+      roles,
+    })
       .then((response) => {
+        console.log(response);
         setSchedules(response);
       })
       .catch((error) => {
