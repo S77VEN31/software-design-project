@@ -286,6 +286,10 @@ const ActivityFields = [
     type: "text",
     section: "Información de la Actividad",
     fullWidth: true,
+    dependsOn: {
+      id: "mode",
+      value: "Online",
+    },
   },
   {
     id: "evidence",

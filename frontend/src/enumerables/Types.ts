@@ -122,7 +122,7 @@ export type Role =
     reminderDays: string;
     mode: ActivityModality;
     status: ActivityStatus;
-    meetingLink: string;
+    meetingLink?: string;
     poster: string;
     evidence: string;
     comments: string[];
@@ -142,6 +142,10 @@ export type Role =
 
   export type Field = {
     id: string;
+    dependsOn?: {
+      id: string;
+      value: string;
+    };
     disabled?: boolean;
     label?: string;
     options?: { value: string; label: string }[];
