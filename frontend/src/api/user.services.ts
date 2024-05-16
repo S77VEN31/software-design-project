@@ -26,7 +26,7 @@ export const getStudentRequest = async ({
   return response.data;
 };
 
-export const getTeacherRequest = async (id?: string) => {
+export const getTeacherRequest = async ({ id }: GetUserRequestParams) => {
   const response = await api.get(
     id ? `${VITE_API_TEACHER}?id=${id}` : VITE_API_TEACHER
   );
