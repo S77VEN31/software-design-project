@@ -48,8 +48,8 @@ const Login = () => {
     event.preventDefault();
     loginRequest(loginData)
       .then((response) => {
-        const { permissions, token, id, roles } = response;
-        login(token, permissions, roles, id);
+        const { permissions, token, id, roles, campusBranch } = response;
+        login(token, permissions, roles, id, campusBranch);
         navigation("/home/teams");
         if (response.status === 400)  {
           toast(400, response.message);

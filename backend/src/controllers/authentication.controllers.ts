@@ -66,7 +66,7 @@ export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     // Find user
     const userFound = await User.findOne({ email });
-    console.log(userFound);
+
     if (!userFound) {
       return res.status(400).json({ message: ["User not found"] });
     }
@@ -85,6 +85,10 @@ export const login = async (req: Request, res: Response) => {
     if (!userFound.roles) {
       return res.status(400).json({ message: ["User has no roles"] });
     }
+   
+    const campusBranch =
+      // @ts-ignore
+      userFound.campusBranch ? userFound.campusBranch[0] : "";
 
     const permissions = PermissionManager.getPermissionsByRoles(
       userFound.roles as Role[]
@@ -97,13 +101,13 @@ export const login = async (req: Request, res: Response) => {
       sameSite: "none",
       secure: true,
     });
-
     // Send userFound and permissions
     return res.status(200).json({
       permissions,
       token,
       id: userFound._id,
       roles: userFound.roles,
+      campusBranch,
     });
   } catch (error) {
     console.log(error);

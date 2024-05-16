@@ -14,7 +14,8 @@ interface AuthContextType {
     token: string,
     permissions: Permission[],
     roles: string[],
-    id: string
+    id: string,
+    campusBranch: string
   ) => void;
   logout: () => void;
 }
@@ -48,6 +49,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       localStorage.removeItem("permissions");
       localStorage.removeItem("roles");
       localStorage.removeItem("id");
+      localStorage.removeItem("campusBranch");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -56,13 +58,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     token: string,
     newPermissions: Permission[],
     newRoles: string[],
-    newId: string
+    newId: string,
+    newCampusBranch: string
   ) => {
     // Guardar los permisos, roles e id en localStorage
     localStorage.setItem("permissions", JSON.stringify(newPermissions));
     localStorage.setItem("roles", JSON.stringify(newRoles));
     localStorage.setItem("id", newId);
     localStorage.setItem("token", token); // Guardar el token en localStorage para persistencia
+    localStorage.setItem("campusBranch", newCampusBranch);
 
     setCookie("token", token, {
       expires: new Date(Date.now() + 7 * 864e5), // expires in 7 days

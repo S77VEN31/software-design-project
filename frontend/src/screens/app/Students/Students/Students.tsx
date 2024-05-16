@@ -10,7 +10,7 @@ import { Button, IconButton, Modal } from "@mui/material";
 // Layouts
 import { TableLayout } from "@layouts";
 // Api
-import { deleteStudentRequest, getStudentRequest } from "@api";
+import { deleteStudentRequest, downloadExcel, getStudentRequest } from "@api";
 // Utils
 import { checkPermission } from "@utils";
 // Hooks
@@ -37,6 +37,7 @@ const Students = () => {
   const permissions = JSON.parse(localStorage.getItem("permissions") || "[]");
   const roles = JSON.parse(localStorage.getItem("roles") || "[]");
   const userId = localStorage.getItem("id") || "";
+  const campusBranch = localStorage.getItem("campusBranch") || "";
 
   // Hooks
   const toast = useResponseToast();
@@ -112,6 +113,14 @@ const Students = () => {
         Agregar Estudiante
       </Button>
     ),
+    reportsButton: checkPermission(permissions, "REPORTS", "GET") && (
+      <Button
+        variant="contained"
+        onClick={() => getStudentsExcel(campusBranch)}
+      >
+        Descargar Reporte
+      </Button>
+    ),
     children: <DataTable data={students} columns={columns} />,
   };
 
@@ -127,6 +136,10 @@ const Students = () => {
         console.log(error);
         toast(500, ["Error al obtener los estudiantes"]);
       });
+  };
+
+  const getStudentsExcel = (id?: string) => {
+    downloadExcel(id);
   };
 
   const deleteStudent = async (id: string) => {

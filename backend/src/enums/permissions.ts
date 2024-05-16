@@ -1,4 +1,11 @@
 const AdminPermissions = [
+  // Reports
+  {
+    slug: "/reports/get",
+    description: "Get reports",
+    type: "GET",
+    selector: "REPORTS",
+  },
   // Team
   {
     slug: "/team/get",
@@ -157,6 +164,13 @@ const AdminPermissions = [
 ];
 
 const AdministrativeAssistantPermissions = [
+  // Reports
+  {
+    slug: "/reports/get",
+    description: "Get reports",
+    type: "GET",
+    selector: "REPORTS",
+  },
   // Team
   {
     slug: "/team/get",
@@ -249,6 +263,13 @@ const AdministrativeAssistantPermissions = [
 ];
 
 const TeacherPermissions = [
+  // Reports
+  {
+    slug: "/reports/get",
+    description: "Get reports",
+    type: "GET",
+    selector: "REPORTS",
+  },
   // Team
   {
     slug: "/team/get",
@@ -347,6 +368,12 @@ const StudentPermissions = [
 ];
 
 const CoordinatorPermissions = [
+  {
+    slug: "/reports/get",
+    description: "Get reports",
+    type: "GET",
+    selector: "REPORTS",
+  },
   // Team
   {
     slug: "/team/get",

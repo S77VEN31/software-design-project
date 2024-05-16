@@ -7,14 +7,21 @@ interface TableLayoutProps {
   title: string;
   children: ReactNode;
   button?: ReactNode;
+  reportsButton?: ReactNode;
 }
 
-const TableLayout = ({ children, title, button }: TableLayoutProps) => {
+const TableLayout = ({
+  children,
+  title,
+  button,
+  reportsButton,
+}: TableLayoutProps) => {
   return (
     <div className={styles.tableLayout}>
       <div className={styles.header}>
         <div className={styles.content}>
           <h1>{title}</h1>
+          {reportsButton}
           {button}
         </div>
         <div className={styles.line} />
