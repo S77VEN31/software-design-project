@@ -59,9 +59,12 @@ export const updateActivities = async (req: Request, res: Response) => {
 
 export const deleteActivity = async (req: Request, res: Response) => {
     try {
-        const { name } = req.params;
-        await Activity.deleteOne({ name });
-        return res.status(200).json({ message: ["Deleted the activity successfully"]})
+      const { id } = req.query;
+      const deletedActivity = await Activity.findByIdAndDelete(id);
+      return res.status(200).json({
+        message: ["Actividad eliminada correctamente"],
+        deletedActivity,
+      });
     } catch (error:any) {
         return res.status(500).json({ message: [error] });
     }
