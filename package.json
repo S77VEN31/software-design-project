@@ -2,11 +2,9 @@
   "name": "root",
   "private": true,
   "scripts": {
-    "start": "npm install --prefix backend && npm start --prefix backend",
-    "install": "npm install --prefix backend && npm install --prefix frontend",
-    "heroku-postbuild": "npm run build --prefix frontend",
-    "build": "npm run build --prefix backend",
-    "frontend": "npm start --prefix frontend"
+    "start": "cd backend && npm start",
+    "build": "cd frontend && npm install && npm run build && cd ../backend && npm install",
+    "heroku-postbuild": "npm run build"
   },
   "engines": {
     "node": "16.x"
