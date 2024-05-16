@@ -158,11 +158,15 @@ class Teacher extends BaseUser {
     try {
       const user = await TeacherUser.findOne({
         _id: id,
-        roles: { $in: [role] },
+        /**
+         * Check if user has the role passed in the params (Teacher) or if it is a Coordinator
+         */
+        roles: { $in: [role, "Coordinator"] },
       });
-
       if (!user) {
-        throw new Error(`User with role ${role} not found. Cannot read user.`);
+        throw new Error(
+          `User with role Teacher or Coordinator not found. Cannot read user.`
+        );
       }
       return user;
     } catch (error: any) {
@@ -173,10 +177,7 @@ class Teacher extends BaseUser {
   async update(id: string, updateData: any, role: string) {
     try {
       const { roles, campusBranch } = updateData;
-      if (!roles.includes("Coordinator")) {
-        updateData.coordinatorId = null;
-      }
-
+    
       const campusBranchObject = await CampusBranch.findOne({
         _id: campusBranch,
       });
@@ -190,32 +191,35 @@ class Teacher extends BaseUser {
         roles: { $in: ["Coordinator"] },
       });
 
-      let newCoordinatorId = "";
-      if (coordinators && coordinators.length > 0) {
-        const lastCoordinator = coordinators[coordinators.length - 1];
-        const lastCoordinatorNumber = parseInt(
-          // @ts-expect-error Property 'coordinatorId' does not exist on type 'Document'
-          lastCoordinator.coordinatorId.match(/\d+$/)[0]
-        );
-        const newCoordinatorNumber = lastCoordinatorNumber + 1;
-        newCoordinatorId = `${campusBranchObject.initials}${newCoordinatorNumber}`;
-      } else {
-        newCoordinatorId = `${campusBranchObject.initials}1`;
+      if (!roles.includes("Coordinator")) {
+        updateData.coordinatorId = null;
       }
 
       if (roles.includes("Coordinator")) {
+        let newCoordinatorId = "";
+        if (coordinators && coordinators.length > 0) {
+          const lastCoordinator = coordinators[coordinators.length - 1];
+          const lastCoordinatorNumber = parseInt(
+            // @ts-expect-error Property 'coordinatorId' does not exist on type 'Document'
+            lastCoordinator.coordinatorId.match(/\d+$/)[0]
+          );
+          const newCoordinatorNumber = lastCoordinatorNumber + 1;
+          newCoordinatorId = `${campusBranchObject.initials}${newCoordinatorNumber}`;
+        } else {
+          newCoordinatorId = `${campusBranchObject.initials}1`;
+        }
         updateData.coordinatorId = newCoordinatorId;
       }
 
       const user = await TeacherUser.findOneAndUpdate(
-        { _id: id, roles: { $in: [role] } },
+        { _id: id, roles: { $in: [role, "Coordinator"] } },
         updateData,
         { new: true, runValidators: true }
-      ).populate("campusBranch", "career");
+      );
 
       if (!user) {
         throw new Error(
-          `User with role ${role} not found. Cannot update user.`
+          `User with role Teacher or Coordinator not found. Cannot update user.`
         );
       }
       return user;
@@ -228,7 +232,7 @@ class Teacher extends BaseUser {
     try {
       const user = await TeacherUser.findOneAndDelete({
         _id: id,
-        roles: { $in: [role] },
+        roles: { $in: [role,  "Coordinator"] },
       });
 
       if (!user) {
