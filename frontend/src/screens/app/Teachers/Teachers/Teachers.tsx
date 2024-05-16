@@ -75,9 +75,8 @@ const Teachers = () => {
     },
     {
       header: "Estado",
-      accessor: "active",
-      render: (active) => (active ? "Activo" : "Inactivo"),
-      objectAccessor: (active) => (active ? "Activo" : "Inactivo"),
+      accessor: "status",
+      render: (status) => (status === "active" ? "Activo" : "Inactivo"),
     },
   ];
 
@@ -148,7 +147,7 @@ const Teachers = () => {
       })
       .catch((error) => {
         console.log(error);
-        toast(500, ["Error al eliminar el profesor"]);
+        toast(500, error.response.data.message);
       });
   };
 

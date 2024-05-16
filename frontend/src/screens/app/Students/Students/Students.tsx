@@ -61,9 +61,8 @@ const Students = () => {
     },
     {
       header: "Estado",
-      accessor: "active",
-      render: (active) => (active ? "Activo" : "Inactivo"),
-      objectAccessor: (active) => (active ? "Activo" : "Inactivo"),
+      accessor: "status",
+      render: (status) => (status === "active" ? "Activo" : "Inactivo"),
     },
   ];
 
