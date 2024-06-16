@@ -5,6 +5,7 @@ import Career from "./career.model";
 import Comment from "./comments.model";
 import Schedule from "./schedule.model";
 import Team from "./team.model";
+import Notification from "./notification.model";
 import {
   AdminAssistantUser,
   AdminUser,
@@ -25,5 +26,6 @@ export {
   Comment,
   Schedule,
   Team,
+  Notification,
 };
 
