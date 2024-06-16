@@ -27,6 +27,8 @@ import {
   updateActivityRequest,
   getActivityRequest,
   createActivityRequest,
+  updateAdminAssistantRequest,
+  updateAdminRequest
 } from "@api";
 import {
   DefaultSchedule,
@@ -46,6 +48,8 @@ import {
   ActivityUpdateFields,
   DefaultActivity,
   ActivityFields,
+  DefaultProfile,
+  ProfileFields
 } from "@enumerables";
 
 const authenticationRoutes = [
@@ -62,6 +66,70 @@ const errorRoutes = [
 ];
 
 const appRoutes = [
+  {
+    apiSlug: "/self/teacher/put",
+    path: "/home/self/teacher/:id",
+    inNav: false,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Editar perfil"
+        createButtonText="Editar perfil"
+        request={updateTeacherRequest}
+        getRequest={getTeacherRequest}
+        fields={ProfileFields}
+        initialData={DefaultProfile}
+        routeToGo="/home/teams"
+      />
+    ),
+  },
+  {
+    apiSlug: "/self/adminassistant/put",
+    path: "/home/self/adminassistant/:id",
+    inNav: false,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Editar perfil"
+        createButtonText="Editar perfil"
+        request={updateAdminAssistantRequest}
+        getRequest={getTeacherRequest}
+        fields={ProfileFields}
+        initialData={DefaultProfile}
+        routeToGo="/home/teams"
+      />
+    ),
+  },
+  {
+    apiSlug: "/self/admin/put",
+    path: "/home/self/admin/:id",
+    inNav: false,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Editar perfil"
+        createButtonText="Editar perfil"
+        request={updateAdminRequest}
+        getRequest={getTeacherRequest}
+        fields={ProfileFields}
+        initialData={DefaultProfile}
+        routeToGo="/home/teams"
+      />
+    ),
+  },
+  {
+    apiSlug: "/self/student/put",
+    path: "/home/self/student/:id",
+    inNav: false,
+    element: (
+      <CreateFormLayout
+        layoutTitle="Editar perfil"
+        createButtonText="Editar perfil"
+        request={updateStudentRequest}
+        getRequest={getStudentRequest}
+        fields={ProfileFields}
+        initialData={DefaultProfile}
+        routeToGo="/home/teams"
+      />
+    ),
+  },
   {
     apiSlug: "/team/get",
     path: "/home/teams",

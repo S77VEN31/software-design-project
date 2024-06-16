@@ -1,5 +1,7 @@
 // React
 import { MouseEvent, useState } from "react";
+// Libraries
+import { useNavigate } from "react-router-dom";
 // Styles
 import styles from "./Menu.module.css";
 // Components
@@ -12,6 +14,10 @@ import { useAuth } from "@contexts";
 
 const Menu = () => {
   const { logout } = useAuth();
+  const navigate = useNavigate();
+  // Get user id and roles
+  const userId = localStorage.getItem("id") || "";
+  const roles = JSON.parse(localStorage.getItem("roles") || "[]");
   const logOut = () => {
     logout();
   };
@@ -41,7 +47,10 @@ const Menu = () => {
             <MenuItem
               onClick={() => {
                 handleClose();
-                console.log("Ver perfil");
+                if (roles.length > 0) {
+                  navigate(`/home/self/${roles[0].toLowerCase()}/${userId}`);
+                }
+                console.log(`/home/self/${roles[0].toLowerCase()}/${userId}`);
               }}
             >
               Ver perfil

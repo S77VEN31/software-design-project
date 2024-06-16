@@ -148,7 +148,7 @@ export type Role =
     coordinator: string[];
   };
 
-  export type FormData = Student | Teacher | Schedule | Team | Activity;
+  export type FormData = Student | Teacher | Schedule | Team | Activity | Profile;
 
   export type Field = {
     id: string;
@@ -171,4 +171,14 @@ export type Role =
     validation?: (value: string) => boolean;
     helperText?: string;
     required?: boolean;
+  };
+
+  export type Profile = {
+    profilePicture?: string;
+    _id?: string;
+    userName?: string;
+    email?: string;
+    roles: Role[];
+    password?: string;
+    phones: string[];
   };

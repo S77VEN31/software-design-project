@@ -12,6 +12,8 @@ import {
   getTeacherRequest,
   updateStudentRequest,
   updateTeacherRequest,
+  updateAdminAssistantRequest,
+  updateAdminRequest
 } from "./user.services";
 // Schedule services
 import {
@@ -68,6 +70,8 @@ export {
   updateScheduleRequest,
   updateStudentRequest,
   updateTeacherRequest,
-  updateTeamRequest
+  updateTeamRequest,
+  updateAdminAssistantRequest,
+  updateAdminRequest
 };
 

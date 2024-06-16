@@ -350,8 +350,7 @@ const CreateForm = ({
     if (getRequest) {
       getRequest({ id })
         .then((response) => {
-          console.log(response);
-          setFormData(response);
+          setFormData({...response, password: ""});
         })
         .catch((error) => {
           toast(error.status, error.message);

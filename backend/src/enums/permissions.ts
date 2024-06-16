@@ -1,4 +1,11 @@
 const AdminPermissions = [
+  // Profile
+  {
+    slug: "/self/admin/put",
+    description: "Update admin profile",
+    type: "PUT",
+    selector: "PROFILE",
+  },
   // Reports
   {
     slug: "/reports/get",
@@ -164,6 +171,13 @@ const AdminPermissions = [
 ];
 
 const AdministrativeAssistantPermissions = [
+  // Profile
+  {
+    slug: "/self/adminassistant/put",
+    description: "Update admin assistant profile",
+    type: "PUT",
+    selector: "PROFILE",
+  },
   // Reports
   {
     slug: "/reports/get",
@@ -263,6 +277,13 @@ const AdministrativeAssistantPermissions = [
 ];
 
 const TeacherPermissions = [
+  // Profile
+  {
+    slug: "/self/teacher/put",
+    description: "Update teacher profile",
+    type: "PUT",
+    selector: "PROFILE",
+  },
   // Reports
   {
     slug: "/reports/get",
@@ -326,6 +347,13 @@ const TeacherPermissions = [
 ];
 
 const StudentPermissions = [
+  // Profile
+  {
+    slug: "/self/student/put",
+    description: "Update student profile",
+    type: "PUT",
+    selector: "PROFILE",
+  },
   // Team
   {
     slug: "/team/get",
@@ -368,6 +396,13 @@ const StudentPermissions = [
 ];
 
 const CoordinatorPermissions = [
+  // Profile
+  {
+    slug: "/self/teacher/put",
+    description: "Update teacher profile",
+    type: "PUT",
+    selector: "PROFILE",
+  },
   {
     slug: "/reports/get",
     description: "Get reports",
