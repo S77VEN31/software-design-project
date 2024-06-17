@@ -28,7 +28,9 @@ import {
   getActivityRequest,
   createActivityRequest,
   updateAdminAssistantRequest,
-  updateAdminRequest
+  updateAdminRequest,
+  getAdminAssistantRequest,
+  getAdminRequest
 } from "@api";
 import {
   DefaultSchedule,
@@ -91,7 +93,7 @@ const appRoutes = [
         layoutTitle="Editar perfil"
         createButtonText="Editar perfil"
         request={updateAdminAssistantRequest}
-        getRequest={getTeacherRequest}
+        getRequest={getAdminAssistantRequest}
         fields={ProfileFields}
         initialData={DefaultProfile}
         routeToGo="/home/teams"
@@ -107,7 +109,7 @@ const appRoutes = [
         layoutTitle="Editar perfil"
         createButtonText="Editar perfil"
         request={updateAdminRequest}
-        getRequest={getTeacherRequest}
+        getRequest={getAdminRequest}
         fields={ProfileFields}
         initialData={DefaultProfile}
         routeToGo="/home/teams"

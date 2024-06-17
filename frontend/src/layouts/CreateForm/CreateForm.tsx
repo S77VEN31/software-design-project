@@ -299,6 +299,31 @@ const CreateForm = ({
     [phones]
   );
 
+  const handlePhoneChangeWrapper = (index: number) => {
+    const handleIndexPhoneChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      // @ts-expect-error
+      const newPhones = [...formData.phones]
+      newPhones.splice(index, 1, event.target.value)
+      setFormData({
+        ...formData,
+        // @ts-expect-error
+        phones: newPhones
+      });
+    };
+    return handleIndexPhoneChange;
+  };
+
+  const handleAddPhone = () => {
+    // @ts-expect-error
+    const newPhones = formData.phones;
+    newPhones.push("");
+    setFormData({
+      ...formData,
+      // @ts-expect-error
+      phones: newPhones
+    });
+  }
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     /*
@@ -665,6 +690,35 @@ const CreateForm = ({
             seed={formData[id as keyof FormData]}
           />
         );
+      case "phone-list":
+        return (
+          <div className={styles.formSection}>
+            {formData[id as keyof FormData] ?
+              // @ts-expect-error
+              formData[id as keyof FormData].map((element: string, index: number) => (
+                <TextField
+                {...field}
+                className={styles.formField}
+                value={formData[id as keyof FormData][index] || ""}
+                key={`ph${index}`}
+                onChange={handlePhoneChangeWrapper(index)}
+                error={
+                  validation &&
+                  !validation(formData[id as keyof FormData] as string)
+                }
+                helperText={
+                  validation &&
+                  !validation(formData[id as keyof FormData] as string)
+                    ? helperText
+                    : ""
+                }
+              />
+                )) 
+                : 
+              <div>Not supported</div>}
+            <Button onClick={handleAddPhone}>Add</Button>
+          </div>
+        )
       default:
         return <div>Unsupported field type</div>;
     }

@@ -339,6 +339,13 @@ const ProfileFields = [
     fullWidth: true,
     disabled: true,
   },
+  {
+    id: "phones",
+    label: "Teléfono",
+    type: "phone-list",
+    section: "Teléfonos",
+    fullWidth: true,
+  },
 ]
 
 const StudentFields = [

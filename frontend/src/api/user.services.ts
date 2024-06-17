@@ -77,3 +77,13 @@ export const updateAdminRequest = async (admin: FormData, id: string) => {
   const response = await api.put(`${VITE_API_ADMIN}?id=${id}`, admin);
   return response.data;
 }
+
+export const getAdminAssistantRequest = async ({ id }: GetUserRequestParams) => {
+  const response = await api.get(id ? `${VITE_API_ADMIN_ASSISTANT}?id=${id}` : VITE_API_ADMIN_ASSISTANT);
+  return response.data;
+}
+
+export const getAdminRequest = async ({ id }: GetUserRequestParams) => {
+  const response = await api.get(id ? `${VITE_API_ADMIN}?id=${id}` : VITE_API_ADMIN);
+  return response.data;
+}

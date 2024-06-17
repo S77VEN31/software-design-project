@@ -50,7 +50,7 @@ const Menu = () => {
                 if (roles.length > 0) {
                   navigate(`/home/self/${roles[0].toLowerCase()}/${userId}`);
                 }
-                console.log(`/home/self/${roles[0].toLowerCase()}/${userId}`);
+                console.log(userId);
               }}
             >
               Ver perfil
