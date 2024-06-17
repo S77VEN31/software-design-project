@@ -1,8 +1,10 @@
 // Express
 import { Request, Response } from "express";
-// Mongoose
 // Models
-import { Activity, Schedule } from "../models";
+import { Activity, Notification, Schedule } from "../models";
+// Services
+import { notificationObserver } from '../services';
+import { dateVisitor } from '../services';
 
 export const addActivity = async (req: Request, res: Response) => {
   try {
@@ -114,4 +116,42 @@ export const deleteActivity = async (req: Request, res: Response) => {
     } catch (error:any) {
         return res.status(500).json({ message: [error] });
     }
+};
+
+//Notification configuration
+export const createActivity = (req: Request, res: Response) => {
+  const { sender, date, text } = req.body;
+  const newNotification = new Notification(
+      Date.now(), // using timestamp as a simple ID
+      sender,
+      new Date(date),
+      text,
+      'UNREAD'
+  );
+
+  notificationObserver.addNotification(newNotification);
+  res.status(201).json({ message: 'Activity created and notification sent' });
+};
+
+export const getNotifications = (req: Request, res: Response) => {
+  const { status } = req.query;
+  const notifications = notificationObserver.getNotifications(status as 'READ' | 'UNREAD' | 'ALL');
+  res.status(200).json(notifications);
+};
+
+export const deleteNotification = (req: Request, res: Response) => {
+  const { id } = req.params;
+  notificationObserver.deleteNotification(Number(id));
+  res.status(200).json({ message: 'Notification deleted' });
+};
+
+export const updateActivityStatus = async (req: Request, res: Response) => {
+  try {
+      const { activityId } = req.params;
+      await dateVisitor.visit(activityId);
+      const updatedActivity = await Activity.findById(activityId);
+      res.status(200).json({ message: 'Activity status updated', activity: updatedActivity });
+  } catch (error:any) {
+      res.status(404).json({ message: [error] });
+  }
 };
