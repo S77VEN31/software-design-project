@@ -1,13 +1,10 @@
 // Express
 import { Request, Response } from "express";
-// Mongoose
 // Models
-import { notificationObserver } from '../services/notificationObserver.service';
-import { Notification } from '../models/notification.model';
-
-import { Activity, Schedule } from "../models";
-
-import { dateVisitor } from '../services/dateVisitor';
+import { Activity, Notification, Schedule } from "../models";
+// Services
+import { notificationObserver } from '../services';
+import { dateVisitor } from '../services';
 
 export const addActivity = async (req: Request, res: Response) => {
   try {
