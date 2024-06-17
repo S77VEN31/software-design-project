@@ -61,11 +61,21 @@ class Admin extends BaseUser {
 
   async update(id: string, updateData: any, role: string) {
     try {
-      const updatedUser = await AdminUser.findOneAndUpdate(
-        { _id: id, roles: { $in: [role] } },
-        updateData,
-        { new: true, runValidators: true }
-      );
+      let updatedUser = null;
+      if (updateData.password) {
+        const passwordHash = await bcrypt.hash(updateData.password, 10);
+        updatedUser = await AdminUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role] } },
+          { ...updateData, password: passwordHash},
+          { new: true, runValidators: true }
+        );
+      } else {
+        updatedUser = await AdminUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role] } },
+          updateData,
+          { new: true, runValidators: true }
+        );
+      }
 
       if (!updatedUser) {
         throw new Error(
@@ -212,11 +222,21 @@ class Teacher extends BaseUser {
         updateData.coordinatorId = newCoordinatorId;
       }
 
-      const user = await TeacherUser.findOneAndUpdate(
-        { _id: id, roles: { $in: [role, "Coordinator"] } },
-        updateData,
-        { new: true, runValidators: true }
-      );
+      let user = null;
+      if (updateData.password) {
+        const passwordHash = await bcrypt.hash(updateData.password, 10);
+        user = await TeacherUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role, "Coordinator"] } },
+          { ...updateData, password: passwordHash},
+          { new: true, runValidators: true }
+        );
+      } else {
+        user = await TeacherUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role, "Coordinator"] } },
+          updateData,
+          { new: true, runValidators: true }
+        );
+      }
 
       if (!user) {
         throw new Error(
@@ -297,11 +317,21 @@ class Student extends BaseUser {
 
   async update(id: string, updateData: any, role: string) {
     try {
-      const user = await StudentUser.findOneAndUpdate(
-        { _id: id, roles: { $in: [role] } },
-        updateData,
-        { new: true, runValidators: true }
-      ).populate("campusBranch", "career");
+      let user = null;
+      if (updateData.password) {
+        const passwordHash = await bcrypt.hash(updateData.password, 10);
+        user = await StudentUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role] } },
+          { ...updateData, password: passwordHash},
+          { new: true, runValidators: true }
+          ).populate("campusBranch", "career");
+      } else {
+        user = await StudentUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role] } },
+          updateData,
+          { new: true, runValidators: true }
+        ).populate("campusBranch", "career");
+      }
 
       if (!user) {
         throw new Error(
@@ -413,12 +443,21 @@ class AdminAssistant extends BaseUser {
 
   async update(id: string, updateData: any, role: string) {
     try {
-      const user = await AdminAssistantUser.findOneAndUpdate(
-        { _id: id, roles: { $in: [role] } },
-        updateData,
-        { new: true, runValidators: true }
-      ).populate("campusBranch");
-
+      let user = null;
+      if (updateData.password) {
+        const passwordHash = await bcrypt.hash(updateData.password, 10);
+        user = await AdminAssistantUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role] } },
+          { ...updateData, password: passwordHash},
+          { new: true, runValidators: true }
+        ).populate("campusBranch");
+      } else {
+        user = await AdminAssistantUser.findOneAndUpdate(
+          { _id: id, roles: { $in: [role] } },
+          updateData,
+          { new: true, runValidators: true }
+        ).populate("campusBranch");
+      }
       if (!user) {
         throw new Error(
           `User with role ${role} not found. Cannot update user.`

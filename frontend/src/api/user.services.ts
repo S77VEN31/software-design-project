@@ -3,7 +3,12 @@ import { api } from "./api";
 // Types
 import { FormData } from "@enumerables";
 // Enviroment variables
-const { VITE_API_STUDENT, VITE_API_TEACHER } = import.meta.env;
+const { 
+  VITE_API_STUDENT, 
+  VITE_API_TEACHER, 
+  VITE_API_ADMIN_ASSISTANT,
+  VITE_API_ADMIN,
+  } = import.meta.env;
 
 interface GetUserRequestParams {
   id?: string;
@@ -60,5 +65,25 @@ export const deleteStudentRequest = async (id: string) => {
 
 export const deleteTeacherRequest = async (id: string) => {
   const response = await api.delete(`${VITE_API_TEACHER}?id=${id}`);
+  return response.data;
+}
+
+export const updateAdminAssistantRequest = async (adminAssistant: FormData, id: string) => {
+  const response = await api.put(`${VITE_API_ADMIN_ASSISTANT}?id=${id}`, adminAssistant);
+  return response.data;
+}
+
+export const updateAdminRequest = async (admin: FormData, id: string) => {
+  const response = await api.put(`${VITE_API_ADMIN}?id=${id}`, admin);
+  return response.data;
+}
+
+export const getAdminAssistantRequest = async ({ id }: GetUserRequestParams) => {
+  const response = await api.get(id ? `${VITE_API_ADMIN_ASSISTANT}?id=${id}` : VITE_API_ADMIN_ASSISTANT);
+  return response.data;
+}
+
+export const getAdminRequest = async ({ id }: GetUserRequestParams) => {
+  const response = await api.get(id ? `${VITE_API_ADMIN}?id=${id}` : VITE_API_ADMIN);
   return response.data;
 }

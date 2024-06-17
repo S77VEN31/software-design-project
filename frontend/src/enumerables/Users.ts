@@ -1,5 +1,5 @@
 // Types
-import { Admin, AdminAssistant, Student, Teacher } from "@enumerables";
+import { Admin, AdminAssistant, Student, Teacher, Profile } from "@enumerables";
 
 const DefaultTeacher: Teacher = {
   profilePicture: "",
@@ -294,6 +294,60 @@ const DefaultUpdateStudent: Student = {
   roles: ["Student"],
 };
 
+const DefaultProfile: Profile = {
+  roles: [],
+  userName: "",
+  phones: [],
+  password: "",
+  email: "",
+}
+
+const ProfileFields = [
+  {
+    id: "profilePicture",
+    label: "Foto de perfil",
+    type: "profile-picture",
+    section: "Información del Perfil",
+  },
+  {
+    id: "userName",
+    label: "Nombre de usuario",
+    type: "text",
+    section: "Información del Perfil",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
+    id: "password",
+    label: "Nueva Contraseña",
+    type: "password",
+    section: "Información del Perfil",
+    fullWidth: true,
+    inputProps: {
+      maxLength: 100,
+      minLength: 8,
+    },
+    validation: (value: string) => value === "" || passwordRegex.test(value),
+    helperText:
+      "Password must have at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character",
+  },
+  {
+    id: "email",
+    label: "Email",
+    type: "email",
+    section: "Contacto",
+    fullWidth: true,
+    disabled: true,
+  },
+  {
+    id: "phones",
+    label: "Teléfono",
+    type: "phone-list",
+    section: "Teléfonos",
+    fullWidth: true,
+  },
+]
+
 const StudentFields = [
   {
     id: "carne",
@@ -559,5 +613,7 @@ export {
   StudentUpdateFields,
   TeacherFields,
   TeacherUpdateFields,
+  DefaultProfile,
+  ProfileFields
 };
 
